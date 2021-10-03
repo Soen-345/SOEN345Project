@@ -2,6 +2,12 @@ pipeline {
     agent any
 
     stages {
+        stage ("Analyse") {
+            sh 'sloccount --duplicates --wide --details path-to-code/ > sloccount.sc'
+        }
+        stage ("Publish reports") {
+            sloccountPublish encoding: '', pattern: ''
+        }
         stage('Build') {
             steps {
                 echo 'Building..'
