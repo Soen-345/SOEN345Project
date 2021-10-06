@@ -1,10 +1,16 @@
 pipeline {
     agent any
+    tools {
+        maven 'Maven 3.8.3'
+        jdk 'jdk11'
+    }
 
     stages {
-        stage('Setup') {
+        stage('Initialize') {
             steps {
+                echo 'installing maven'
                 bat 'mvn clean install'
+                echo 'Successfully installed maven'
                 }
             }
         stage('Test') {
