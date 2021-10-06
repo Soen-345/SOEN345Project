@@ -12,8 +12,7 @@ pipeline {
                 echo 'Testing..'
                 bat 'mvn test'
                 echo 'Test done'
-            }
+             }
             }
         }
     }
-}
