@@ -7,6 +7,8 @@ import org.springframework.samples.petclinic.visit.Visit;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static org.mockito.Mockito.verify;
+
 public class PetTests {
 
     @Test
@@ -16,7 +18,11 @@ public class PetTests {
         Visit visit = Mockito.mock(Visit.class);
         PetType type = Mockito.mock(PetType.class);
         pet.setOwner(owner);
-
+        pet.setType(type);
+        pet.setOwner(owner);
+        pet.setId(001);
+        pet.addVisit(visit);
+        verify(visit).setPetId(001);
     }
 
 
