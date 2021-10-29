@@ -16,7 +16,11 @@
 package org.springframework.samples.petclinic.vet;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.util.SerializationUtils;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -37,4 +41,15 @@ class VetTests {
 		assertThat(other.getId()).isEqualTo(vet.getId());
 	}
 
+
+//  getSpecialties, getNrOfSpecialties and addSpecialty methods are missing for testing
+	@Test
+	public void testAddSpecialties() {
+		Vet vet = new Vet();
+
+		Specialty specialty = Mockito.mock(Specialty.class);
+		assertEquals(0, vet.getNrOfSpecialties()); // addSpeciality not used so should return 0
+
+
+	}
 }
