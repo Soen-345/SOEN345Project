@@ -44,12 +44,12 @@ class VetTests {
 
 //  getSpecialties, getNrOfSpecialties and addSpecialty methods are missing for testing
 	@Test
-	public void testAddSpecialties() {
+	public void testAddSpecialty() {
 		Vet vet = new Vet();
 
 		Specialty specialty = Mockito.mock(Specialty.class);
 		assertEquals(0, vet.getNrOfSpecialties()); // addSpeciality not used so should return 0
-
-
+		vet.addSpecialty(specialty); // should increment number of specialities by 1
+		assertEquals(1, vet.getNrOfSpecialties());
 	}
 }
