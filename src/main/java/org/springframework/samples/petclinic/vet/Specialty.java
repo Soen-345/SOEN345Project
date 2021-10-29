@@ -38,7 +38,6 @@ public class Specialty extends NamedEntity implements Serializable {
 
     public Specialty (String name, Integer id)
     {
-        this.setName(name);
-        this.setId(id);
+        super (name, id);
     }
 }
