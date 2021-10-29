@@ -44,6 +44,24 @@ class VetTests {
 
 //  getSpecialties, getNrOfSpecialties and addSpecialty methods are missing for testing
 	@Test
+	public void testGetSpecialties (){
+
+		Vet vet = new Vet();
+		Specialty specialty = Mockito.mock(Specialty.class);
+
+			specialty.setName("radiology");
+
+		assertEquals(0, vet.getSpecialties());
+
+
+
+
+	}
+
+
+
+
+	@Test
 	public void testAddSpecialty() {
 		Vet vet = new Vet();
 
