@@ -35,6 +35,20 @@ public class Person extends BaseEntity {
 	@NotEmpty
 	private String lastName;
 
+
+	public Person ()
+	{
+
+	}
+
+	public Person (String first, String last)
+	{
+		this.firstName = first;
+		this.lastName = last;
+	}
+
+
+
 	public String getFirstName() {
 		return this.firstName;
 	}
