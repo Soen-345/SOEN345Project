@@ -21,13 +21,13 @@ public class PetTests {
         Visit visit = Mockito.mock(Visit.class);
         PetType type = Mockito.mock(PetType.class);
         pet.setOwner(owner);
-
         pet.setType(type);
-        pet.setId(001);
         pet.addVisit(visit);
-        verify(visit).setPetId(001);
         when(owner.getCity()).thenReturn("Madison");
         assertEquals("Madison", pet.getOwner().getCity());
+        when(type.getName()).thenReturn("leo");
+        assertEquals("leo", pet.getType().getName());
+
     }
 
 
