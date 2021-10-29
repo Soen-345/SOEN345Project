@@ -42,15 +42,16 @@ public class Person extends BaseEntity {
 
 	public Person (String first, String last)
 	{
+		super();
 		this.firstName = first;
 		this.lastName = last;
 	}
 
 	public Person (String first, String last, Integer id)
 	{
+		super (id);
 		this.firstName = first;
 		this.lastName = last;
-		this.setId(id);
 	}
 
 	public String getFirstName() {
