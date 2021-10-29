@@ -52,4 +52,12 @@ class VetTests {
 		vet.addSpecialty(specialty); // should increment number of specialities by 1
 		assertEquals(1, vet.getNrOfSpecialties());
 	}
+	public void testGetNrOfSpecialties() {
+		Vet vet = new Vet();
+
+		Specialty specialty = Mockito.mock(Specialty.class); //specialty number 1
+		Specialty specialty2 = Mockito.mock(Specialty.class); //specialty number 2
+
+	}
+
 }
