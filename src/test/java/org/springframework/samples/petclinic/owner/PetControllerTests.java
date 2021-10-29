@@ -17,6 +17,7 @@
 package org.springframework.samples.petclinic.owner;
 
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -26,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -55,14 +57,23 @@ class PetControllerTests {
 	@MockBean
 	private OwnerRepository owners;
 
+	//add another mock to remove pettype
+	//another way using annotation
+	//@Mock
+	PetType type=mock(PetType.class);
+
 	@BeforeEach
 	void setup() {
-		PetType cat = new PetType();
-		cat.setId(3);
-		cat.setName("hamster");
-		given(this.pets.findPetTypes()).willReturn(Lists.newArrayList(cat));
+
+		type.setId(3);
+		type.setName("hamster");
+		given(this.pets.findPetTypes()).willReturn(Lists.newArrayList(type));
 		given(this.owners.findById(TEST_OWNER_ID)).willReturn(new Owner());
 		given(this.pets.findById(TEST_PET_ID)).willReturn(new Pet());
+
+		given(this.type.getId()).willReturn(3);
+		given(this.type.getName()).willReturn("hamster");
+
 
 	}
 
