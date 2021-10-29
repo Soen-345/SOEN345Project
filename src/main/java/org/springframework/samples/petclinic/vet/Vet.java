@@ -50,6 +50,12 @@ public class Vet extends Person {
 			inverseJoinColumns = @JoinColumn(name = "specialty_id"))
 	private Set<Specialty> specialties;
 
+	public Vet () {this.specialties = new HashSet<>(); }
+
+	public Vet (HashSet<Specialty> hashSet) {
+		this.specialties = hashSet;
+	}
+
 	protected Set<Specialty> getSpecialtiesInternal() {
 		if (this.specialties == null) {
 			this.specialties = new HashSet<>();
