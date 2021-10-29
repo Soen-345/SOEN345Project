@@ -32,6 +32,7 @@ class VetController {
 
 	private final VetRepository vets;
 
+
 	public VetController(VetRepository clinicService) {
 		this.vets = clinicService;
 	}
