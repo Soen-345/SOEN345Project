@@ -1,9 +1,9 @@
 package org.springframework.samples.petclinic.owner;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.*;
 
 import java.util.HashSet;
 
@@ -20,7 +20,7 @@ public class OwnerTest {
 
 	private HashSet<Pet> setOfPets;
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		alireza = new Owner();
 		alireza.setFirstName("alireza");
