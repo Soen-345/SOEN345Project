@@ -63,6 +63,16 @@ public class Pet extends NamedEntity {
 	@Transient
 	private Set<Visit> visits = new LinkedHashSet<>();
 
+	public Pet() {
+
+	}
+
+	public Pet(LocalDate birthDate, PetType type, Owner owner) {
+		this.birthDate = birthDate;
+		this.type = type;
+		this.owner = owner;
+	}
+
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}

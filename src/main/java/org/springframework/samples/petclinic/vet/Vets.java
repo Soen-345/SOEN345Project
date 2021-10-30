@@ -32,6 +32,14 @@ public class Vets {
 
 	private List<Vet> vets;
 
+	public Vets() {
+		vets = new ArrayList<>();
+	};
+
+	public Vets(List<Vet> vets) {
+		this.vets = vets;
+	}
+
 	@XmlElement
 	public List<Vet> getVetList() {
 		if (vets == null) {
