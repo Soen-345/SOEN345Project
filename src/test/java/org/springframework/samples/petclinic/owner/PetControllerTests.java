@@ -18,6 +18,7 @@ package org.springframework.samples.petclinic.owner;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -57,24 +58,26 @@ class PetControllerTests {
 	@MockBean
 	private OwnerRepository owners;
 
-	//add another mock to remove pettype
-	//another way using annotation
-	//@Mock
-	PetType type;
+	@Mock
+	private PetType hamster;
+
+	@Mock
+	private Owner betty;
+
+	@Mock
+	private Pet max;
 
 	@BeforeEach
 	void setup() {
-		type =mock(PetType.class);
-		type.setId(3);
-		type.setName("hamster");
-		given(this.pets.findPetTypes()).willReturn(Lists.newArrayList(type));
-		given(this.owners.findById(TEST_OWNER_ID)).willReturn(new Owner());
-		given(this.pets.findById(TEST_PET_ID)).willReturn(new Pet());
-
-		given(this.type.getId()).willReturn(3);
-		given(this.type.getName()).willReturn("hamster");
-
-
+		when(max.getId()).thenReturn(3);
+		when(max.getName()).thenReturn("max");
+		when(max.getOwner()).thenReturn(betty);
+		when(max.getType()).thenReturn(hamster);
+		when(hamster.getName()).thenReturn("hamster");
+		when(betty.getPet("max")).thenReturn(max);
+		given(this.pets.findPetTypes()).willReturn(Lists.newArrayList(hamster));
+		given(this.owners.findById(TEST_OWNER_ID)).willReturn(betty);
+		given(this.pets.findById(TEST_PET_ID)).willReturn(max);
 	}
 
 	@Test
