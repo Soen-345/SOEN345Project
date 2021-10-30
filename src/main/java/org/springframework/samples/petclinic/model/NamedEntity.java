@@ -17,6 +17,7 @@ package org.springframework.samples.petclinic.model;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.print.attribute.standard.MediaSize;
 
 /**
  * Simple JavaBean domain object adds a name property to <code>BaseEntity</code>. Used as
@@ -30,6 +31,20 @@ public class NamedEntity extends BaseEntity {
 
 	@Column(name = "name")
 	private String name;
+
+	public NamedEntity() {
+		super();
+	}
+
+	public NamedEntity(String name) {
+		super();
+		this.name = name;
+	}
+
+	public NamedEntity(String name, Integer id) {
+		super(id);
+		this.name = name;
+	}
 
 	public String getName() {
 		return this.name;

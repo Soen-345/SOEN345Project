@@ -366,6 +366,7 @@
                         <groupId>io.spring.javaformat</groupId>
                         <artifactId>spring-javaformat-maven-plugin</artifactId>
                         <versionRange>[0,)</versionRange>
+                        <lineEnding>KEEP</lineEnding>
                         <goals>
                           <goal>validate</goal>
                         </goals>
