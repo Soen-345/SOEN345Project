@@ -6,6 +6,9 @@ import org.junit.Test;
 
 import java.util.HashSet;
 
+/**
+ * @author Alireza Ziarizi
+ */
 public class OwnerTest {
 
     private Owner alireza;
