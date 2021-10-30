@@ -48,18 +48,16 @@ class VetTests {
 
 		Vet vet = new Vet();
 		Specialty specialty = Mockito.mock(Specialty.class);
+		Specialty specialty2 = Mockito.mock(Specialty.class);
 
-			specialty.setName("radiology");
-
-		assertEquals(0, vet.getSpecialties());
-
-
-
+		when(specialty.getName()).thenReturn("radiology");
+		when(specialty2.getName()).thenReturn("surgery");
+		vet.addSpecialty(specialty);
+		vet.addSpecialty(specialty2);
+		assertEquals(specialty, vet.getSpecialties().get(0));
+		assertEquals(specialty2, vet.getSpecialties().get(1));
 
 	}
-
-
-
 
 	@Test
 	public void testAddSpecialty() {
