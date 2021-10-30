@@ -1,4 +1,5 @@
 package org.springframework.samples.petclinic.owner;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import org.junit.Before;
@@ -11,59 +12,61 @@ import java.util.HashSet;
  */
 public class OwnerTest {
 
-    private Owner alireza;
+	private Owner alireza;
 
-    private Pet pet;
-    private Pet existingPet;
-    private HashSet<Pet> setOfPets;
+	private Pet pet;
 
-    @Before
-    public void setup(){
-        alireza = new Owner();
-        alireza.setFirstName("alireza");
-        alireza.setLastName("Ziarizi");
-        alireza.setAddress("1234 cdn");
-        alireza.setCity("Montreal");
-        alireza.setTelephone("5141111111");
+	private Pet existingPet;
 
+	private HashSet<Pet> setOfPets;
 
-        // mocking pet class
-        pet = mock(Pet.class);
-        existingPet = mock(Pet.class);
+	@Before
+	public void setup() {
+		alireza = new Owner();
+		alireza.setFirstName("alireza");
+		alireza.setLastName("Ziarizi");
+		alireza.setAddress("1234 cdn");
+		alireza.setCity("Montreal");
+		alireza.setTelephone("5141111111");
 
-        setOfPets = new HashSet<>();
+		// mocking pet class
+		pet = mock(Pet.class);
+		existingPet = mock(Pet.class);
 
-        when(pet.getName()).thenReturn("maxi");
-        when(pet.isNew()).thenReturn(true);
-        when(existingPet.getName()).thenReturn("charlie");
-        when(existingPet.isNew()).thenReturn(false);
-        setOfPets.add(pet);
-        setOfPets.add(existingPet);
-        alireza.setPetsInternal(setOfPets);
+		setOfPets = new HashSet<>();
 
-    }
+		when(pet.getName()).thenReturn("maxi");
+		when(pet.isNew()).thenReturn(true);
+		when(existingPet.getName()).thenReturn("charlie");
+		when(existingPet.isNew()).thenReturn(false);
+		setOfPets.add(pet);
+		setOfPets.add(existingPet);
+		alireza.setPetsInternal(setOfPets);
 
-    @Test
-    public void testGetPetnew (){
-        // testing without ignoreNew
-        assertEquals(pet, alireza.getPet("maxi"));
-        // testing with ignorenNew = false
-        assertEquals(pet, alireza.getPet("maxi",false));
-    }
+	}
 
-    @Test
-    public void testExistingPet(){
-        assertEquals(existingPet,alireza.getPet("charlie"));
-        assertEquals(existingPet,alireza.getPet("charlie",true));
-    }
+	@Test
+	public void testGetPetnew() {
+		// testing without ignoreNew
+		assertEquals(pet, alireza.getPet("maxi"));
+		// testing with ignorenNew = false
+		assertEquals(pet, alireza.getPet("maxi", false));
+	}
 
-    @Test
-    public void testfornopets (){
-        assertEquals(setOfPets.size(),alireza.getPets().size());
-    }
+	@Test
+	public void testExistingPet() {
+		assertEquals(existingPet, alireza.getPet("charlie"));
+		assertEquals(existingPet, alireza.getPet("charlie", true));
+	}
 
-    @Test
-    public void testPetNotFound(){
-        assertEquals(null,alireza.getPet("haboub"));
-    }
+	@Test
+	public void testfornopets() {
+		assertEquals(setOfPets.size(), alireza.getPets().size());
+	}
+
+	@Test
+	public void testPetNotFound() {
+		assertEquals(null, alireza.getPet("haboub"));
+	}
+
 }

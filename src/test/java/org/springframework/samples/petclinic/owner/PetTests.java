@@ -13,25 +13,21 @@ import static org.mockito.Mockito.when;
 
 public class PetTests {
 
-    @Test
-    void testPet(){
-        Pet pet = new Pet();
-        Owner owner = Mockito.mock(Owner.class);
+	@Test
+	void testPet() {
+		Pet pet = new Pet();
+		Owner owner = Mockito.mock(Owner.class);
 
-        Visit visit = Mockito.mock(Visit.class);
-        PetType type = Mockito.mock(PetType.class);
-        pet.setOwner(owner);
-        pet.setType(type);
-        pet.addVisit(visit);
-        when(owner.getCity()).thenReturn("Madison");
-        assertEquals("Madison", pet.getOwner().getCity());
-        when(type.getName()).thenReturn("leo");
-        assertEquals("leo", pet.getType().getName());
+		Visit visit = Mockito.mock(Visit.class);
+		PetType type = Mockito.mock(PetType.class);
+		pet.setOwner(owner);
+		pet.setType(type);
+		pet.addVisit(visit);
+		when(owner.getCity()).thenReturn("Madison");
+		assertEquals("Madison", pet.getOwner().getCity());
+		when(type.getName()).thenReturn("leo");
+		assertEquals("leo", pet.getType().getName());
 
-    }
-
-
-
-
+	}
 
 }
