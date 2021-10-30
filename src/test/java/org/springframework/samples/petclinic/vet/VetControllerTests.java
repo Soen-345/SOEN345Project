@@ -27,12 +27,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Test class for the {@link VetController}
@@ -46,20 +51,41 @@ class VetControllerTests {
 	@MockBean
 	private VetRepository vets;
 
+	@Mock
+	private Vet james;
+
+	@Mock
+	private Vet helen;
+
+	@Mock
+	private Specialty radiology;
+
 	@BeforeEach
 	void setup() {
-		Vet james = new Vet();
-		james.setFirstName("James");
-		james.setLastName("Carter");
-		james.setId(1);
-		Vet helen = new Vet();
-		helen.setFirstName("Helen");
-		helen.setLastName("Leary");
-		helen.setId(2);
-		Specialty radiology = new Specialty();
-		radiology.setId(1);
-		radiology.setName("radiology");
-		helen.addSpecialty(radiology);
+//		Vet james = new Vet();
+//		james.setFirstName("James");
+//		james.setLastName("Carter");
+//		james.setId(1);
+		given(this.james.getId()).willReturn(1);
+		given(this.james.getFirstName()).willReturn("James");
+		given(this.james.getLastName()).willReturn("Carter");
+
+		given(this.helen.getId()).willReturn(2);
+		given(this.helen.getFirstName()).willReturn("Helen");
+		given(this.helen.getLastName()).willReturn("Leary");
+//		helen.setFirstName("Helen");
+//		helen.setLastName("Leary");
+//		helen.setId(2);
+
+		given(this.radiology.getId()).willReturn(1);
+		given(this.radiology.getName()).willReturn("radiology");
+
+//		Specialty radiology = new Specialty();
+//		radiology.setId(1);
+//		radiology.setName("radiology");
+//		helen.addSpecialty(radiology);
+		given(this.helen.getSpecialties()).willReturn(Arrays.asList(radiology));
+
 		given(this.vets.findAll()).willReturn(Lists.newArrayList(james, helen));
 	}
 

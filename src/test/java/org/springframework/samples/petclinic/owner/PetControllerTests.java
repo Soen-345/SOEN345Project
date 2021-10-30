@@ -60,11 +60,11 @@ class PetControllerTests {
 	//add another mock to remove pettype
 	//another way using annotation
 	//@Mock
-	PetType type=mock(PetType.class);
+	PetType type;
 
 	@BeforeEach
 	void setup() {
-
+		type =mock(PetType.class);
 		type.setId(3);
 		type.setName("hamster");
 		given(this.pets.findPetTypes()).willReturn(Lists.newArrayList(type));
