@@ -366,6 +366,9 @@
                         <groupId>io.spring.javaformat</groupId>
                         <artifactId>spring-javaformat-maven-plugin</artifactId>
                         <versionRange>[0,)</versionRange>
+                        <configuration>
+                          <skip>${disable.checks}</skip>
+                        </configuration>
                         <goals>
                           <goal>validate</goal>
                         </goals>
