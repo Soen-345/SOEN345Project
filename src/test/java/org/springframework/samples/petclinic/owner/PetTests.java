@@ -28,12 +28,10 @@ public class PetTests {
 
     @BeforeEach
     public void setup(){
-        pet = new Pet();
         owner = mock(Owner.class);
         visit = mock(Visit.class);
         type =  mock(PetType.class);
-        pet.setOwner(owner);
-        pet.setType(type);
+        pet = new Pet("max", type, owner);
         pet.addVisit(visit);
         setOfVisits = new HashSet<>();
         setOfVisits.add(visit);

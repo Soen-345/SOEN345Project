@@ -67,8 +67,8 @@ public class Pet extends NamedEntity {
 
 	}
 
-	public Pet(LocalDate birthDate, PetType type, Owner owner) {
-		this.birthDate = birthDate;
+	public Pet(String name, PetType type, Owner owner) {
+		super(name);
 		this.type = type;
 		this.owner = owner;
 	}
