@@ -10,6 +10,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'installing maven'
+                bat 'mvn spring-javaformat:apply'
                 bat 'mvn clean install'
                 echo 'Successfully installed maven'
                 }
