@@ -1,33 +1,55 @@
 package org.springframework.samples.petclinic.owner;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.samples.petclinic.visit.Visit;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
+/**
+ * @author alireza ziairiz
+ * @author  Beshoy
+ */
 public class PetTests {
+    private Pet pet;
+    private Owner owner;
+    private Visit visit;
+    private PetType type;
+    @Mock
+    private HashSet<Visit> setOfVisits;
 
-	@Test
-	void testPet() {
-		Pet pet = new Pet();
-		Owner owner = Mockito.mock(Owner.class);
+    @BeforeEach
+    public void setup(){
+        pet = new Pet();
+        owner = mock(Owner.class);
+        visit = mock(Visit.class);
+        type =  mock(PetType.class);
+        pet.setOwner(owner);
+        pet.setType(type);
+        pet.addVisit(visit);
+        setOfVisits = new HashSet<>();
+        setOfVisits.add(visit);
+        when(visit.getPetId()).thenReturn(123);
+    }
 
-		Visit visit = Mockito.mock(Visit.class);
-		PetType type = Mockito.mock(PetType.class);
-		pet.setOwner(owner);
-		pet.setType(type);
-		pet.addVisit(visit);
-		when(owner.getCity()).thenReturn("Madison");
-		assertEquals("Madison", pet.getOwner().getCity());
-		when(type.getName()).thenReturn("leo");
-		assertEquals("leo", pet.getType().getName());
+    @Test
+    void testPet(){
+     pet.setVisitsInternal(setOfVisits);
+     verify(visit).setPetId(pet.getId());
+     assertEquals(123,(int) visit.getPetId());
 
-	}
+    }
+
+
+
+
 
 }
