@@ -41,10 +41,9 @@ class VetTests {
 		assertThat(other.getId()).isEqualTo(vet.getId());
 	}
 
-
-//  getSpecialties, getNrOfSpecialties and addSpecialty methods are missing for testing
+	// getSpecialties, getNrOfSpecialties and addSpecialty methods are missing for testing
 	@Test
-	public void testGetSpecialties (){
+	public void testGetSpecialties() {
 
 		Vet vet = new Vet();
 		Specialty specialty = Mockito.mock(Specialty.class);
@@ -64,16 +63,18 @@ class VetTests {
 		Vet vet = new Vet();
 
 		Specialty specialty = Mockito.mock(Specialty.class);
-		assertEquals(0, vet.getNrOfSpecialties()); // addSpeciality not used so should return 0
+		assertEquals(0, vet.getNrOfSpecialties()); // addSpeciality not used so should
+													// return 0
 		vet.addSpecialty(specialty); // should increment number of specialities by 1
 		assertEquals(1, vet.getNrOfSpecialties());
 	}
+
 	@Test
 	public void testGetNrOfSpecialties() {
 		Vet vet = new Vet();
 
-		Specialty specialty = Mockito.mock(Specialty.class); //specialty number 1
-		Specialty specialty2 = Mockito.mock(Specialty.class); //specialty number 2
+		Specialty specialty = Mockito.mock(Specialty.class); // specialty number 1
+		Specialty specialty2 = Mockito.mock(Specialty.class); // specialty number 2
 		vet.addSpecialty(specialty);
 		vet.addSpecialty(specialty2);
 		assertEquals(2, vet.getNrOfSpecialties());
