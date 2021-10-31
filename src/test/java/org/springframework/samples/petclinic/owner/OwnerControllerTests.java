@@ -87,8 +87,7 @@ class OwnerControllerTests {
 		when (this.george.getCity ()).thenReturn("Madison");
 		when (this.george.getTelephone ()).thenReturn("6085551023");
 
-		max = new Pet();
-		dog = new PetType();
+
 //		dog.setName("dog");
 //		max.setId(1);
 //		max.setType(dog);
@@ -104,7 +103,7 @@ class OwnerControllerTests {
 		when (this.george.getPetsInternal ()).thenReturn (Collections.singleton(max));
 		when (this.owners.findById(TEST_OWNER_ID)).thenReturn (george);
 
-		visit = new Visit();
+
 //		visit.setDate(LocalDate.now());
 //		given(this.visits.findByPetId(max.getId())).willReturn(Collections.singletonList(visit));
 		when(this.visit.getDate ()).thenReturn (LocalDate.now());
