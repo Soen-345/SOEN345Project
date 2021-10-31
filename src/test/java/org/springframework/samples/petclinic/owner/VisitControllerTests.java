@@ -25,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -50,9 +51,12 @@ class VisitControllerTests {
 	@MockBean
 	private PetRepository pets;
 
+	@Mock
+	private Pet pet;
+
 	@BeforeEach
 	void init() {
-		given(this.pets.findById(TEST_PET_ID)).willReturn(new Pet());
+		given(this.pets.findById(TEST_PET_ID)).willReturn(pet);
 	}
 
 	@Test
