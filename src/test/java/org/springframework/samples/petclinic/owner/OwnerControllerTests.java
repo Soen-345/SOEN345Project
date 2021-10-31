@@ -80,7 +80,7 @@ class OwnerControllerTests {
 		when (this.george.getAddress ()).thenReturn("110 W. Liberty St.");
 		when (this.george.getCity ()).thenReturn("Madison");
 		when (this.george.getTelephone ()).thenReturn("6085551023");
-
+		when(this.george.getPets()).thenReturn(Lists.newArrayList(max));
 
 
 		when (this.dog.getName ()).thenReturn ("dog");
@@ -88,6 +88,7 @@ class OwnerControllerTests {
 		when (this.max.getType ()).thenReturn (dog);
 		when (this.max.getName ()).thenReturn ("Max");
 		when (this.max.getBirthDate ()).thenReturn (LocalDate.now());
+		when (this.max.getVisits()).thenReturn(Lists.newArrayList(visit));
 		when (this.george.getPetsInternal ()).thenReturn (Collections.singleton(max));
 		when (this.owners.findById(TEST_OWNER_ID)).thenReturn (george);
 
