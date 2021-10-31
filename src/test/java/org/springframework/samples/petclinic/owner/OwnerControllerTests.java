@@ -73,7 +73,7 @@ class OwnerControllerTests {
 
 	@BeforeEach
 	void setup() {
-		george = new Owner();
+		//george = new Owner();
 //		george.setId(TEST_OWNER_ID);
 //		george.setFirstName("George");
 //		george.setLastName("Franklin");
@@ -86,9 +86,10 @@ class OwnerControllerTests {
 		when (this.george.getAddress ()).thenReturn("110 W. Liberty St.");
 		when (this.george.getCity ()).thenReturn("Madison");
 		when (this.george.getTelephone ()).thenReturn("6085551023");
+		when(this.george.getPets()).thenReturn(Lists.newArrayList(max));
 
-		max = new Pet();
-		dog = new PetType();
+		//max = new Pet();
+		//dog = new PetType();
 //		dog.setName("dog");
 //		max.setId(1);
 //		max.setType(dog);
@@ -101,10 +102,11 @@ class OwnerControllerTests {
 		when (this.max.getType ()).thenReturn (dog);
 		when (this.max.getName ()).thenReturn ("Max");
 		when (this.max.getBirthDate ()).thenReturn (LocalDate.now());
+		when (this.max.getVisits()).thenReturn(Lists.newArrayList(visit));
 		when (this.george.getPetsInternal ()).thenReturn (Collections.singleton(max));
 		when (this.owners.findById(TEST_OWNER_ID)).thenReturn (george);
 
-		visit = new Visit();
+		//visit = new Visit();
 //		visit.setDate(LocalDate.now());
 //		given(this.visits.findByPetId(max.getId())).willReturn(Collections.singletonList(visit));
 		when(this.visit.getDate ()).thenReturn (LocalDate.now());
