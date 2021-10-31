@@ -51,47 +51,52 @@ class VetControllerTests {
 	@MockBean
 	private VetRepository vets;
 
-	@Mock
-	private Vet james;
+//	@Mock
+//	private Vet james;
 
-	@Mock
-	private Vet helen;
-
+//	@Mock
+//	private Vet helen;
+//
 	@Mock
 	private Specialty radiology;
 
 	@BeforeEach
 	void setup() {
-//		Vet james = new Vet();
-//		james.setFirstName("James");
-//		james.setLastName("Carter");
-//		james.setId(1);
-		when(this.james.getId()).thenReturn(1);
-		when(this.james.getFirstName()).thenReturn("James");
-		when(this.james.getLastName()).thenReturn("Carter");
-		when(this.james.getNrOfSpecialties()).thenReturn(0);
-		when(this.james.getSpecialties()).thenReturn(Collections.unmodifiableList(Lists.newArrayList()));
-		when(this.james.isNew()).thenReturn(false);
+		Vet james = new Vet();
+		james.setFirstName("James");
+		james.setLastName("Carter");
+		james.setId(1);
+//		when(this.james.getId()).thenReturn(1);
+//		when(this.james.getFirstName()).thenReturn("James");
+//		when(this.james.getLastName()).thenReturn("Carter");
+//		when(this.james.getNrOfSpecialties()).thenReturn(0);
+//		when(this.james.getSpecialties()).thenReturn(Collections.unmodifiableList(Lists.newArrayList()));
+//		when(this.james.isNew()).thenReturn(false);
 
-		when(this.helen.getId()).thenReturn(2);
-		when(this.helen.getFirstName()).thenReturn("Helen");
-		when(this.helen.getLastName()).thenReturn("Leary");
-		when(this.helen.getNrOfSpecialties()).thenReturn(1);
-		when(this.helen.getSpecialties()).thenReturn(Collections.unmodifiableList(Lists.newArrayList(radiology)));
-		when(this.helen.isNew()).thenReturn(false);
-//		helen.setFirstName("Helen");
-//		helen.setLastName("Leary");
-//		helen.setId(2);
 
-		when(this.radiology.getId()).thenReturn(1);
-		when(this.radiology.getName()).thenReturn("radiology");
-		when(this.radiology.isNew()).thenReturn(false);
-		when(this.radiology.toString()).thenReturn("radiology");
+		Vet helen=new Vet();
+		helen.setFirstName("Helen");
+		helen.setLastName("Leary");
+		helen.setId(2);
 
-//		Specialty radiology = new Specialty();
-//		radiology.setId(1);
-//		radiology.setName("radiology");
-//		helen.addSpecialty(radiology);
+		Specialty radiology = new Specialty();
+		radiology.setId(1);
+		radiology.setName("radiology");
+		helen.addSpecialty(radiology);
+
+//		when(this.helen.getId()).thenReturn(2);
+//		when(this.helen.getFirstName()).thenReturn("Helen");
+//		when(this.helen.getLastName()).thenReturn("Leary");
+//		when(this.helen.getNrOfSpecialties()).thenReturn(1);
+//		when(this.helen.getSpecialties()).thenReturn(Collections.unmodifiableList(Lists.newArrayList(radiology)));
+//		when(this.helen.isNew()).thenReturn(false);
+
+//		when(this.radiology.getId()).thenReturn(1);
+//		when(this.radiology.getName()).thenReturn("radiology");
+//		when(this.radiology.isNew()).thenReturn(false);
+//		when(this.radiology.toString()).thenReturn("radiology");
+
+
 
 
 
