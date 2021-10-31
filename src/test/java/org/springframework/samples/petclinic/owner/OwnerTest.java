@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.*;
+import org.springframework.samples.petclinic.model.Person;
 
 import java.util.HashSet;
 
@@ -22,13 +23,7 @@ public class OwnerTest {
 
 	@BeforeEach
 	public void setup() {
-		alireza = new Owner();
-		alireza.setFirstName("alireza");
-		alireza.setLastName("Ziarizi");
-		alireza.setAddress("1234 cdn");
-		alireza.setCity("Montreal");
-		alireza.setTelephone("5141111111");
-
+		alireza = new Owner("alireza", "Ziarizi", "1234 cdn", "Montreal", "5141111111");
 		// mocking pet class
 		pet = mock(Pet.class);
 		existingPet = mock(Pet.class);

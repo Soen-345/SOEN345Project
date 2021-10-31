@@ -8,7 +8,8 @@ import static org.mockito.Mockito.when;
 
 class VetsTests {
 
-    void TestGetVetList(){
+     @Test
+     void TestGetVetList(){
 
          Vets vets = new Vets();
          Vet vet1 = Mockito.mock(Vet.class);
