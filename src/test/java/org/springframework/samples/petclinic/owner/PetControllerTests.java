@@ -17,6 +17,8 @@
 package org.springframework.samples.petclinic.owner;
 
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -26,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -55,15 +58,26 @@ class PetControllerTests {
 	@MockBean
 	private OwnerRepository owners;
 
+	@Mock
+	private PetType hamster;
+
+	@Mock
+	private Owner betty;
+
+	@Mock
+	private Pet max;
+
 	@BeforeEach
 	void setup() {
-		PetType cat = new PetType();
-		cat.setId(3);
-		cat.setName("hamster");
-		given(this.pets.findPetTypes()).willReturn(Lists.newArrayList(cat));
-		given(this.owners.findById(TEST_OWNER_ID)).willReturn(new Owner());
-		given(this.pets.findById(TEST_PET_ID)).willReturn(new Pet());
-
+		when(max.getId()).thenReturn(3);
+		when(max.getName()).thenReturn("max");
+		when(max.getOwner()).thenReturn(betty);
+		when(max.getType()).thenReturn(hamster);
+		when(hamster.getName()).thenReturn("hamster");
+		when(betty.getPet("max")).thenReturn(max);
+		given(this.pets.findPetTypes()).willReturn(Lists.newArrayList(hamster));
+		given(this.owners.findById(TEST_OWNER_ID)).willReturn(betty);
+		given(this.pets.findById(TEST_PET_ID)).willReturn(max);
 	}
 
 	@Test
