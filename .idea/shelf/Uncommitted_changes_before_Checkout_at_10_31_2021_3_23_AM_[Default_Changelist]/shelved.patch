@@ -1,0 +1,958 @@
+Index: .idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+new file mode 100644
+--- /dev/null	(date 1635664955329)
++++ b/.idea/modules.xml	(date 1635664955329)
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ProjectModuleManager">
++    <modules>
++      <module fileurl="file://$PROJECT_DIR$/spring-petclinic.iml" filepath="$PROJECT_DIR$/spring-petclinic.iml" />
++    </modules>
++  </component>
++</project>
+\ No newline at end of file
+Index: spring-petclinic.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring-petclinic.iml b/spring-petclinic.iml
+new file mode 100644
+--- /dev/null	(date 1635664955346)
++++ b/spring-petclinic.iml	(date 1635664955346)
+@@ -0,0 +1,135 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
++  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
++    <output url="file://$MODULE_DIR$/target/classes" />
++    <output-test url="file://$MODULE_DIR$/target/test-classes" />
++    <content url="file://$MODULE_DIR$">
++      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
++      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
++      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
++      <excludeFolder url="file://$MODULE_DIR$/${project.build.directory}/classes" />
++      <excludeFolder url="file://$MODULE_DIR$/${project.build.directory}/test-classes" />
++      <excludeFolder url="file://$MODULE_DIR$/target" />
++    </content>
++    <orderEntry type="inheritedJdk" />
++    <orderEntry type="sourceFolder" forTests="false" />
++    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-actuator:2.5.4" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter:2.5.4" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-logging:2.5.4" level="project" />
++    <orderEntry type="library" name="Maven: ch.qos.logback:logback-classic:1.2.5" level="project" />
++    <orderEntry type="library" name="Maven: ch.qos.logback:logback-core:1.2.5" level="project" />
++    <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-to-slf4j:2.14.1" level="project" />
++    <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-api:2.14.1" level="project" />
++    <orderEntry type="library" name="Maven: org.slf4j:jul-to-slf4j:1.7.32" level="project" />
++    <orderEntry type="library" name="Maven: jakarta.annotation:jakarta.annotation-api:1.3.5" level="project" />
++    <orderEntry type="library" name="Maven: org.yaml:snakeyaml:1.28" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-actuator-autoconfigure:2.5.4" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-actuator:2.5.4" level="project" />
++    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.12.4" level="project" />
++    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.12.4" level="project" />
++    <orderEntry type="library" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.4" level="project" />
++    <orderEntry type="library" name="Maven: io.micrometer:micrometer-core:1.7.3" level="project" />
++    <orderEntry type="library" name="Maven: org.hdrhistogram:HdrHistogram:2.1.12" level="project" />
++    <orderEntry type="library" scope="RUNTIME" name="Maven: org.latencyutils:LatencyUtils:2.0.3" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-cache:2.5.4" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework:spring-context-support:5.3.9" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-data-jpa:2.5.4" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-aop:2.5.4" level="project" />
++    <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.9.7" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-jdbc:2.5.4" level="project" />
++    <orderEntry type="library" name="Maven: com.zaxxer:HikariCP:4.0.3" level="project" />
++    <orderEntry type="library" name="Maven: jakarta.transaction:jakarta.transaction-api:1.3.3" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework:spring-aspects:5.3.9" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-web:2.5.4" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-json:2.5.4" level="project" />
++    <orderEntry type="library" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.12.4" level="project" />
++    <orderEntry type="library" name="Maven: com.fasterxml.jackson.module:jackson-module-parameter-names:2.12.4" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-tomcat:2.5.4" level="project" />
++    <orderEntry type="library" name="Maven: org.apache.tomcat.embed:tomcat-embed-websocket:9.0.52" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework:spring-web:5.3.9" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-validation:2.5.4" level="project" />
++    <orderEntry type="library" name="Maven: org.apache.tomcat.embed:tomcat-embed-el:9.0.52" level="project" />
++    <orderEntry type="library" name="Maven: org.hibernate.validator:hibernate-validator:6.2.0.Final" level="project" />
++    <orderEntry type="library" name="Maven: jakarta.validation:jakarta.validation-api:2.0.2" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-thymeleaf:2.5.4" level="project" />
++    <orderEntry type="library" name="Maven: org.thymeleaf:thymeleaf-spring5:3.0.12.RELEASE" level="project" />
++    <orderEntry type="library" name="Maven: org.thymeleaf:thymeleaf:3.0.12.RELEASE" level="project" />
++    <orderEntry type="library" name="Maven: org.attoparser:attoparser:2.0.5.RELEASE" level="project" />
++    <orderEntry type="library" name="Maven: org.unbescape:unbescape:1.1.6.RELEASE" level="project" />
++    <orderEntry type="library" name="Maven: org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: org.springframework.boot:spring-boot-starter-test:2.5.4" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: org.springframework.boot:spring-boot-test:2.5.4" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: org.springframework.boot:spring-boot-test-autoconfigure:2.5.4" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: com.jayway.jsonpath:json-path:2.5.0" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: net.minidev:json-smart:2.4.7" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: net.minidev:accessors-smart:2.4.7" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: org.ow2.asm:asm:9.1" level="project" />
++    <orderEntry type="library" name="Maven: jakarta.xml.bind:jakarta.xml.bind-api:2.3.3" level="project" />
++    <orderEntry type="library" name="Maven: jakarta.activation:jakarta.activation-api:1.2.2" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: org.assertj:assertj-core:3.19.0" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest:2.2" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter:5.7.2" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-api:5.7.2" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: org.apiguardian:apiguardian-api:1.1.0" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: org.opentest4j:opentest4j:1.2.0" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-commons:1.7.2" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-params:5.7.2" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-engine:5.7.2" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-engine:1.7.2" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: org.mockito:mockito-core:3.9.0" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: net.bytebuddy:byte-buddy-agent:1.10.22" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: org.objenesis:objenesis:3.2" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: org.mockito:mockito-junit-jupiter:3.9.0" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: org.skyscreamer:jsonassert:1.5.0" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: com.vaadin.external.google:android-json:0.0.20131108.vaadin1" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework:spring-core:5.3.9" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework:spring-jcl:5.3.9" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: org.xmlunit:xmlunit-core:2.8.2" level="project" />
++    <orderEntry type="library" scope="RUNTIME" name="Maven: com.h2database:h2:1.4.200" level="project" />
++    <orderEntry type="library" scope="RUNTIME" name="Maven: mysql:mysql-connector-java:8.0.26" level="project" />
++    <orderEntry type="library" name="Maven: javax.cache:cache-api:1.1.1" level="project" />
++    <orderEntry type="library" name="Maven: org.ehcache:ehcache:3.9.5" level="project" />
++    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.32" level="project" />
++    <orderEntry type="library" name="Maven: org.webjars:webjars-locator-core:0.46" level="project" />
++    <orderEntry type="library" name="Maven: io.github.classgraph:classgraph:4.8.69" level="project" />
++    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.12.4" level="project" />
++    <orderEntry type="library" name="Maven: org.webjars:jquery:2.2.4" level="project" />
++    <orderEntry type="library" name="Maven: org.webjars:jquery-ui:1.11.4" level="project" />
++    <orderEntry type="library" name="Maven: org.webjars:bootstrap:3.3.6" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-devtools:2.5.4" level="project" />
++    <orderEntry type="library" name="Maven: org.dom4j:dom4j:2.1.3" level="project" />
++    <orderEntry type="library" name="Maven: jakarta.persistence:jakarta.persistence-api:2.2.3" level="project" />
++    <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:5.4.32.Final" level="project" />
++    <orderEntry type="library" name="Maven: org.jboss.logging:jboss-logging:3.4.2.Final" level="project" />
++    <orderEntry type="library" name="Maven: javax.persistence:javax.persistence-api:2.2" level="project" />
++    <orderEntry type="library" name="Maven: org.javassist:javassist:3.27.0-GA" level="project" />
++    <orderEntry type="library" name="Maven: net.bytebuddy:byte-buddy:1.10.22" level="project" />
++    <orderEntry type="library" name="Maven: antlr:antlr:2.7.7" level="project" />
++    <orderEntry type="library" name="Maven: org.jboss.spec.javax.transaction:jboss-transaction-api_1.2_spec:1.1.1.Final" level="project" />
++    <orderEntry type="library" name="Maven: org.jboss:jandex:2.2.3.Final" level="project" />
++    <orderEntry type="library" name="Maven: com.fasterxml:classmate:1.5.1" level="project" />
++    <orderEntry type="library" name="Maven: javax.activation:javax.activation-api:1.2.0" level="project" />
++    <orderEntry type="library" name="Maven: org.hibernate.common:hibernate-commons-annotations:5.1.2.Final" level="project" />
++    <orderEntry type="library" name="Maven: javax.xml.bind:jaxb-api:2.3.1" level="project" />
++    <orderEntry type="library" name="Maven: org.glassfish.jaxb:jaxb-runtime:2.3.5" level="project" />
++    <orderEntry type="library" name="Maven: org.glassfish.jaxb:txw2:2.3.5" level="project" />
++    <orderEntry type="library" name="Maven: com.sun.istack:istack-commons-runtime:3.0.12" level="project" />
++    <orderEntry type="library" scope="RUNTIME" name="Maven: com.sun.activation:jakarta.activation:1.2.2" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-commons:2.5.4" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework:spring-beans:5.3.9" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework:spring-test:5.3.9" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-jpa:2.5.4" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework:spring-context:5.3.9" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework:spring-aop:5.3.9" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.3.9" level="project" />
++    <orderEntry type="library" name="Maven: org.aspectj:aspectjrt:1.9.7" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework:spring-orm:5.3.9" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:5.3.9" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot:2.5.4" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-autoconfigure:2.5.4" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:5.3.9" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework:spring-expression:5.3.9" level="project" />
++    <orderEntry type="library" name="Maven: org.apache.tomcat.embed:tomcat-embed-core:9.0.52" level="project" />
++    <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-annotations-api:9.0.52" level="project" />
++  </component>
++</module>
+\ No newline at end of file
+Index: .idea/.name
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/.name b/.idea/.name
+new file mode 100644
+--- /dev/null	(date 1635664955374)
++++ b/.idea/.name	(date 1635664955374)
+@@ -0,0 +1,1 @@
++spring-petclinic
+\ No newline at end of file
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/compiler.xml b/.idea/compiler.xml
+new file mode 100644
+--- /dev/null	(date 1635664955380)
++++ b/.idea/compiler.xml	(date 1635664955380)
+@@ -0,0 +1,21 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="CompilerConfiguration">
++    <annotationProcessing>
++      <profile name="Maven default annotation processors profile" enabled="true">
++        <sourceOutputDir name="target/generated-sources/annotations" />
++        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
++        <outputRelativeToContentRoot value="true" />
++        <module name="spring-petclinic" />
++      </profile>
++    </annotationProcessing>
++    <bytecodeTargetLevel>
++      <module name="spring-petclinic" target="1.8" />
++    </bytecodeTargetLevel>
++  </component>
++  <component name="JavacSettings">
++    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
++      <module name="spring-petclinic" options="-parameters" />
++    </option>
++  </component>
++</project>
+\ No newline at end of file
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n  xmlns=\"http://maven.apache.org/POM/4.0.0\"\r\n  xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd\">\r\n  <modelVersion>4.0.0</modelVersion>\r\n  <groupId>org.springframework.samples</groupId>\r\n  <artifactId>spring-petclinic</artifactId>\r\n  <version>2.5.0-SNAPSHOT</version>\r\n\r\n  <parent>\r\n    <groupId>org.springframework.boot</groupId>\r\n    <artifactId>spring-boot-starter-parent</artifactId>\r\n    <version>2.5.4</version>\r\n  </parent>\r\n  <name>petclinic</name>\r\n\r\n  <properties>\r\n\r\n    <!-- Generic properties -->\r\n    <java.version>1.8</java.version>\r\n    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>\r\n    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>\r\n\r\n    <!-- Web dependencies -->\r\n    <webjars-bootstrap.version>3.3.6</webjars-bootstrap.version>\r\n    <webjars-jquery-ui.version>1.11.4</webjars-jquery-ui.version>\r\n    <webjars-jquery.version>2.2.4</webjars-jquery.version>\r\n    <wro4j.version>1.8.0</wro4j.version>\r\n\r\n    <jacoco.version>0.8.5</jacoco.version>\r\n    <nohttp-checkstyle.version>0.0.4.RELEASE</nohttp-checkstyle.version>\r\n    <spring-format.version>0.0.25</spring-format.version>\r\n  </properties>\r\n\r\n  <dependencies>\r\n    <!-- Spring and Spring Boot dependencies -->\r\n    <dependency>\r\n      <groupId>org.springframework.boot</groupId>\r\n      <artifactId>spring-boot-starter-actuator</artifactId>\r\n    </dependency>\r\n    <dependency>\r\n      <groupId>org.springframework.boot</groupId>\r\n      <artifactId>spring-boot-starter-cache</artifactId>\r\n    </dependency>\r\n    <dependency>\r\n      <groupId>org.springframework.boot</groupId>\r\n      <artifactId>spring-boot-starter-data-jpa</artifactId>\r\n    </dependency>\r\n    <dependency>\r\n      <groupId>org.springframework.boot</groupId>\r\n      <artifactId>spring-boot-starter-web</artifactId>\r\n    </dependency>\r\n    <dependency>\r\n      <groupId>org.springframework.boot</groupId>\r\n      <artifactId>spring-boot-starter-validation</artifactId>\r\n    </dependency>\r\n    <dependency>\r\n      <groupId>org.springframework.boot</groupId>\r\n      <artifactId>spring-boot-starter-thymeleaf</artifactId>\r\n    </dependency>\r\n    <dependency>\r\n      <groupId>org.springframework.boot</groupId>\r\n      <artifactId>spring-boot-starter-test</artifactId>\r\n      <scope>test</scope>\r\n        <exclusions>\r\n            <exclusion>\r\n                <groupId>org.junit.vintage</groupId>\r\n                <artifactId>junit-vintage-engine</artifactId>\r\n            </exclusion>\r\n        </exclusions>\r\n    </dependency>\r\n\r\n    <!-- Databases - Uses H2 by default -->\r\n    <dependency>\r\n      <groupId>com.h2database</groupId>\r\n      <artifactId>h2</artifactId>\r\n      <scope>runtime</scope>\r\n    </dependency>\r\n    <dependency>\r\n      <groupId>mysql</groupId>\r\n      <artifactId>mysql-connector-java</artifactId>\r\n      <scope>runtime</scope>\r\n    </dependency>\r\n\r\n    <!-- caching -->\r\n    <dependency>\r\n      <groupId>javax.cache</groupId>\r\n      <artifactId>cache-api</artifactId>\r\n    </dependency>\r\n    <dependency>\r\n      <groupId>org.ehcache</groupId>\r\n      <artifactId>ehcache</artifactId>\r\n    </dependency>\r\n\r\n    <!-- webjars -->\r\n    <dependency>\r\n      <groupId>org.webjars</groupId>\r\n      <artifactId>webjars-locator-core</artifactId>\r\n    </dependency>\r\n    <dependency>\r\n      <groupId>org.webjars</groupId>\r\n      <artifactId>jquery</artifactId>\r\n      <version>${webjars-jquery.version}</version>\r\n    </dependency>\r\n    <dependency>\r\n      <groupId>org.webjars</groupId>\r\n      <artifactId>jquery-ui</artifactId>\r\n      <version>${webjars-jquery-ui.version}</version>\r\n    </dependency>\r\n    <dependency>\r\n      <groupId>org.webjars</groupId>\r\n      <artifactId>bootstrap</artifactId>\r\n      <version>${webjars-bootstrap.version}</version>\r\n    </dependency>\r\n    <!-- end of webjars -->\r\n\r\n    <dependency>\r\n      <groupId>org.springframework.boot</groupId>\r\n      <artifactId>spring-boot-devtools</artifactId>\r\n      <optional>true</optional>\r\n    </dependency>\r\n  </dependencies>\r\n\r\n  <build>\r\n    <plugins>\r\n      <plugin>\r\n        <groupId>io.spring.javaformat</groupId>\r\n        <artifactId>spring-javaformat-maven-plugin</artifactId>\r\n        <version>${spring-format.version}</version>\r\n        <executions>\r\n          <execution>\r\n            <phase>validate</phase>\r\n            <goals>\r\n              <goal>validate</goal>\r\n            </goals>\r\n          </execution>\r\n        </executions>\r\n      </plugin>\r\n      <plugin>\r\n        <groupId>org.apache.maven.plugins</groupId>\r\n        <artifactId>maven-checkstyle-plugin</artifactId>\r\n        <version>3.1.1</version>\r\n        <dependencies>\r\n          <dependency>\r\n            <groupId>com.puppycrawl.tools</groupId>\r\n            <artifactId>checkstyle</artifactId>\r\n            <version>8.32</version>\r\n          </dependency>\r\n          <dependency>\r\n            <groupId>io.spring.nohttp</groupId>\r\n            <artifactId>nohttp-checkstyle</artifactId>\r\n            <version>${nohttp-checkstyle.version}</version>\r\n          </dependency>\r\n        </dependencies>\r\n        <executions>\r\n          <execution>\r\n            <id>nohttp-checkstyle-validation</id>\r\n            <phase>validate</phase>\r\n            <configuration>\r\n              <configLocation>src/checkstyle/nohttp-checkstyle.xml</configLocation>\r\n              <suppressionsLocation>src/checkstyle/nohttp-checkstyle-suppressions.xml</suppressionsLocation>\r\n              <encoding>UTF-8</encoding>\r\n              <sourceDirectories>${basedir}</sourceDirectories>\r\n              <includes>**/*</includes>\r\n              <excludes>**/.git/**/*,**/.idea/**/*,**/target/**/,**/.flattened-pom.xml,**/*.class</excludes>\r\n            </configuration>\r\n            <goals>\r\n              <goal>check</goal>\r\n            </goals>\r\n          </execution>\r\n        </executions>\r\n      </plugin>\r\n      <plugin>\r\n        <groupId>org.springframework.boot</groupId>\r\n        <artifactId>spring-boot-maven-plugin</artifactId>\r\n        <executions>\r\n          <execution>\r\n            <!-- Spring Boot Actuator displays build-related information\r\n              if a META-INF/build-info.properties file is present -->\r\n            <goals>\r\n              <goal>build-info</goal>\r\n            </goals>\r\n            <configuration>\r\n              <additionalProperties>\r\n                <encoding.source>${project.build.sourceEncoding}</encoding.source>\r\n                <encoding.reporting>${project.reporting.outputEncoding}</encoding.reporting>\r\n                <java.source>${maven.compiler.source}</java.source>\r\n                <java.target>${maven.compiler.target}</java.target>\r\n              </additionalProperties>\r\n            </configuration>\r\n          </execution>\r\n        </executions>\r\n      </plugin>\r\n      <plugin>\r\n        <groupId>org.jacoco</groupId>\r\n        <artifactId>jacoco-maven-plugin</artifactId>\r\n        <version>${jacoco.version}</version>\r\n        <executions>\r\n          <execution>\r\n            <goals>\r\n              <goal>prepare-agent</goal>\r\n            </goals>\r\n          </execution>\r\n          <execution>\r\n            <id>report</id>\r\n            <phase>prepare-package</phase>\r\n            <goals>\r\n              <goal>report</goal>\r\n            </goals>\r\n          </execution>\r\n        </executions>\r\n      </plugin>\r\n\r\n      <!-- Spring Boot Actuator displays build-related information if a git.properties\r\n        file is present at the classpath -->\r\n      <plugin>\r\n        <groupId>pl.project13.maven</groupId>\r\n        <artifactId>git-commit-id-plugin</artifactId>\r\n        <executions>\r\n          <execution>\r\n            <goals>\r\n              <goal>revision</goal>\r\n            </goals>\r\n          </execution>\r\n        </executions>\r\n        <configuration>\r\n            <useNativeGit>true</useNativeGit>\r\n          <verbose>true</verbose>\r\n          <dateFormat>yyyy-MM-dd'T'HH:mm:ssZ</dateFormat>\r\n          <generateGitPropertiesFile>true</generateGitPropertiesFile>\r\n          <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties\r\n          </generateGitPropertiesFilename>\r\n          <failOnNoGitDirectory>false</failOnNoGitDirectory>\r\n          <failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>\r\n        </configuration>\r\n      </plugin>\r\n\r\n      <plugin>\r\n        <groupId>ro.isdc.wro4j</groupId>\r\n        <artifactId>wro4j-maven-plugin</artifactId>\r\n        <version>${wro4j.version}</version>\r\n        <executions>\r\n          <execution>\r\n            <phase>generate-resources</phase>\r\n            <?m2e execute onConfiguration,onIncremental?>\r\n            <goals>\r\n              <goal>run</goal>\r\n            </goals>\r\n          </execution>\r\n        </executions>\r\n        <configuration>\r\n          <wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>\r\n          <cssDestinationFolder>${project.build.directory}/classes/static/resources/css</cssDestinationFolder>\r\n          <wroFile>${basedir}/src/main/wro/wro.xml</wroFile>\r\n          <extraConfigFile>${basedir}/src/main/wro/wro.properties</extraConfigFile>\r\n          <contextFolder>${basedir}/src/main/less</contextFolder>\r\n        </configuration>\r\n        <dependencies>\r\n          <dependency>\r\n            <groupId>org.webjars</groupId>\r\n            <artifactId>bootstrap</artifactId>\r\n            <version>${webjars-bootstrap.version}</version>\r\n          </dependency>\r\n          <dependency>\r\n            <groupId>org.mockito</groupId>\r\n            <artifactId>mockito-core</artifactId>\r\n            <version>${mockito.version}</version>\r\n          </dependency>\r\n        </dependencies>\r\n      </plugin>\r\n    </plugins>\r\n  </build>\r\n\r\n  <licenses>\r\n    <license>\r\n      <name>Apache License, Version 2.0</name>\r\n      <url>https://www.apache.org/licenses/LICENSE-2.0</url>\r\n    </license>\r\n  </licenses>\r\n\r\n  <repositories>\r\n    <repository>\r\n      <id>spring-snapshots</id>\r\n      <name>Spring Snapshots</name>\r\n      <url>https://repo.spring.io/snapshot</url>\r\n      <snapshots>\r\n        <enabled>true</enabled>\r\n      </snapshots>\r\n    </repository>\r\n    <repository>\r\n      <id>spring-milestones</id>\r\n      <name>Spring Milestones</name>\r\n      <url>https://repo.spring.io/milestone</url>\r\n      <snapshots>\r\n        <enabled>false</enabled>\r\n      </snapshots>\r\n    </repository>\r\n  </repositories>\r\n\r\n  <pluginRepositories>\r\n    <pluginRepository>\r\n      <id>spring-snapshots</id>\r\n      <name>Spring Snapshots</name>\r\n      <url>https://repo.spring.io/snapshot</url>\r\n      <snapshots>\r\n        <enabled>true</enabled>\r\n      </snapshots>\r\n    </pluginRepository>\r\n    <pluginRepository>\r\n      <id>spring-milestones</id>\r\n      <name>Spring Milestones</name>\r\n      <url>https://repo.spring.io/milestone</url>\r\n      <snapshots>\r\n        <enabled>false</enabled>\r\n      </snapshots>\r\n    </pluginRepository>\r\n  </pluginRepositories>\r\n\r\n  <profiles>\r\n    <profile>\r\n      <id>m2e</id>\r\n      <activation>\r\n        <property>\r\n          <name>m2e.version</name>\r\n        </property>\r\n      </activation>\r\n      <build>\r\n        <pluginManagement>\r\n          <plugins>\r\n            <!-- This plugin's configuration is used to store Eclipse m2e settings\r\n   only. It has no influence on the Maven build itself. -->\r\n            <plugin>\r\n              <groupId>org.eclipse.m2e</groupId>\r\n              <artifactId>lifecycle-mapping</artifactId>\r\n              <version>1.0.0</version>\r\n              <configuration>\r\n                <lifecycleMappingMetadata>\r\n                  <pluginExecutions>\r\n                    <pluginExecution>\r\n                      <pluginExecutionFilter>\r\n                        <groupId>org.apache.maven.plugins</groupId>\r\n                        <artifactId>maven-checkstyle-plugin</artifactId>\r\n                        <versionRange>[1,)</versionRange>\r\n                        <goals>\r\n                          <goal>check</goal>\r\n                        </goals>\r\n                      </pluginExecutionFilter>\r\n                      <action>\r\n                        <ignore/>\r\n                      </action>\r\n                    </pluginExecution>\r\n                    <pluginExecution>\r\n                      <pluginExecutionFilter>\r\n                        <groupId>org.springframework.boot</groupId>\r\n                        <artifactId>spring-boot-maven-plugin</artifactId>\r\n                        <versionRange>[1,)</versionRange>\r\n                        <goals>\r\n                          <goal>build-info</goal>\r\n                        </goals>\r\n                      </pluginExecutionFilter>\r\n                      <action>\r\n                        <ignore/>\r\n                      </action>\r\n                    </pluginExecution>\r\n                    <pluginExecution>\r\n                      <pluginExecutionFilter>\r\n                        <groupId>io.spring.javaformat</groupId>\r\n                        <artifactId>spring-javaformat-maven-plugin</artifactId>\r\n                        <versionRange>[0,)</versionRange>\r\n                        <lineEnding>KEEP</lineEnding>\r\n                        <goals>\r\n                          <goal>validate</goal>\r\n                        </goals>\r\n                      </pluginExecutionFilter>\r\n                      <action>\r\n                        <ignore/>\r\n                      </action>\r\n                    </pluginExecution>\r\n                  </pluginExecutions>\r\n                </lifecycleMappingMetadata>\r\n              </configuration>\r\n            </plugin>\r\n          </plugins>\r\n        </pluginManagement>\r\n      </build>\r\n    </profile>\r\n  </profiles>\r\n\r\n</project>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pom.xml b/pom.xml
+--- a/pom.xml	(revision 8920c49e42335beaf38a47936df9bea7ddffb4e6)
++++ b/pom.xml	(date 1635664955368)
+@@ -119,6 +119,686 @@
+       <artifactId>spring-boot-devtools</artifactId>
+       <optional>true</optional>
+     </dependency>
++      <dependency>
++          <groupId>org.dom4j</groupId>
++          <artifactId>dom4j</artifactId>
++          <version>2.1.3</version>
++      </dependency>
++      <dependency>
++          <groupId>jakarta.persistence</groupId>
++          <artifactId>jakarta.persistence-api</artifactId>
++          <version>2.2.3</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework.data</groupId>
++          <artifactId>spring-data-commons</artifactId>
++          <version>2.5.4</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework.data</groupId>
++          <artifactId>spring-data-commons</artifactId>
++          <version>2.5.4</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework.data</groupId>
++          <artifactId>spring-data-commons</artifactId>
++          <version>2.5.4</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework.data</groupId>
++          <artifactId>spring-data-commons</artifactId>
++          <version>2.5.4</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework.data</groupId>
++          <artifactId>spring-data-commons</artifactId>
++          <version>2.5.4</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework</groupId>
++          <artifactId>spring-test</artifactId>
++          <version>5.3.9</version>
++      </dependency>
++      <dependency>
++          <groupId>jakarta.persistence</groupId>
++          <artifactId>jakarta.persistence-api</artifactId>
++          <version>2.2.3</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework.data</groupId>
++          <artifactId>spring-data-jpa</artifactId>
++          <version>2.5.4</version>
++      </dependency>
++      <dependency>
++          <groupId>jakarta.persistence</groupId>
++          <artifactId>jakarta.persistence-api</artifactId>
++          <version>2.2.3</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework.data</groupId>
++          <artifactId>spring-data-commons</artifactId>
++          <version>2.5.4</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework.data</groupId>
++          <artifactId>spring-data-commons</artifactId>
++          <version>2.5.4</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework.data</groupId>
++          <artifactId>spring-data-commons</artifactId>
++          <version>2.5.4</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework.data</groupId>
++          <artifactId>spring-data-commons</artifactId>
++          <version>2.5.4</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework.data</groupId>
++          <artifactId>spring-data-commons</artifactId>
++          <version>2.5.4</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework.data</groupId>
++          <artifactId>spring-data-commons</artifactId>
++          <version>2.5.4</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>jakarta.persistence</groupId>
++          <artifactId>jakarta.persistence-api</artifactId>
++          <version>2.2.3</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>jakarta.persistence</groupId>
++          <artifactId>jakarta.persistence-api</artifactId>
++          <version>2.2.3</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework.data</groupId>
++          <artifactId>spring-data-jpa</artifactId>
++          <version>2.5.4</version>
++      </dependency>
++      <dependency>
++          <groupId>jakarta.persistence</groupId>
++          <artifactId>jakarta.persistence-api</artifactId>
++          <version>2.2.3</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework</groupId>
++          <artifactId>spring-orm</artifactId>
++          <version>5.3.9</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework.boot</groupId>
++          <artifactId>spring-boot</artifactId>
++          <version>2.5.4</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework.boot</groupId>
++          <artifactId>spring-boot-autoconfigure</artifactId>
++          <version>2.5.4</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework.boot</groupId>
++          <artifactId>spring-boot-autoconfigure</artifactId>
++          <version>2.5.4</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework.boot</groupId>
++          <artifactId>spring-boot-autoconfigure</artifactId>
++          <version>2.5.4</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework</groupId>
++          <artifactId>spring-orm</artifactId>
++          <version>5.3.9</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework</groupId>
++          <artifactId>spring-orm</artifactId>
++          <version>5.3.9</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework</groupId>
++          <artifactId>spring-orm</artifactId>
++          <version>5.3.9</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework</groupId>
++          <artifactId>spring-orm</artifactId>
++          <version>5.3.9</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework.data</groupId>
++          <artifactId>spring-data-commons</artifactId>
++          <version>2.5.4</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>jakarta.persistence</groupId>
++          <artifactId>jakarta.persistence-api</artifactId>
++          <version>2.2.3</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework.data</groupId>
++          <artifactId>spring-data-commons</artifactId>
++          <version>2.5.4</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework.data</groupId>
++          <artifactId>spring-data-commons</artifactId>
++          <version>2.5.4</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework</groupId>
++          <artifactId>spring-webmvc</artifactId>
++          <version>5.3.9</version>
++      </dependency>
++      <dependency>
++          <groupId>jakarta.persistence</groupId>
++          <artifactId>jakarta.persistence-api</artifactId>
++          <version>2.2.3</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework.boot</groupId>
++          <artifactId>spring-boot-autoconfigure</artifactId>
++          <version>2.5.4</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework.boot</groupId>
++          <artifactId>spring-boot-autoconfigure</artifactId>
++          <version>2.5.4</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework.boot</groupId>
++          <artifactId>spring-boot-autoconfigure</artifactId>
++          <version>2.5.4</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.apache.tomcat.embed</groupId>
++          <artifactId>tomcat-embed-core</artifactId>
++          <version>9.0.52</version>
++      </dependency>
++      <dependency>
++          <groupId>jakarta.persistence</groupId>
++          <artifactId>jakarta.persistence-api</artifactId>
++          <version>2.2.3</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>jakarta.persistence</groupId>
++          <artifactId>jakarta.persistence-api</artifactId>
++          <version>2.2.3</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.hibernate</groupId>
++          <artifactId>hibernate-core</artifactId>
++          <version>5.4.32.Final</version>
++      </dependency>
++      <dependency>
++          <groupId>org.springframework.data</groupId>
++          <artifactId>spring-data-commons</artifactId>
++          <version>2.5.4</version>
++      </dependency>
+   </dependencies>
+ 
+   <build>
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+new file mode 100644
+--- /dev/null	(date 1635664955320)
++++ b/.idea/misc.xml	(date 1635664955320)
+@@ -0,0 +1,11 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="MavenProjectsManager">
++    <option name="originalFiles">
++      <list>
++        <option value="$PROJECT_DIR$/pom.xml" />
++      </list>
++    </option>
++  </component>
++  <component name="ProjectRootManager" version="2" project-jdk-name="JavaSE-11" project-jdk-type="JavaSDK" />
++</project>
+\ No newline at end of file
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+new file mode 100644
+--- /dev/null	(date 1635664955385)
++++ b/.idea/vcs.xml	(date 1635664955385)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="VcsDirectoryMappings">
++    <mapping directory="" vcs="Git" />
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/.gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/.gitignore b/.idea/.gitignore
+new file mode 100644
+--- /dev/null	(date 1635664955392)
++++ b/.idea/.gitignore	(date 1635664955392)
+@@ -0,0 +1,3 @@
++# Default ignored files
++/shelf/
++/workspace.xml

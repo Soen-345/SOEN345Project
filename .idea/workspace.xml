@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c3e69784-511e-46a5-9af2-017e45f7fa38" name="Default Changelist" comment="removing real object2">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/springframework/samples/petclinic/owner/OwnerControllerTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/springframework/samples/petclinic/owner/OwnerControllerTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/org/springframework/samples/petclinic/owner/OwnerControllerTests$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/org/springframework/samples/petclinic/owner/OwnerControllerTests$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/org/springframework/samples/petclinic/owner/OwnerControllerTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/org/springframework/samples/petclinic/owner/OwnerControllerTests.class" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="mirali" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="203FhePqK2HZcmCXiaoZsyl22V0" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$MAVEN_REPOSITORY$/org/mockito/mockito-core/3.9.0/mockito-core-3.9.0.jar" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+  </component>
+  <component name="RunManager" selected="JUnit.OwnerControllerTests.testShowOwner">
+    <configuration name="OwnerControllerTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="spring-petclinic" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.springframework.samples.petclinic.owner.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.springframework.samples.petclinic.owner" />
+      <option name="MAIN_CLASS_NAME" value="org.springframework.samples.petclinic.owner.OwnerControllerTests" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OwnerControllerTests.testInitCreationForm" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="spring-petclinic" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.springframework.samples.petclinic.owner.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.springframework.samples.petclinic.owner" />
+      <option name="MAIN_CLASS_NAME" value="org.springframework.samples.petclinic.owner.OwnerControllerTests" />
+      <option name="METHOD_NAME" value="testInitCreationForm" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OwnerControllerTests.testInitUpdateOwnerForm" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
+      <module name="spring-petclinic" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.springframework.samples.petclinic.owner.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.springframework.samples.petclinic.owner" />
+      <option name="MAIN_CLASS_NAME" value="org.springframework.samples.petclinic.owner.OwnerControllerTests" />
+      <option name="METHOD_NAME" value="testInitUpdateOwnerForm" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OwnerControllerTests.testProcessCreationFormSuccess" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="spring-petclinic" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.springframework.samples.petclinic.owner.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.springframework.samples.petclinic.owner" />
+      <option name="MAIN_CLASS_NAME" value="org.springframework.samples.petclinic.owner.OwnerControllerTests" />
+      <option name="METHOD_NAME" value="testProcessCreationFormSuccess" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OwnerControllerTests.testShowOwner" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
+      <module name="spring-petclinic" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.springframework.samples.petclinic.owner.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.springframework.samples.petclinic.owner" />
+      <option name="MAIN_CLASS_NAME" value="org.springframework.samples.petclinic.owner.OwnerControllerTests" />
+      <option name="METHOD_NAME" value="testShowOwner" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PetclinicIntegrationTests.testFindAll" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="spring-petclinic" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.springframework.samples.petclinic.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.springframework.samples.petclinic" />
+      <option name="MAIN_CLASS_NAME" value="org.springframework.samples.petclinic.PetclinicIntegrationTests" />
+      <option name="METHOD_NAME" value="testFindAll" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="VetTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="spring-petclinic" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.springframework.samples.petclinic.vet.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.springframework.samples.petclinic.vet" />
+      <option name="MAIN_CLASS_NAME" value="org.springframework.samples.petclinic.vet.VetTests" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.OwnerControllerTests" />
+        <item itemvalue="JUnit.OwnerControllerTests.testProcessCreationFormSuccess" />
+        <item itemvalue="JUnit.VetTests" />
+        <item itemvalue="JUnit.PetclinicIntegrationTests.testFindAll" />
+        <item itemvalue="JUnit.OwnerControllerTests.testInitCreationForm" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c3e69784-511e-46a5-9af2-017e45f7fa38" name="Default Changelist" comment="" />
+      <created>1635265489181</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1635265489181</updated>
+    </task>
+    <task id="LOCAL-00001" summary="some tests dont work">
+      <created>1635686260422</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1635686260422</updated>
+    </task>
+    <task id="LOCAL-00002" summary="removing real object">
+      <created>1635695357211</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1635695357211</updated>
+    </task>
+    <task id="LOCAL-00003" summary="removing real object2">
+      <created>1635695917250</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1635695917250</updated>
+    </task>
+    <task id="LOCAL-00004" summary="removing real object2">
+      <created>1635696707409</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1635696707409</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="branch/Mirali1" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
+    <MESSAGE value="some tests dont work" />
+    <MESSAGE value="removing real object" />
+    <MESSAGE value="removing real object2" />
+    <option name="LAST_COMMIT_MESSAGE" value="removing real object2" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/spring_petclinic$PetClinicApplication.ic" NAME="PetClinicApplication Coverage Results" MODIFIED="1635276323808" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>org.springframework.samples.petclinic.*</FILTER>
+    </SUITE>
+  </component>
+</project>
