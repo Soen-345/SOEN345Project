@@ -31,8 +31,8 @@ import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.lang.*;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.BDDMockito.given;
