@@ -17,6 +17,7 @@
 package org.springframework.samples.petclinic.vet;
 
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -27,12 +28,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+
+import javax.xml.bind.annotation.XmlElement;
+import java.util.*;
 
 /**
  * Test class for the {@link VetController}
@@ -46,21 +51,56 @@ class VetControllerTests {
 	@MockBean
 	private VetRepository vets;
 
+//	@Mock
+//	private Vet james;
+
+//	@Mock
+//	private Vet helen;
+//
+	@Mock
+	private Specialty radiology;
+
 	@BeforeEach
 	void setup() {
 		Vet james = new Vet();
 		james.setFirstName("James");
 		james.setLastName("Carter");
 		james.setId(1);
-		Vet helen = new Vet();
+//		when(this.james.getId()).thenReturn(1);
+//		when(this.james.getFirstName()).thenReturn("James");
+//		when(this.james.getLastName()).thenReturn("Carter");
+//		when(this.james.getNrOfSpecialties()).thenReturn(0);
+//		when(this.james.getSpecialties()).thenReturn(Collections.unmodifiableList(Lists.newArrayList()));
+//		when(this.james.isNew()).thenReturn(false);
+
+
+		Vet helen=new Vet();
 		helen.setFirstName("Helen");
 		helen.setLastName("Leary");
 		helen.setId(2);
+
 		Specialty radiology = new Specialty();
 		radiology.setId(1);
 		radiology.setName("radiology");
 		helen.addSpecialty(radiology);
-		given(this.vets.findAll()).willReturn(Lists.newArrayList(james, helen));
+
+//		when(this.helen.getId()).thenReturn(2);
+//		when(this.helen.getFirstName()).thenReturn("Helen");
+//		when(this.helen.getLastName()).thenReturn("Leary");
+//		when(this.helen.getNrOfSpecialties()).thenReturn(1);
+//		when(this.helen.getSpecialties()).thenReturn(Collections.unmodifiableList(Lists.newArrayList(radiology)));
+//		when(this.helen.isNew()).thenReturn(false);
+
+//		when(this.radiology.getId()).thenReturn(1);
+//		when(this.radiology.getName()).thenReturn("radiology");
+//		when(this.radiology.isNew()).thenReturn(false);
+//		when(this.radiology.toString()).thenReturn("radiology");
+
+
+
+
+
+		when(this.vets.findAll()).thenReturn(Lists.newArrayList(james, helen));
 	}
 
 	@Test
