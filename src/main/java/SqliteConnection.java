@@ -48,9 +48,4 @@ public class SqliteConnection {
         }
 
     }
-
-    public static void main(String[] args) {
-        query("INSERT INTO vets (id, first_name, last_name ) VALUES (1, 'James', 'Carter')");
-        query("SELECT id, first_name, last_name FROM vets");
-    }
 }
