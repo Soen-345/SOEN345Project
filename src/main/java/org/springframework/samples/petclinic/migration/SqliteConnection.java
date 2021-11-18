@@ -1,5 +1,8 @@
-package org.springframework.samples.petclinic;
+package org.springframework.samples.petclinic.migration;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.*;
 
 public class SqliteConnection {
@@ -8,7 +11,7 @@ public class SqliteConnection {
     private static Connection connect() {
         Connection conn = null;
         try {
-            String url = "jdbc:sqlite:identifier.sqlite";
+            String url = "your sqlite url";
             conn = DriverManager.getConnection(url);
 
             System.out.println("Connection to SQLite successful");
@@ -19,6 +22,7 @@ public class SqliteConnection {
         }
         return conn;
     }
+
 
     public static void query(String query) {
         Connection conn = connect();
