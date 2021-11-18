@@ -16,13 +16,7 @@
 package org.springframework.samples.petclinic.owner;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -71,6 +65,13 @@ public class Pet extends NamedEntity {
 		super(name);
 		this.type = type;
 		this.owner = owner;
+	}
+
+	public Pet(int id, String name, LocalDate birthDate, int typeId, int ownerId) {
+		super(name, id);
+		this.birthDate = birthDate;
+		this.type.setId(typeId);
+		this.owner.setId(ownerId);
 	}
 
 	public void setBirthDate(LocalDate birthDate) {
