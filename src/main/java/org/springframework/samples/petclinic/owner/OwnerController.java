@@ -142,4 +142,7 @@ class OwnerController {
 		return mav;
 	}
 
+	// TODO - GET request to get all owners and pass it to OwnerDataMigration forklift
+
+
 }

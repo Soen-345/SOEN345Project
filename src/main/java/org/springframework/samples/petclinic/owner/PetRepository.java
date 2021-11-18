@@ -56,4 +56,7 @@ public interface PetRepository extends Repository<Pet, Integer> {
 	 */
 	void save(Pet pet);
 
+
+	// TODO - Query to return Collection of all pets (to be called by Pet Controller)
+
 }

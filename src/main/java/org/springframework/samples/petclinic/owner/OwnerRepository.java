@@ -61,4 +61,6 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
 	 */
 	void save(Owner owner);
 
+	// TODO - Query to return Collection of all owners (to be called by Owner Controller)
+
 }

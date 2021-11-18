@@ -1,9 +1,11 @@
+package org.springframework.samples.petclinic;
+
 import java.sql.*;
 
 public class SqliteConnection {
 
 
-    public static Connection connect() {
+    private static Connection connect() {
         Connection conn = null;
         try {
             String url = "jdbc:sqlite:identifier.sqlite";
