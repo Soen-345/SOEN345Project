@@ -1,8 +1,8 @@
 package org.springframework.samples.petclinic.migration;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -12,6 +12,7 @@ import org.springframework.samples.petclinic.vet.Vet;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Sevag Eordkian
@@ -30,7 +31,6 @@ public class VetMigrationTest {
     Vet vet2;
     @Mock
     Vet vet3;
-
 
 
     @BeforeEach
@@ -60,22 +60,16 @@ public class VetMigrationTest {
     }
 
     @Test
-    public void testForklift() {
+    public void testForklift() throws SQLException {
         DatastoreToggles.isUnderTest = true;
 
         vetMigration.forklift(oldDataStoreVets);
+        testDbConnection = DriverManager.getConnection(SQLite_URL_TEST);
 
-        try {
-            testDbConnection = DriverManager.getConnection(SQLite_URL_TEST);
-            if (testDbConnection != null) {
-                Statement statement = testDbConnection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM vets");
+        if (testDbConnection != null) {
+            Statement statement = testDbConnection.createStatement();
 
-                assertDoesNotThrow(() -> {});
-            }
-        }
-        catch (SQLException e) {
-            System.out.println(e.getMessage());
+            assertTrue(statement.execute("SELECT * FROM pets"));
         }
 
 
