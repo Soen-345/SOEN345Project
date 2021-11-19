@@ -6,6 +6,8 @@ public class DatastoreConnection {
 
     private static final String SQLite_URL = "jdbc:sqlite:pet-clinic";
     private static final String H2_URL = "jdbc:h2:mem:testdb";
+    private static final String USERNAME = "sa";
+    private static final String PASSWORD = "";
 
 
 
@@ -26,7 +28,7 @@ public class DatastoreConnection {
     protected static Connection connectH2() {
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection(H2_URL);
+            conn = DriverManager.getConnection(H2_URL, USERNAME, PASSWORD);
 
             System.out.println("Connection to H2 successful");
 
