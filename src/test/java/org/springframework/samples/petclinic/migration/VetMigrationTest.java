@@ -24,8 +24,9 @@ public class VetMigrationTest {
 
     @BeforeEach
     public void setup() {
-        vetMigration = new VetMigration();
 
+        vetMigration = new VetMigration();
+/*
         when(this.vet1.getId()).thenReturn(1);
         when(this.vet1.getFirstName()).thenReturn("James");
         when(this.vet1.getLastName()).thenReturn("Carter");
@@ -37,7 +38,7 @@ public class VetMigrationTest {
         when(this.vet3.getId()).thenReturn(3);
         when(this.vet3.getFirstName()).thenReturn("Linda");
         when(this.vet3.getLastName()).thenReturn("Douglas");
-
+*/
     }
 
     @Test
