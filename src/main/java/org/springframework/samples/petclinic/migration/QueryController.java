@@ -73,25 +73,22 @@ public class QueryController {
                         returnData.add(new Visit(resultSet.getInt("id"),
                                 resultSet.getInt("pet_id"),
                                 convertToLocalDateViaInstant(resultSet.getDate("visit_date")),
-                                        resultSet.getString("description")));
+                                resultSet.getString("description")));
                     }
-                }
-                else {
+                } else {
+                    statement.execute(query);
                     returnData = null;
                 }
 
 
-            }
-            catch(SQLException e) {
+            } catch (SQLException e) {
                 System.out.println(e.getMessage());
-            }
-            finally {
+            } finally {
                 try {
                     if (conn != null) {
                         conn.close();
                     }
-                }
-                catch (SQLException ex) {
+                } catch (SQLException ex) {
                     System.out.println(ex.getMessage());
                 }
 
@@ -123,23 +120,18 @@ public class QueryController {
                         returnData.add(new Vet(resultSet.getInt("vet_id"),
                                 specialty.get(0)));
                     }
-                }
-                else {
+                } else {
+                    statement.execute(query);
                     returnData = null;
                 }
-
-
-            }
-            catch(SQLException e) {
+            } catch (SQLException e) {
                 System.out.println(e.getMessage());
-            }
-            finally {
+            } finally {
                 try {
                     if (conn != null) {
                         conn.close();
                     }
-                }
-                catch (SQLException ex) {
+                } catch (SQLException ex) {
                     System.out.println(ex.getMessage());
                 }
 
@@ -168,23 +160,20 @@ public class QueryController {
                         returnData.add(new PetType(resultSet.getInt("id"),
                                 resultSet.getString("name")));
                     }
-                }
-                else {
+                } else {
+                    statement.execute(query);
                     returnData = null;
                 }
 
 
-            }
-            catch(SQLException e) {
+            } catch (SQLException e) {
                 System.out.println(e.getMessage());
-            }
-            finally {
+            } finally {
                 try {
                     if (conn != null) {
                         conn.close();
                     }
-                }
-                catch (SQLException ex) {
+                } catch (SQLException ex) {
                     System.out.println(ex.getMessage());
                 }
 
@@ -214,23 +203,18 @@ public class QueryController {
                                 resultSet.getString("first_name"),
                                 resultSet.getString("last_name")));
                     }
-                }
-                else {
+                } else {
+                    statement.execute(query);
                     returnData = null;
                 }
-
-
-            }
-            catch(SQLException e) {
+            } catch (SQLException e) {
                 System.out.println(e.getMessage());
-            }
-            finally {
+            } finally {
                 try {
                     if (conn != null) {
                         conn.close();
                     }
-                }
-                catch (SQLException ex) {
+                } catch (SQLException ex) {
                     System.out.println(ex.getMessage());
                 }
 
@@ -264,23 +248,20 @@ public class QueryController {
                                 resultSet.getString("city"),
                                 resultSet.getString("telephone")));
                     }
-                }
-                else {
+                } else {
+                    statement.execute(query);
                     returnData = null;
                 }
 
 
-            }
-            catch(SQLException e) {
+            } catch (SQLException e) {
                 System.out.println(e.getMessage());
-            }
-            finally {
+            } finally {
                 try {
                     if (conn != null) {
                         conn.close();
                     }
-                }
-                catch (SQLException ex) {
+                } catch (SQLException ex) {
                     System.out.println(ex.getMessage());
                 }
 
@@ -312,21 +293,18 @@ public class QueryController {
                                 resultSet.getInt("type_id"),
                                 resultSet.getInt("owner_id")));
                     }
-                }
-                else {
+                } else {
+                    statement.execute(query);
                     returnData = null;
                 }
-            }
-            catch(SQLException e) {
+            } catch (SQLException e) {
                 System.out.println(e.getMessage());
-            }
-            finally {
+            } finally {
                 try {
                     if (conn != null) {
                         conn.close();
                     }
-                }
-                catch (SQLException ex) {
+                } catch (SQLException ex) {
                     System.out.println(ex.getMessage());
                 }
 
@@ -355,21 +333,18 @@ public class QueryController {
                         returnData.add(new Specialty(resultSet.getString("name"),
                                 resultSet.getInt("id")));
                     }
-                }
-                else {
+                } else {
+                    statement.execute(query);
                     returnData = null;
                 }
-            }
-            catch(SQLException e) {
+            } catch (SQLException e) {
                 System.out.println(e.getMessage());
-            }
-            finally {
+            } finally {
                 try {
                     if (conn != null) {
                         conn.close();
                     }
-                }
-                catch (SQLException ex) {
+                } catch (SQLException ex) {
                     System.out.println(ex.getMessage());
                 }
 
