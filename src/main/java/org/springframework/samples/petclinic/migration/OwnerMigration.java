@@ -1,8 +1,11 @@
 package org.springframework.samples.petclinic.migration;
 
+import java.util.List;
+
 public class OwnerMigration implements IMigration{
+
     @Override
-    public void forklift() {
+    public void forklift(List owners) {
 
     }
 
