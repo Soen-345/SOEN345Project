@@ -8,7 +8,7 @@ public class VetMigration implements IMigration {
 
 
     private void initTable() {
-        String deleteQuery = "DROP TABLE vets";
+        String deleteQuery = "DROP TABLE IF EXISTS vets";
         QueryController.query(deleteQuery, Datastore.SQLITE, Table.VETS, false);
 
         String createQuery = "CREATE TABLE vets (\n" +
@@ -22,18 +22,20 @@ public class VetMigration implements IMigration {
     }
 
     @Override
-    public void forklift() {
+    public void forklift(List vets) {
+
+        if (!DatastoreToggles.isUnderTest) {
+            String selectQuery = "SELECT * FROM vets";
+            vets = QueryController.query(selectQuery, Datastore.H2, Table.VETS, true);
+        }
+
         this.initTable();
-
-        String selectQuery = "SELECT * FROM vets";
-        List<Vet> vets = QueryController.query(selectQuery, Datastore.H2, Table.VETS, true);
-
-        for (Vet vet : vets) {
+        for (Object obj : vets) {
+            Vet vet = ((Vet) obj);
             String insertQuery = "INSERT INTO vets (id, first_name, last_name) VALUES ('" + vet.getId() +
             "','" + vet.getFirstName() + "','" + vet.getLastName() + "');";
             QueryController.query(insertQuery, Datastore.SQLITE, Table.VETS, false);
         }
-
     }
 
     @Override
