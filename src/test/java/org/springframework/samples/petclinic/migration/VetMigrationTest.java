@@ -69,7 +69,7 @@ public class VetMigrationTest {
         if (testDbConnection != null) {
             Statement statement = testDbConnection.createStatement();
 
-            assertTrue(statement.execute("SELECT * FROM pets"));
+            assertTrue(statement.execute("SELECT * FROM vets"));
         }
 
 
