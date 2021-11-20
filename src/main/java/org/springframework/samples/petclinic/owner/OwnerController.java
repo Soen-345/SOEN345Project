@@ -75,32 +75,57 @@ class OwnerController {
     @GetMapping("/owners/find")
     public String initFindForm(Map<String, Object> model) {
         model.put("owner", new Owner());
+        if(OwnerToggles.isSearchLastNameEnabled)
+            model.put("nameType","Last");
+        if(OwnerToggles.isSearchFirstNameEnabled)
+            model.put("nameType","First");
+
+
         return "owners/findOwners";
     }
 
     @GetMapping("/owners")
     public String processFindForm(Owner owner, BindingResult result, Map<String, Object> model) {
 
-        // allow parameterless GET request for /owners to return all records
-        if (owner.getLastName() == null) {
-            owner.setLastName(""); // empty string signifies broadest possible search
-        }
+        Collection<Owner> results=null;
+        if(OwnerToggles.isSearchLastNameEnabled){
+            // allow parameterless GET request for /owners to return all records
+            if (owner.getLastName() == null) {
+                owner.setLastName(""); // empty string signifies broadest possible search
+            }
 
-        // find owners by last name
-        Collection<Owner> results = this.owners.findByLastName(owner.getLastName());
-        if (results.isEmpty()) {
-            // no owners found
-            result.rejectValue("lastName", "notFound", "not found");
-            return "owners/findOwners";
-        } else if (results.size() == 1) {
-            // 1 owner found
-            owner = results.iterator().next();
-            return "redirect:/owners/" + owner.getId();
-        } else {
-            // multiple owners found
-            model.put("selections", results);
-            return "owners/ownersList";
+            // find owners by last name
+            results = this.owners.findByLastName(owner.getLastName());
+
         }
+        if (OwnerToggles.isSearchFirstNameEnabled) {
+            // allow parameterless GET request for /owners to return all records
+            if (owner.getFirstName() == null) {
+                owner.setFirstName(""); // empty string signifies broadest possible search
+            }
+
+            // find owners by first name
+            results = this.owners.findByFirstName(owner.getFirstName());
+
+        }
+        if(OwnerToggles.isSearchFirstNameEnabled||OwnerToggles.isSearchLastNameEnabled){
+            if (results.isEmpty()) {
+                // no owners found
+                result.rejectValue("lastName", "notFound", "not found");
+                return "owners/findOwners";
+            } else if (results.size() == 1) {
+                // 1 owner found
+                owner = results.iterator().next();
+                return "redirect:/owners/" + owner.getId();
+            } else {
+                // multiple owners found
+                model.put("selections", results);
+                return "owners/ownersList";
+            }
+
+        }
+        result.rejectValue("lastName", "notFound", "not found");
+        return "owners/findOwners";
     }
 
     @GetMapping("/owners/{ownerId}/edit")

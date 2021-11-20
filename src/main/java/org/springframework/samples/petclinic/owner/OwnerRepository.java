@@ -62,4 +62,17 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
 	void save(Owner owner);
 
 
+	//a new part used to find owner by firstName, modified from findbyLastName above
+	/**
+	 * Retrieve {@link Owner}s from the data store by first name, returning all owners
+	 * whose first name <i>starts</i> with the given name.
+	 * @param firstName Value to search for
+	 * @return a Collection of matching {@link Owner}s (or an empty Collection if none
+	 * found)
+	 */
+	@Query("SELECT DISTINCT owner FROM Owner owner left join fetch owner.pets WHERE owner.firstName LIKE :firstName%")
+	@Transactional(readOnly = true)
+	Collection<Owner> findByFirstName(@Param("firstName") String firstName);
+
+
 }
