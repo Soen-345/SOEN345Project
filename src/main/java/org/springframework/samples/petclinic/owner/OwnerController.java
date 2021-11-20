@@ -75,6 +75,12 @@ class OwnerController {
     @GetMapping("/owners/find")
     public String initFindForm(Map<String, Object> model) {
         model.put("owner", new Owner());
+        if(OwnerToggles.isSearchLastNameEnabled)
+            model.put("nameType","Last");
+        if(OwnerToggles.isSearchFirstNameEnabled)
+            model.put("nameType","First");
+
+
         return "owners/findOwners";
     }
 
