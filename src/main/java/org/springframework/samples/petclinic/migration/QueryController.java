@@ -16,49 +16,16 @@ import java.time.ZoneId;
 import java.util.*;
 
 public class QueryController {
-/*
-    protected static Map query(String query, Datastore datastore, Table table, Boolean returnAnything) {
-        Map returnData = new HashMap();
 
-        if (table == Table.OWNERS) {
-            returnData = queryOwners(query, datastore, returnAnything);
-        }
 
-        if (table == Table.PETS) {
-            returnData = queryPets(query, datastore, returnAnything);
-        }
-
-        if (table == Table.VETS) {
-            returnData = queryVets(query, datastore, returnAnything);
-        }
-
-        if (table == Table.SPECIALTIES) {
-            returnData = querySpecialties(query, datastore, returnAnything);
-        }
-
-        if (table == Table.TYPES) {
-            returnData = queryTypes(query, datastore, returnAnything);
-        }
-
-        if (table == Table.VET_SPECIALTIES) {
-            returnData = queryVetSpecialties(query, datastore, returnAnything);
-        }
-
-        if (table == Table.VISITS) {
-            returnData = queryVisits(query, datastore, returnAnything);
-        }
-
-        return returnData;
-    } */
-
-    protected static Map<Integer, Visit> queryVisits(String query, Datastore datastore, Boolean returnAnything) {
+    protected static Map<Integer, Visit> queryVisits(String query, Datastores datastore, Boolean returnAnything) {
         Connection conn = null;
         Map<Integer, Visit> returnData = new HashMap<>();
 
-        if (datastore == Datastore.SQLITE) {
+        if (datastore == Datastores.SQLITE) {
             conn = DatastoreConnection.connectSqlite();
         }
-        if (datastore == Datastore.H2) {
+        if (datastore == Datastores.H2) {
             conn = DatastoreConnection.connectH2();
         }
 
@@ -97,14 +64,14 @@ public class QueryController {
 
     }
 
-    protected static Map<Integer, Vet> queryVetSpecialties(String query, Datastore datastore, Boolean returnAnything) {
+    protected static Map<Integer, Vet> queryVetSpecialties(String query, Datastores datastore, Boolean returnAnything) {
         Connection conn = null;
         Map<Integer, Vet> returnData = new HashMap<>();
 
-        if (datastore == Datastore.SQLITE) {
+        if (datastore == Datastores.SQLITE) {
             conn = DatastoreConnection.connectSqlite();
         }
-        if (datastore == Datastore.H2) {
+        if (datastore == Datastores.H2) {
             conn = DatastoreConnection.connectH2();
         }
 
@@ -115,7 +82,7 @@ public class QueryController {
                     ResultSet resultSet = statement.executeQuery(query);
                     while (resultSet.next()) {
                         String q = "SELECT id, name FROM specialty WHERE id = " + resultSet.getInt("specialty_id") + ";";
-                        Map<Integer, Specialty> specialty = querySpecialties(q, Datastore.H2, true);
+                        Map<Integer, Specialty> specialty = querySpecialties(q, Datastores.H2, true);
                         returnData.put(resultSet.getInt("id"),
                                 new Vet(resultSet.getInt("vet_id"),
                                 specialty.get(resultSet.getInt("specialty_id"))));
@@ -140,14 +107,14 @@ public class QueryController {
         return returnData;
     }
 
-    protected static Map<Integer, PetType> queryTypes(String query, Datastore datastore, Boolean returnAnything) {
+    protected static Map<Integer, PetType> queryTypes(String query, Datastores datastore, Boolean returnAnything) {
         Connection conn = null;
         Map<Integer, PetType> returnData = new HashMap<>();
 
-        if (datastore == Datastore.SQLITE) {
+        if (datastore == Datastores.SQLITE) {
             conn = DatastoreConnection.connectSqlite();
         }
-        if (datastore == Datastore.H2) {
+        if (datastore == Datastores.H2) {
             conn = DatastoreConnection.connectH2();
         }
 
@@ -183,14 +150,14 @@ public class QueryController {
         return returnData;
     }
 
-    protected static Map<Integer, Vet> queryVets(String query, Datastore datastore, Boolean returnAnything) {
+    protected static Map<Integer, Vet> queryVets(String query, Datastores datastore, Boolean returnAnything) {
         Connection conn = null;
         Map<Integer, Vet> returnData = new HashMap<>();
 
-        if (datastore == Datastore.SQLITE) {
+        if (datastore == Datastores.SQLITE) {
             conn = DatastoreConnection.connectSqlite();
         }
-        if (datastore == Datastore.H2) {
+        if (datastore == Datastores.H2) {
             conn = DatastoreConnection.connectH2();
         }
 
@@ -226,14 +193,14 @@ public class QueryController {
     }
 
 
-    protected static Map<Integer, Owner> queryOwners(String query, Datastore datastore, Boolean returnAnything) {
+    protected static Map<Integer, Owner> queryOwners(String query, Datastores datastore, Boolean returnAnything) {
         Connection conn = null;
         Map<Integer, Owner> returnData = new HashMap<>();
 
-        if (datastore == Datastore.SQLITE) {
+        if (datastore == Datastores.SQLITE) {
             conn = DatastoreConnection.connectSqlite();
         }
-        if (datastore == Datastore.H2) {
+        if (datastore == Datastores.H2) {
             conn = DatastoreConnection.connectH2();
         }
 
@@ -273,14 +240,14 @@ public class QueryController {
         return returnData;
     }
 
-    protected static Map<Integer, Pet> queryPets(String query, Datastore datastore, Boolean returnAnything) {
+    protected static Map<Integer, Pet> queryPets(String query, Datastores datastore, Boolean returnAnything) {
         Connection conn = null;
         Map<Integer, Pet> returnData = new HashMap<>();
 
-        if (datastore == Datastore.SQLITE) {
+        if (datastore == Datastores.SQLITE) {
             conn = DatastoreConnection.connectSqlite();
         }
-        if (datastore == Datastore.H2) {
+        if (datastore == Datastores.H2) {
             conn = DatastoreConnection.connectH2();
         }
 
@@ -317,14 +284,14 @@ public class QueryController {
         return returnData;
     }
 
-    protected static Map<Integer, Specialty> querySpecialties(String query, Datastore datastore, Boolean returnAnything) {
+    protected static Map<Integer, Specialty> querySpecialties(String query, Datastores datastore, Boolean returnAnything) {
         Connection conn = null;
         Map<Integer, Specialty> returnData = new HashMap<>();
 
-        if (datastore == Datastore.SQLITE) {
+        if (datastore == Datastores.SQLITE) {
             conn = DatastoreConnection.connectSqlite();
         }
-        if (datastore == Datastore.H2) {
+        if (datastore == Datastores.H2) {
             conn = DatastoreConnection.connectH2();
         }
 

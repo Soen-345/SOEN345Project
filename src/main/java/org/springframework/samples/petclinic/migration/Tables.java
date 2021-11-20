@@ -1,6 +1,6 @@
 package org.springframework.samples.petclinic.migration;
 
-public enum Table {
+public enum Tables {
 
     OWNERS,
     PETS,

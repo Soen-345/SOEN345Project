@@ -14,7 +14,7 @@ public class DatastoreConnection {
 
     protected static Connection connectSqlite() {
         Connection conn = null;
-        if (DatastoreToggles.isUnderTest) {
+        if (MigrationToggles.isUnderTest) {
             try {
                 conn = DriverManager.getConnection(SQLite_URL_TEST);
 

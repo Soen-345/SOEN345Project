@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.vet;
 
+import org.springframework.samples.petclinic.migration.VetMigration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -52,6 +53,14 @@ class VetController {
 		// objects so it is simpler for JSon/Object mapping
 		Vets vets = new Vets();
 		vets.getVetList().addAll(this.vets.findAll());
+
+		for (Vet vet : this.vets.findAll()) {
+			boolean consistent = VetMigration.shadowReadConsistencyChecker(vet.getId());
+			if (!consistent) {
+				VetMigration.correctInconsistency(vet);
+			}
+		}
+
 		return vets;
 	}
 
