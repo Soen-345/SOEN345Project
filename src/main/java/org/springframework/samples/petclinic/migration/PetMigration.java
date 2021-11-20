@@ -1,21 +1,28 @@
 package org.springframework.samples.petclinic.migration;
 
+import org.springframework.samples.petclinic.owner.Pet;
+
 import java.util.List;
+import java.util.Map;
 
-public class PetMigration implements IMigration{
+public class PetMigration {
 
-    @Override
-    public void forklift(List pets) {
+
+    private void initTable() {
 
     }
 
-    @Override
-    public int checkConsistencies() {
+    public void forklift(Map<Integer, Pet> pets) {
+
+    }
+
+
+    public int checkConsistencies(Map<Integer, Pet> pets) {
         return 0;
     }
 
-    @Override
-    public void logInconsistency() {
+
+    public void logInconsistency(Integer expected, Integer actual) {
 
     }
 }

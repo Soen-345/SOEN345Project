@@ -11,6 +11,7 @@ import org.springframework.samples.petclinic.vet.Vet;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +24,7 @@ public class VetMigrationTest {
     private static final String SQLite_URL_TEST = "jdbc:sqlite:test-pet-clinic";
     private VetMigration vetMigration;
     private Connection testDbConnection;
-    private List<Vet> oldDataStoreVets;
+    private Map<Integer, Vet> oldDataStoreVets;
 
     @Mock
     Vet vet1;
@@ -36,6 +37,8 @@ public class VetMigrationTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
+
+        DatastoreToggles.isUnderTest = true;
 
         vetMigration = new VetMigration();
 
@@ -51,17 +54,17 @@ public class VetMigrationTest {
         when(vet3.getFirstName()).thenReturn("Linda");
         when(vet3.getLastName()).thenReturn("Douglas");
 
-        oldDataStoreVets = new ArrayList<>();
+        oldDataStoreVets = new HashMap<>();
 
-        oldDataStoreVets.add(vet1);
-        oldDataStoreVets.add(vet2);
-        oldDataStoreVets.add(vet3);
+        oldDataStoreVets.put(vet1.getId(), vet1);
+        oldDataStoreVets.put(vet2.getId(), vet2);
+        oldDataStoreVets.put(vet3.getId(), vet3);
 
     }
 
     @Test
     public void testForklift() throws SQLException {
-        DatastoreToggles.isUnderTest = true;
+
 
         vetMigration.forklift(oldDataStoreVets);
         testDbConnection = DriverManager.getConnection(SQLite_URL_TEST);
@@ -78,5 +81,6 @@ public class VetMigrationTest {
     @Test
     public void testCheckConsistency() {
 
+        assertEquals(0, vetMigration.checkConsistencies(new HashMap<>()));
     }
 }

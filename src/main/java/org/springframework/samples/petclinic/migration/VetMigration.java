@@ -3,13 +3,14 @@ package org.springframework.samples.petclinic.migration;
 import org.springframework.samples.petclinic.vet.Vet;
 
 import java.util.List;
+import java.util.Map;
 
-public class VetMigration implements IMigration {
+public class VetMigration  {
 
 
     private void initTable() {
         String deleteQuery = "DROP TABLE IF EXISTS vets";
-        QueryController.query(deleteQuery, Datastore.SQLITE, Table.VETS, false);
+        QueryController.queryVets(deleteQuery, Datastore.SQLITE, false);
 
         String createQuery = "CREATE TABLE vets (\n" +
                 "                      id         INTEGER IDENTITY PRIMARY KEY,\n" +
@@ -18,45 +19,56 @@ public class VetMigration implements IMigration {
                 ");\n" +
                 "CREATE INDEX vets_last_name ON vets (last_name);";
 
-        QueryController.query(createQuery, Datastore.SQLITE, Table.VETS, false);
+        QueryController.queryVets(createQuery, Datastore.SQLITE, false);
     }
 
-    @Override
-    public void forklift(List vets) {
+
+    public void forklift(Map<Integer, Vet> vets) {
 
         if (!DatastoreToggles.isUnderTest) {
             String selectQuery = "SELECT * FROM vets";
-            vets = QueryController.query(selectQuery, Datastore.H2, Table.VETS, true);
+            vets = QueryController.queryVets(selectQuery, Datastore.H2, true);
         }
 
         this.initTable();
-        for (Object obj : vets) {
-            Vet vet = ((Vet) obj);
+        for (Vet vet : vets.values()) {
             String insertQuery = "INSERT INTO vets (id, first_name, last_name) VALUES ('" + vet.getId() +
             "','" + vet.getFirstName() + "','" + vet.getLastName() + "');";
-            QueryController.query(insertQuery, Datastore.SQLITE, Table.VETS, false);
+            QueryController.queryVets(insertQuery, Datastore.SQLITE, false);
         }
     }
 
-    @Override
-    public int checkConsistencies() {
+
+
+    public int checkConsistencies(Map<Integer, Vet> expected) {
         int inconsistencies = 0;
-        String queryH2 = "SELECT * FROM vets";
-        List<Vet> expected = QueryController.query(queryH2, Datastore.H2, Table.VETS, true);
+
+        if (!DatastoreToggles.isUnderTest) {
+            String queryH2 = "SELECT * FROM vets";
+            expected = QueryController.queryVets(queryH2, Datastore.H2, true);
+        }
 
         String querySQLite = "SELECT * FROM vets";
-        List<Vet> actual = QueryController.query(querySQLite, Datastore.SQLITE, Table.VETS, true);
+        Map<Integer, Vet> actual = QueryController.queryVets(querySQLite, Datastore.SQLITE, true);
 
-        for (int i = 0; i < actual.size(); i++) {
-            if (!expected.get(i).equals(actual.get(i))) {
+        for (Integer key : expected.keySet()) {
+            Vet exp = expected.get(key);
+            Vet act = actual.get(key);
+            if (exp.getId() != act.getId() || !exp.getFirstName().equals(act.getFirstName()) ||
+                    !exp.getLastName().equals(act.getLastName())) {
                 inconsistencies++;
+                System.out.println(exp + " ====== " + act);
+                this.logInconsistency(exp.getId(), act.getId());
             }
         }
         return inconsistencies;
     }
 
-    @Override
-    public void logInconsistency() {
+
+    public void logInconsistency(Integer expected, Integer actual) {
+        System.out.println("Vet Table Incosistency - \n " +
+                "Expected: " + expected + "\n"
+                + "Actual: " + actual);
 
     }
 }

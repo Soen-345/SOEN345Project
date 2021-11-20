@@ -13,14 +13,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class QueryController {
-
-    protected static List query(String query, Datastore datastore, Table table, Boolean returnAnything) {
-        List returnData = new ArrayList<>();
+/*
+    protected static Map query(String query, Datastore datastore, Table table, Boolean returnAnything) {
+        Map returnData = new HashMap();
 
         if (table == Table.OWNERS) {
             returnData = queryOwners(query, datastore, returnAnything);
@@ -51,11 +49,11 @@ public class QueryController {
         }
 
         return returnData;
-    }
+    } */
 
-    private static List<Visit> queryVisits(String query, Datastore datastore, Boolean returnAnything) {
+    protected static Map<Integer, Visit> queryVisits(String query, Datastore datastore, Boolean returnAnything) {
         Connection conn = null;
-        List<Visit> returnData = new ArrayList<>();
+        Map<Integer, Visit> returnData = new HashMap<>();
 
         if (datastore == Datastore.SQLITE) {
             conn = DatastoreConnection.connectSqlite();
@@ -70,7 +68,8 @@ public class QueryController {
                 if (returnAnything) {
                     ResultSet resultSet = statement.executeQuery(query);
                     while (resultSet.next()) {
-                        returnData.add(new Visit(resultSet.getInt("id"),
+                        returnData.put(resultSet.getInt("id"),
+                                new Visit(resultSet.getInt("id"),
                                 resultSet.getInt("pet_id"),
                                 convertToLocalDateViaInstant(resultSet.getDate("visit_date")),
                                 resultSet.getString("description")));
@@ -98,9 +97,9 @@ public class QueryController {
 
     }
 
-    private static List<Vet> queryVetSpecialties(String query, Datastore datastore, Boolean returnAnything) {
+    protected static Map<Integer, Vet> queryVetSpecialties(String query, Datastore datastore, Boolean returnAnything) {
         Connection conn = null;
-        List<Vet> returnData = new ArrayList<>();
+        Map<Integer, Vet> returnData = new HashMap<>();
 
         if (datastore == Datastore.SQLITE) {
             conn = DatastoreConnection.connectSqlite();
@@ -116,9 +115,10 @@ public class QueryController {
                     ResultSet resultSet = statement.executeQuery(query);
                     while (resultSet.next()) {
                         String q = "SELECT id, name FROM specialty WHERE id = " + resultSet.getInt("specialty_id") + ";";
-                        List<Specialty> specialty = querySpecialties(q, Datastore.H2, true);
-                        returnData.add(new Vet(resultSet.getInt("vet_id"),
-                                specialty.get(0)));
+                        Map<Integer, Specialty> specialty = querySpecialties(q, Datastore.H2, true);
+                        returnData.put(resultSet.getInt("id"),
+                                new Vet(resultSet.getInt("vet_id"),
+                                specialty.get(resultSet.getInt("specialty_id"))));
                     }
                 } else {
                     statement.execute(query);
@@ -140,9 +140,9 @@ public class QueryController {
         return returnData;
     }
 
-    private static List<PetType> queryTypes(String query, Datastore datastore, Boolean returnAnything) {
+    protected static Map<Integer, PetType> queryTypes(String query, Datastore datastore, Boolean returnAnything) {
         Connection conn = null;
-        List<PetType> returnData = new ArrayList<>();
+        Map<Integer, PetType> returnData = new HashMap<>();
 
         if (datastore == Datastore.SQLITE) {
             conn = DatastoreConnection.connectSqlite();
@@ -157,7 +157,8 @@ public class QueryController {
                 if (returnAnything) {
                     ResultSet resultSet = statement.executeQuery(query);
                     while (resultSet.next()) {
-                        returnData.add(new PetType(resultSet.getInt("id"),
+                        returnData.put(resultSet.getInt("id"),
+                                new PetType(resultSet.getInt("id"),
                                 resultSet.getString("name")));
                     }
                 } else {
@@ -182,9 +183,9 @@ public class QueryController {
         return returnData;
     }
 
-    private static List<Vet> queryVets(String query, Datastore datastore, Boolean returnAnything) {
+    protected static Map<Integer, Vet> queryVets(String query, Datastore datastore, Boolean returnAnything) {
         Connection conn = null;
-        List<Vet> returnData = new ArrayList<>();
+        Map<Integer, Vet> returnData = new HashMap<>();
 
         if (datastore == Datastore.SQLITE) {
             conn = DatastoreConnection.connectSqlite();
@@ -199,7 +200,8 @@ public class QueryController {
                 if (returnAnything) {
                     ResultSet resultSet = statement.executeQuery(query);
                     while (resultSet.next()) {
-                        returnData.add(new Vet(resultSet.getInt("id"),
+                        returnData.put(resultSet.getInt("id"),
+                                new Vet(resultSet.getInt("id"),
                                 resultSet.getString("first_name"),
                                 resultSet.getString("last_name")));
                     }
@@ -224,9 +226,9 @@ public class QueryController {
     }
 
 
-    private static List<Owner> queryOwners(String query, Datastore datastore, Boolean returnAnything) {
+    protected static Map<Integer, Owner> queryOwners(String query, Datastore datastore, Boolean returnAnything) {
         Connection conn = null;
-        List<Owner> returnData = new ArrayList<>();
+        Map<Integer, Owner> returnData = new HashMap<>();
 
         if (datastore == Datastore.SQLITE) {
             conn = DatastoreConnection.connectSqlite();
@@ -241,7 +243,8 @@ public class QueryController {
                 if (returnAnything) {
                     ResultSet resultSet = statement.executeQuery(query);
                     while (resultSet.next()) {
-                        returnData.add(new Owner(resultSet.getInt("id"),
+                        returnData.put(resultSet.getInt("id"),
+                                new Owner(resultSet.getInt("id"),
                                 resultSet.getString("first_name"),
                                 resultSet.getString("last_name"),
                                 resultSet.getString("address"),
@@ -270,9 +273,9 @@ public class QueryController {
         return returnData;
     }
 
-    private static List<Pet> queryPets(String query, Datastore datastore, Boolean returnAnything) {
+    protected static Map<Integer, Pet> queryPets(String query, Datastore datastore, Boolean returnAnything) {
         Connection conn = null;
-        List<Pet> returnData = new ArrayList<>();
+        Map<Integer, Pet> returnData = new HashMap<>();
 
         if (datastore == Datastore.SQLITE) {
             conn = DatastoreConnection.connectSqlite();
@@ -287,7 +290,8 @@ public class QueryController {
                 if (returnAnything) {
                     ResultSet resultSet = statement.executeQuery(query);
                     while (resultSet.next()) {
-                        returnData.add(new Pet(resultSet.getInt("id"),
+                        returnData.put(resultSet.getInt("id"),
+                                new Pet(resultSet.getInt("id"),
                                 resultSet.getString("name"),
                                 convertToLocalDateViaInstant(resultSet.getDate("birth_date")),
                                 resultSet.getInt("type_id"),
@@ -313,9 +317,9 @@ public class QueryController {
         return returnData;
     }
 
-    private static List<Specialty> querySpecialties(String query, Datastore datastore, Boolean returnAnything) {
+    protected static Map<Integer, Specialty> querySpecialties(String query, Datastore datastore, Boolean returnAnything) {
         Connection conn = null;
-        List<Specialty> returnData = new ArrayList<>();
+        Map<Integer, Specialty> returnData = new HashMap<>();
 
         if (datastore == Datastore.SQLITE) {
             conn = DatastoreConnection.connectSqlite();
@@ -330,7 +334,8 @@ public class QueryController {
                 if (returnAnything) {
                     ResultSet resultSet = statement.executeQuery(query);
                     while (resultSet.next()) {
-                        returnData.add(new Specialty(resultSet.getString("name"),
+                        returnData.put(resultSet.getInt("id"),
+                                new Specialty(resultSet.getString("name"),
                                 resultSet.getInt("id")));
                     }
                 } else {
@@ -354,7 +359,7 @@ public class QueryController {
     }
 
 
-    public static LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
+    private static LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
         return dateToConvert.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
