@@ -56,12 +56,17 @@ public class Vet extends Person {
 	}
 
 	public Vet(Integer id, String first, String last) {
-		super(first, last);
+		super(first, last, id);
 	}
 
 	public Vet(HashSet<Specialty> hashSet) {
 		super();
 		this.specialties = hashSet;
+	}
+
+	public Vet(Integer id, Specialty specialty) {
+		super(id);
+		this.specialties.add(specialty);
 	}
 
 	public Vet(HashSet<Specialty> hashSet, String first, String last, Integer id) {

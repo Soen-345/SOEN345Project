@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.*;
-import org.springframework.samples.petclinic.model.Person;
+
 
 import java.util.HashSet;
 

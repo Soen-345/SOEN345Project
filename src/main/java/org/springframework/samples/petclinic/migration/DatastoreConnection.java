@@ -1,0 +1,57 @@
+package org.springframework.samples.petclinic.migration;
+
+import java.sql.*;
+
+public class DatastoreConnection {
+
+    private static final String SQLite_URL = "jdbc:sqlite:pet-clinic";
+    private static final String SQLite_URL_TEST = "jdbc:sqlite:test-pet-clinic";
+    private static final String H2_URL = "jdbc:h2:mem:testdb";
+    private static final String USERNAME = "sa";
+    private static final String PASSWORD = "";
+
+
+
+    protected static Connection connectSqlite() {
+        Connection conn = null;
+        if (DatastoreToggles.isUnderTest) {
+            try {
+                conn = DriverManager.getConnection(SQLite_URL_TEST);
+
+                System.out.println("Connection to test SQLite successful");
+
+            }
+            catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        else {
+            try {
+                conn = DriverManager.getConnection(SQLite_URL);
+
+                System.out.println("Connection to SQLite successful");
+
+            }
+            catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        return conn;
+    }
+
+    protected static Connection connectH2() {
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(H2_URL, USERNAME, PASSWORD);
+
+            System.out.println("Connection to H2 successful");
+
+        }
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return conn;
+    }
+
+}

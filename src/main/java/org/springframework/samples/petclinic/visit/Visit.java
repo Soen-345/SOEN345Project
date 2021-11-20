@@ -56,6 +56,13 @@ public class Visit extends BaseEntity {
 		this.date = LocalDate.now();
 	}
 
+	public Visit(Integer id, Integer petId, LocalDate visitDate, String description) {
+		super(id);
+		this.description = description;
+		this.petId = petId;
+		this.date = visitDate;
+	}
+
 	public Visit() {
 		this.date = LocalDate.now();
 	}
