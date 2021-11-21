@@ -75,7 +75,7 @@ public class VetMigrationTest {
     @Order(1)
     public void testForklift() {
 
-        assertEquals(3, vetMigration.forklift(oldDataStoreVets));
+        assertEquals(3, vetMigration.forkliftTestOnly(oldDataStoreVets));
 
     }
 

@@ -20,14 +20,26 @@ public class VetMigration {
         vetDAO = new VetDAO();
     }
 
-    public int forklift(Map<Integer, Vet> vets) {
+    public int forklift() {
+        this.vetDAO.initTable();
+        int numInsert = 0;
+
+        Map<Integer, Vet> vets = this.vetDAO.getAllVets(Datastores.H2);
+
+        for (Vet vet : vets.values()) {
+            boolean success = this.vetDAO.addVet(vet, Datastores.SQLITE);
+            if (success) {
+                numInsert++;
+            }
+        }
+        return numInsert;
+    }
+
+    public int forkliftTestOnly(Map<Integer, Vet> vets) {
 
         this.vetDAO.initTable();
         int numInsert = 0;
 
-        if (!MigrationToggles.isUnderTest) {
-            vets = this.vetDAO.getAllVets(Datastores.H2);
-        }
         for (Vet vet : vets.values()) {
             boolean success = this.vetDAO.addVet(vet, Datastores.SQLITE);
             if (success) {
