@@ -86,7 +86,7 @@ public class VetMigrationTest {
         oldDataStoreVets.put(vet4.getId(), vet4);
 
 
-        assertEquals(1, vetMigration.checkConsistencies(oldDataStoreVets));
+        assertEquals(1, vetMigration.checkConsistenciesTestOnly(oldDataStoreVets));
     }
 
     @Test
