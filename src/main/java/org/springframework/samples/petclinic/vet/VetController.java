@@ -53,7 +53,7 @@ class VetController {
 		for (Vet vet : this.vets.findAll()) {
 			boolean consistent = vetMigration.shadowReadConsistencyChecker(vet);
 			if (!consistent) {
-				vetMigration.checkConsistencies(new HashMap<>());
+				vetMigration.checkConsistencies();
 			}
 		}
 

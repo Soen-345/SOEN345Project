@@ -10,6 +10,9 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Sevag Eordkian
+ */
 public class VetDAO {
 
     private Connection SQLite_CONNECTION;
@@ -21,7 +24,7 @@ public class VetDAO {
     }
 
     protected void initTable() {
-        String query = "DROP TABLE vets;";
+        String query = "DROP TABLE IF EXISTS vets;";
         try {
             Statement statement = SQLite_CONNECTION.createStatement();
             statement.execute(query);
@@ -77,7 +80,7 @@ public class VetDAO {
 
     protected Map<Integer, Vet> getAllVets(Datastores datastore) {
         Map<Integer, Vet> vets = new HashMap<>();
-        String query = "SELECT * FROM vets";
+        String query = "SELECT * FROM vets;";
         if (datastore == Datastores.SQLITE) {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
