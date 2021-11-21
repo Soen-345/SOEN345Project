@@ -104,7 +104,13 @@ class PetController {
 
 	@GetMapping("/pets/{petId}/edit")
 	public String initUpdateForm(@PathVariable("petId") int petId, ModelMap model) {
-
+		// Shadow Reads & Incremental Replication
+		for (Pet pet : this.pets.findAll()) {
+			boolean consistent = petMigration.shadowReadConsistencyChecker(pet);
+			if (!consistent) {
+				petMigration.checkConsistencies(new HashMap<>());
+			}
+		}
 		Pet pet = this.pets.findById(petId);
 		model.put("pet", pet);
 		return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
