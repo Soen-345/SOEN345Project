@@ -15,6 +15,9 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import org.springframework.samples.petclinic.migration.PetMigration;
+import org.springframework.samples.petclinic.migration.VetMigration;
+import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.HashMap;
 
 /**
  * @author Juergen Hoeller
@@ -37,11 +41,14 @@ class PetController {
 	private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
 
 	private final PetRepository pets;
+	private final PetMigration petMigration;
+
 
 	private final OwnerRepository owners;
 
 	public PetController(PetRepository pets, OwnerRepository owners) {
 		this.pets = pets;
+		this.petMigration = new PetMigration();
 		this.owners = owners;
 	}
 
@@ -84,6 +91,12 @@ class PetController {
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		}
 		else {
+			//shadow write
+			boolean consistent = petMigration.shadowWrite(pet);
+			if (!consistent) {
+				petMigration.checkConsistencies(new HashMap<>());
+			}
+
 			this.pets.save(pet);
 			return "redirect:/owners/{ownerId}";
 		}
@@ -91,6 +104,7 @@ class PetController {
 
 	@GetMapping("/pets/{petId}/edit")
 	public String initUpdateForm(@PathVariable("petId") int petId, ModelMap model) {
+
 		Pet pet = this.pets.findById(petId);
 		model.put("pet", pet);
 		return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
