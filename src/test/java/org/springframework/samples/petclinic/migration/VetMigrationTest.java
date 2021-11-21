@@ -12,15 +12,15 @@ import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
+
 /**
  * @author Sevag Eordkian
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class VetMigrationTest {
 
-    private static final String SQLite_URL_TEST = "jdbc:sqlite:test-pet-clinic";
+    private static VetMigration vetMigration;
 
-    private Connection testDbConnection;
     private Map<Integer, Vet> oldDataStoreVets;
 
     @Mock
@@ -38,14 +38,9 @@ public class VetMigrationTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        try {
-            testDbConnection = DriverManager.getConnection(SQLite_URL_TEST);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-
         MigrationToggles.isUnderTest = true;
 
+        vetMigration = new VetMigration();
 
         when(vet1.getId()).thenReturn(1);
         when(vet1.getFirstName()).thenReturn("James");
@@ -76,18 +71,11 @@ public class VetMigrationTest {
 
     }
 
-    @Test
+    @Test()
     @Order(1)
-    public void testForklift() throws SQLException {
+    public void testForklift() {
 
-        VetMigration.forklift(oldDataStoreVets);
-
-        if (testDbConnection != null) {
-            Statement statement = testDbConnection.createStatement();
-
-            assertTrue(statement.execute("SELECT * FROM vets"));
-        }
-
+        assertEquals(3, vetMigration.forklift(oldDataStoreVets));
 
     }
 
@@ -96,8 +84,9 @@ public class VetMigrationTest {
     public void testCheckConsistency() {
 
         oldDataStoreVets.put(vet4.getId(), vet4);
-        assertEquals(1, VetMigration.checkConsistencies(oldDataStoreVets));
 
+
+        assertEquals(1, vetMigration.checkConsistencies(oldDataStoreVets));
     }
 
     @Test
@@ -106,27 +95,19 @@ public class VetMigrationTest {
 
         oldDataStoreVets.put(vet5.getId(), vet5);
 
-        VetMigration.addVetToNewDatastore(vet5);
 
-        assertEquals(0, VetMigration.checkConsistencies(oldDataStoreVets));
+        vetMigration.shadowWrite(vet5);
 
+
+        assertTrue(vetMigration.shadowReadConsistencyChecker(vet5));
 
 
     }
 
-    @Test
-    @Order(4)
-    public void testCorrectConsistency() {
-
-        when(vet3.getFirstName()).thenReturn("Lola");
-
-        VetMigration.correctInconsistency(this.vet3);
-
-        assertEquals(0, VetMigration.checkConsistencies(oldDataStoreVets));
-
+    @AfterAll
+    public static void closeConnection() throws SQLException {
+        vetMigration.closeConnections();
     }
-
-
 
 
 }

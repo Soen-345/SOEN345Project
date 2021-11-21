@@ -18,6 +18,11 @@ package org.springframework.samples.petclinic;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.samples.petclinic.migration.Datastores;
+import org.springframework.samples.petclinic.migration.MigrationToggles;
+import org.springframework.samples.petclinic.migration.VetMigration;
+
+import java.util.HashMap;
 
 /**
  * PetClinic Spring Boot Application.
