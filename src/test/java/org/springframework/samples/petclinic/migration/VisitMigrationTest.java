@@ -5,9 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.*;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+
+import org.mockito.Mockito;
 import org.springframework.samples.petclinic.visit.Visit;
+
 
 import java.sql.SQLException;
 import java.util.Date;
@@ -17,33 +18,34 @@ import java.util.Map;
 /**
  * @author Sevag Eordkian
  */
+
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class VisitMigrationTest {
 
+    private static Map<Integer, Visit> oldDataStoreVisits;
+
     private static VisitMigration visitMigration;
 
-    private Map<Integer, Visit> oldDataStoreVisits;
+    static Visit visit1;
+    static Visit visit2;
+    static Visit visit3;
+    static Visit visit4;
+    static Visit visit5;
 
-    @Mock
-    Visit visit1;
-    @Mock
-    Visit visit2;
-    @Mock
-    Visit visit3;
-    @Mock
-    Visit visit4;
-    @Mock
-    Visit visit5;
 
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
+    @BeforeAll
+    public static void setup() {
 
         MigrationToggles.isUnderTest = true;
 
         visitMigration = new VisitMigration();
 
         Date date = new Date();
+        visit1 = Mockito.mock(Visit.class);
+        visit2 = Mockito.mock(Visit.class);
+        visit3 = Mockito.mock(Visit.class);
+        visit4 = Mockito.mock(Visit.class);
+        visit5 = Mockito.mock(Visit.class);
 
         when(visit1.getId()).thenReturn(12);
         when(visit1.getPetId()).thenReturn(5);
