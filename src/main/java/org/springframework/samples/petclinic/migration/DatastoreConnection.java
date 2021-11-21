@@ -22,7 +22,7 @@ public class DatastoreConnection {
         Connection conn = null;
         if (MigrationToggles.isUnderTest) {
             try {
-                if (SQLite_TEST_CONNECTION != null) {
+                if (SQLite_TEST_CONNECTION != null && !SQLite_TEST_CONNECTION.isClosed()) {
                     conn = SQLite_TEST_CONNECTION;
                     System.out.println("***Returning existing connection to test SQLite***");
                 }
@@ -43,7 +43,7 @@ public class DatastoreConnection {
         else {
             try {
 
-                if (SQLite_CONNECTION != null) {
+                if (SQLite_CONNECTION != null && !SQLite_CONNECTION.isClosed()) {
                     conn = SQLite_CONNECTION;
                     System.out.println("***Returning existing connection to SQLite***");
                 }

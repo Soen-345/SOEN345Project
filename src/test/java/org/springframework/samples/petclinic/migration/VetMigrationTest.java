@@ -4,8 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.*;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.Mockito;
 import org.springframework.samples.petclinic.vet.Vet;
 
 import java.sql.*;
@@ -21,26 +20,26 @@ public class VetMigrationTest {
 
     private static VetMigration vetMigration;
 
-    private Map<Integer, Vet> oldDataStoreVets;
+    private static Map<Integer, Vet> oldDataStoreVets;
 
-    @Mock
-    Vet vet1;
-    @Mock
-    Vet vet2;
-    @Mock
-    Vet vet3;
-    @Mock
-    Vet vet4;
-    @Mock
-    Vet vet5;
+    static Vet vet1;
+    static Vet vet2;
+    static Vet vet3;
+    static Vet vet4;
+    static Vet vet5;
 
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
+    @BeforeAll
+    public static void setup() {
 
         MigrationToggles.isUnderTest = true;
 
         vetMigration = new VetMigration();
+
+        vet1 = Mockito.mock(Vet.class);
+        vet2 = Mockito.mock(Vet.class);
+        vet3 = Mockito.mock(Vet.class);
+        vet4 = Mockito.mock(Vet.class);
+        vet5 = Mockito.mock(Vet.class);
 
         when(vet1.getId()).thenReturn(1);
         when(vet1.getFirstName()).thenReturn("James");
@@ -75,7 +74,7 @@ public class VetMigrationTest {
     @Order(1)
     public void testForklift() {
 
-        assertEquals(3, vetMigration.forklift(oldDataStoreVets));
+        assertEquals(3, vetMigration.forkliftTestOnly(oldDataStoreVets));
 
     }
 
@@ -86,7 +85,7 @@ public class VetMigrationTest {
         oldDataStoreVets.put(vet4.getId(), vet4);
 
 
-        assertEquals(1, vetMigration.checkConsistencies(oldDataStoreVets));
+        assertEquals(1, vetMigration.checkConsistenciesTestOnly(oldDataStoreVets));
     }
 
     @Test
