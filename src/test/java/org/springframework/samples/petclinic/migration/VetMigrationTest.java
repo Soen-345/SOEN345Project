@@ -3,27 +3,24 @@ package org.springframework.samples.petclinic.migration;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.samples.petclinic.vet.Vet;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
 
 /**
  * @author Sevag Eordkian
  */
-
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class VetMigrationTest {
 
-    private static final String SQLite_URL_TEST = "jdbc:sqlite:test-pet-clinic";
-    private VetMigration vetMigration;
-    private Connection testDbConnection;
+    private static VetMigration vetMigration;
+
     private Map<Integer, Vet> oldDataStoreVets;
 
     @Mock
@@ -32,13 +29,16 @@ public class VetMigrationTest {
     Vet vet2;
     @Mock
     Vet vet3;
-
+    @Mock
+    Vet vet4;
+    @Mock
+    Vet vet5;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        DatastoreToggles.isUnderTest = true;
+        MigrationToggles.isUnderTest = true;
 
         vetMigration = new VetMigration();
 
@@ -54,6 +54,15 @@ public class VetMigrationTest {
         when(vet3.getFirstName()).thenReturn("Linda");
         when(vet3.getLastName()).thenReturn("Douglas");
 
+        when(vet4.getId()).thenReturn(4);
+        when(vet4.getFirstName()).thenReturn("Ted");
+        when(vet4.getLastName()).thenReturn("Lasso");
+
+        when(vet5.getId()).thenReturn(5);
+        when(vet5.getFirstName()).thenReturn("Micheal");
+        when(vet5.getLastName()).thenReturn("Scott");
+
+
         oldDataStoreVets = new HashMap<>();
 
         oldDataStoreVets.put(vet1.getId(), vet1);
@@ -62,25 +71,43 @@ public class VetMigrationTest {
 
     }
 
-    @Test
-    public void testForklift() throws SQLException {
+    @Test()
+    @Order(1)
+    public void testForklift() {
 
-
-        vetMigration.forklift(oldDataStoreVets);
-        testDbConnection = DriverManager.getConnection(SQLite_URL_TEST);
-
-        if (testDbConnection != null) {
-            Statement statement = testDbConnection.createStatement();
-
-            assertTrue(statement.execute("SELECT * FROM vets"));
-        }
-
+        assertEquals(3, vetMigration.forklift(oldDataStoreVets));
 
     }
 
     @Test
+    @Order(2)
     public void testCheckConsistency() {
 
-        assertEquals(0, vetMigration.checkConsistencies(new HashMap<>()));
+        oldDataStoreVets.put(vet4.getId(), vet4);
+
+
+        assertEquals(1, vetMigration.checkConsistencies(oldDataStoreVets));
     }
+
+    @Test
+    @Order(3)
+    public void testShadowReadConsistencyChecker() {
+
+        oldDataStoreVets.put(vet5.getId(), vet5);
+
+
+        vetMigration.shadowWrite(vet5);
+
+
+        assertTrue(vetMigration.shadowReadConsistencyChecker(vet5));
+
+
+    }
+
+    @AfterAll
+    public static void closeConnection() throws SQLException {
+        vetMigration.closeConnections();
+    }
+
+
 }
