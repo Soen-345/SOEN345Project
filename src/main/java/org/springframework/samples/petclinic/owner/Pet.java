@@ -67,11 +67,9 @@ public class Pet extends NamedEntity {
 		this.owner = owner;
 	}
 
-	public Pet(int id, String name, LocalDate birthDate, int typeId, int ownerId) {
+	public Pet(int id, String name, LocalDate birthDate) {
 		super(name, id);
 		this.birthDate = birthDate;
-		this.type.setId(typeId);
-		this.owner.setId(ownerId);
 	}
 
 	public void setBirthDate(LocalDate birthDate) {
@@ -94,7 +92,7 @@ public class Pet extends NamedEntity {
 		return this.owner;
 	}
 
-	protected void setOwner(Owner owner) {
+	public void setOwner(Owner owner) {
 		this.owner = owner;
 	}
 

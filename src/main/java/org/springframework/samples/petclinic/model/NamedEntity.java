@@ -41,6 +41,10 @@ public class NamedEntity extends BaseEntity {
 		this.name = name;
 	}
 
+	public NamedEntity(Integer id) {
+		super(id);
+	}
+
 	public NamedEntity(String name, Integer id) {
 		super(id);
 		this.name = name;

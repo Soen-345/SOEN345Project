@@ -1,10 +1,14 @@
 package org.springframework.samples.petclinic.migration;
 
+import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.Pet;
+import org.springframework.samples.petclinic.owner.PetType;
 
 
 import java.sql.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.HashMap;
@@ -51,7 +55,6 @@ public class PetDAO {
             statement.execute(createQuery);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            System.out.println();
         }
     }
 
@@ -64,10 +67,13 @@ public class PetDAO {
                 ResultSet resultSet = statement.executeQuery(query);
                 pet = new Pet(resultSet.getInt("id"),
                         resultSet.getString("name"),
-                        converttoLocalDate(resultSet.getDate("birth_date")),
-                        resultSet.getInt("type_id"),
-                        resultSet.getInt("owner_id"));
-            } catch (SQLException e) {
+                        convertToLocalDate(new SimpleDateFormat("yyyy-MM-dd")
+                                .parse(resultSet.getString("birth_date"))));
+
+                pet.setOwner(new Owner(resultSet.getInt("owner_id")));
+                pet.setType(new PetType(resultSet.getInt("type_id")));
+
+            } catch (SQLException | ParseException e) {
                 System.out.println(e.getMessage());
             }
         }
@@ -77,17 +83,20 @@ public class PetDAO {
                 ResultSet resultSet = statement.executeQuery(query);
                 pet = new Pet(resultSet.getInt("id"),
                         resultSet.getString("name"),
-                        converttoLocalDate(resultSet.getDate("birth_date")),
-                        resultSet.getInt("type_id"),
-                        resultSet.getInt("owner_id"));
-            } catch (SQLException e) {
+                        convertToLocalDate(new SimpleDateFormat("yyyy-MM-dd")
+                                .parse(resultSet.getString("birth_date"))));
+
+                pet.setOwner(new Owner(resultSet.getInt("owner_id")));
+                pet.setType(new PetType(resultSet.getInt("type_id")));
+
+            } catch (SQLException | ParseException e) {
                 System.out.println(e.getMessage());
             }
         }
         return pet;
     }
 
-    private LocalDate converttoLocalDate(Date birth_date) {
+    private LocalDate convertToLocalDate(java.util.Date birth_date) {
         return birth_date.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
@@ -101,14 +110,17 @@ public class PetDAO {
                 Statement statement = SQLite_CONNECTION.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
-                    pets.put(resultSet.getInt("id"),
-                            new Pet(resultSet.getInt("id"),
-                                    resultSet.getString("name"),
-                                    converttoLocalDate(resultSet.getDate("birth_date")),
-                                    resultSet.getInt("type_id"),
-                                    resultSet.getInt("owner_id")));
+                    Pet pet = new Pet(resultSet.getInt("id"),
+                            resultSet.getString("name"),
+                            convertToLocalDate(new SimpleDateFormat("yyyy-MM-dd")
+                                    .parse(resultSet.getString("birth_date"))));
+
+                    pet.setOwner(new Owner(resultSet.getInt("owner_id")));
+                    pet.setType(new PetType(resultSet.getInt("type_id")));
+
+                    pets.put(resultSet.getInt("id"), pet);
                 }
-            } catch (SQLException e) {
+            } catch (SQLException | ParseException e) {
                 System.out.println(e.getMessage());
             }
         }
@@ -117,14 +129,18 @@ public class PetDAO {
                 Statement statement = H2_CONNECTION.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
-                    pets.put(resultSet.getInt("id"),
-                            new Pet(resultSet.getInt("id"),
-                                    resultSet.getString("name"),
-                                    converttoLocalDate(resultSet.getDate("birth_date")),
-                                    resultSet.getInt("type_id"),
-                                    resultSet.getInt("owner_id")));
+                    Pet pet = new Pet(resultSet.getInt("id"),
+                            resultSet.getString("name"),
+                            convertToLocalDate(new SimpleDateFormat("yyyy-MM-dd")
+                                    .parse(resultSet.getString("birth_date"))));
+
+                    pet.setOwner(new Owner(resultSet.getInt("owner_id")));
+                    pet.setType(new PetType(resultSet.getInt("type_id")));
+
+                    pets.put(resultSet.getInt("id"), pet);
+
                 }
-            } catch (SQLException e) {
+            } catch (SQLException | ParseException e) {
                 System.out.println(e.getMessage());
             }
         }
@@ -134,7 +150,7 @@ public class PetDAO {
 
     protected boolean addPet(Pet pet, Datastores datastore) {
         String insertQuery = "INSERT INTO pets (id, name, birth_date, type_id, owner_id) VALUES (" + pet.getId()
-                + ",'" + pet.getName() + "','" + pet.getBirthDate() + ",'" + pet.getType()+ "','"+pet.getOwner() + "')';";
+                + ",'" + pet.getName() + "','" + Date.valueOf(pet.getBirthDate()) + "','" + pet.getTypeId()+ "','"+pet.getOwnerId() + "');";
         if (datastore == Datastores.SQLITE) {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
@@ -158,7 +174,7 @@ public class PetDAO {
 
     protected void update(Pet pet, Datastores datastore) {
         String query = "UPDATE pets SET name = '" + pet.getName()
-                + "', birth_date = '" + pet.getBirthDate()+ "', type_id = '" +pet.getId()+ "', owner_id = '" +pet.getOwner()+
+                + "', birth_date = '" + Date.valueOf(pet.getBirthDate()) + "', type_id = '" +pet.getTypeId()+ "', owner_id = '" +pet.getOwnerId()+
                 "' WHERE id = " + pet.getId() + ";";
         if (datastore == Datastores.SQLITE) {
             try {
