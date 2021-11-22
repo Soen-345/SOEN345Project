@@ -91,12 +91,12 @@ class PetController {
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		}
 		else {
-			//shadow write
+		/*
 			boolean consistent = petMigration.shadowWrite(pet);
 			if (!consistent) {
 				petMigration.checkConsistencies();
 			}
-
+*/
 			this.pets.save(pet);
 			return "redirect:/owners/{ownerId}";
 		}
@@ -104,13 +104,15 @@ class PetController {
 
 	@GetMapping("/pets/{petId}/edit")
 	public String initUpdateForm(@PathVariable("petId") int petId, ModelMap model) {
-		// Shadow Reads & Incremental Replication
+
+		/*
 		for (Pet pet : this.pets.findAll()) {
 			boolean consistent = petMigration.shadowReadConsistencyChecker(pet);
 			if (!consistent) {
 				petMigration.checkConsistencies();
 			}
 		}
+		*/
 		Pet pet = this.pets.findById(petId);
 		model.put("pet", pet);
 		return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
@@ -124,11 +126,11 @@ class PetController {
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		}
 		else {
-			//shadow write
+			/*
 			boolean consistent = petMigration.shadowWrite(pet);
 			if (!consistent) {
 				petMigration.checkConsistencies();
-			}
+			} */
 			owner.addPet(pet);
 			this.pets.save(pet);
 			return "redirect:/owners/{ownerId}";
