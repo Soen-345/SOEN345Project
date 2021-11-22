@@ -94,7 +94,7 @@ class PetController {
 			//shadow write
 			boolean consistent = petMigration.shadowWrite(pet);
 			if (!consistent) {
-				petMigration.checkConsistencies(new HashMap<>());
+				petMigration.checkConsistencies();
 			}
 
 			this.pets.save(pet);
@@ -108,7 +108,7 @@ class PetController {
 		for (Pet pet : this.pets.findAll()) {
 			boolean consistent = petMigration.shadowReadConsistencyChecker(pet);
 			if (!consistent) {
-				petMigration.checkConsistencies(new HashMap<>());
+				petMigration.checkConsistencies();
 			}
 		}
 		Pet pet = this.pets.findById(petId);
@@ -124,6 +124,11 @@ class PetController {
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		}
 		else {
+			//shadow write
+			boolean consistent = petMigration.shadowWrite(pet);
+			if (!consistent) {
+				petMigration.checkConsistencies();
+			}
 			owner.addPet(pet);
 			this.pets.save(pet);
 			return "redirect:/owners/{ownerId}";

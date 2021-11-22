@@ -6,13 +6,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.Pet;
 import org.springframework.samples.petclinic.owner.PetType;
+import org.springframework.samples.petclinic.visit.Visit;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,51 +24,48 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 public class PetMigrationTest {
-    private static PetMigration petMigration;
-
     private Map<Integer, Pet> oldDataStorePets;
 
-    @Mock
-    Pet pet1;
-    Owner beshoy;
-    PetType hamster;
-    @Mock
-    Pet pet2;
-    Owner sevag;
-    PetType puppy;
-    @Mock
-    Pet pet3;
-    Owner ali;
-    PetType bird;
+    private static PetMigration petMigration;
+    static Pet pet1;
+    static Pet pet2;
+    static Pet pet3;
+    static Pet pet4;
+    static Pet pet5;
+
+
 
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
 
         MigrationToggles.isUnderTest = true;
-
         petMigration = new PetMigration();
-
+        Date date = new Date();
+        pet1 = Mockito.mock(Pet.class);
+        pet2 = Mockito.mock(Pet.class);
+        pet3 = Mockito.mock(Pet.class);
+        pet4 = Mockito.mock(Pet.class);
+        pet5 = Mockito.mock(Pet.class);
         when(pet1.getId()).thenReturn(1);
         when(pet1.getName()).thenReturn("pet1");
-        when(pet1.getBirthDate()).thenReturn(LocalDate.parse("2020-11-08"));
-        when(pet1.getType()).thenReturn((PetType) when(hamster.getId()).thenReturn(1));
-        when(pet1.getOwner()).thenReturn((Owner) when(beshoy.getId()).thenReturn(1));
+        when(pet1.getBirthDate()).thenReturn(PetMigration.convertToLocalDateViaInstant(date));
+        when(pet1.getTypeId()).thenReturn(1);
+        when(pet1.getOwnerId()).thenReturn(1);
 
 
         when(pet2.getId()).thenReturn(2);
         when(pet2.getName()).thenReturn("pet2");
-        when(pet2.getBirthDate()).thenReturn(LocalDate.parse("2021-07-28"));
-        when(pet2.getType()).thenReturn((PetType) when(puppy.getId()).thenReturn(2));
-        when(pet2.getOwner()).thenReturn((Owner) when(sevag.getId()).thenReturn(2));
+        when(pet2.getBirthDate()).thenReturn(PetMigration.convertToLocalDateViaInstant(date));
+        when(pet2.getTypeId()).thenReturn(2);
+        when(pet2.getOwnerId()).thenReturn(2);
 
 
-        when(pet3.getId()).thenReturn(1);
+        when(pet3.getId()).thenReturn(3);
         when(pet3.getName()).thenReturn("pet3");
-        when(pet3.getBirthDate()).thenReturn(LocalDate.parse("2019-05-18"));
-        when(pet3.getType()).thenReturn((PetType) when(bird.getId()).thenReturn(3));
-        when(pet3.getOwner()).thenReturn((Owner) when(ali.getId()).thenReturn(3));
+        when(pet3.getBirthDate()).thenReturn(PetMigration.convertToLocalDateViaInstant(date));
+        when(pet3.getTypeId()).thenReturn(3);
+        when(pet3.getOwnerId()).thenReturn(3);
 
 
         oldDataStorePets = new HashMap<>();
@@ -73,12 +73,13 @@ public class PetMigrationTest {
         oldDataStorePets.put(pet2.getId(), pet2);
         oldDataStorePets.put(pet3.getId(), pet3);
 
+
     }
     @Test()
     @Order(1)
     public void testForklift() {
 
-        assertEquals(3, petMigration.forklift(oldDataStorePets));
+        assertEquals(3, petMigration.forkliftTestOnly(oldDataStorePets));
 
     }
 
@@ -86,23 +87,23 @@ public class PetMigrationTest {
     @Order(2)
     public void testCheckConsistency() {
 
-        oldDataStorePets.put(pet3.getId(), pet3);
+        oldDataStorePets.put(pet4.getId(), pet4);
 
 
-        assertEquals(1, petMigration.checkConsistencies(oldDataStorePets));
+        assertEquals(1, petMigration.checkConsistencies());
     }
 
     @Test
     @Order(3)
     public void testShadowReadConsistencyChecker() {
 
-        oldDataStorePets.put(pet2.getId(), pet2);
+        oldDataStorePets.put(pet5.getId(), pet5);
 
 
-        petMigration.shadowWrite(pet2);
+        petMigration.shadowWrite(pet5);
 
 
-        assertTrue(petMigration.shadowReadConsistencyChecker(pet2));
+        assertTrue(petMigration.shadowReadConsistencyChecker(pet5));
 
 
     }
