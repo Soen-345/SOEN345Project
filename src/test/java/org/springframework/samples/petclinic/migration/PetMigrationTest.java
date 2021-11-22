@@ -3,9 +3,9 @@ package org.springframework.samples.petclinic.migration;
 
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
-import org.springframework.samples.petclinic.owner.Owner;
+
 import org.springframework.samples.petclinic.owner.Pet;
-import org.springframework.samples.petclinic.owner.PetType;
+
 
 import java.sql.SQLException;
 import java.util.Date;
@@ -14,7 +14,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.doNothing;
+
 import static org.mockito.Mockito.when;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
