@@ -120,12 +120,13 @@ public class Pet extends NamedEntity {
 		visit.setPetId(this.getId());
 	}
 	public Integer getTypeId() {
-
-		return this.type.getId();
+		int typeId= type.getId();
+		return typeId;
 	}
 	public Integer getOwnerId() {
 
-		return this.owner.getId();
+		int ownerId= owner.getId();
+		return ownerId;
 	}
 
 }
