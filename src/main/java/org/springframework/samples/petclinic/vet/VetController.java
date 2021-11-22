@@ -15,10 +15,13 @@
  */
 package org.springframework.samples.petclinic.vet;
 
+import org.springframework.samples.petclinic.migration.VetMigration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -31,9 +34,11 @@ import java.util.Map;
 class VetController {
 
 	private final VetRepository vets;
+	private final VetMigration vetMigration;
 
 	public VetController(VetRepository clinicService) {
 		this.vets = clinicService;
+		this.vetMigration = new VetMigration();
 	}
 
 	@GetMapping("/vets.html")
@@ -43,16 +48,27 @@ class VetController {
 		Vets vets = new Vets();
 		vets.getVetList().addAll(this.vets.findAll());
 		model.put("vets", vets);
+
+		// Shadow Reads & Incremental Replication
+		for (Vet vet : this.vets.findAll()) {
+			boolean consistent = vetMigration.shadowReadConsistencyChecker(vet);
+			if (!consistent) {
+				vetMigration.checkConsistencies();
+			}
+		}
+
 		return "vets/vetList";
 	}
 
 	@GetMapping({ "/vets" })
-	public @ResponseBody Vets showResourcesVetList() {
+	public @ResponseBody Vets showResourcesVetList() throws SQLException {
 		// Here we are returning an object of type 'Vets' rather than a collection of Vet
 		// objects so it is simpler for JSon/Object mapping
 		Vets vets = new Vets();
 		vets.getVetList().addAll(this.vets.findAll());
+
 		return vets;
 	}
+
 
 }
