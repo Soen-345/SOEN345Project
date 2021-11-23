@@ -25,7 +25,8 @@ public class OwnerDAO {
     }
 
     protected void initTable(){
-        String query = "DROP TABLE IF EXISTS vets;";
+
+        String query = "DROP TABLE IF EXISTS owners;";
         try{
             Statement statement = SQLite_CONNECTION.createStatement();
             statement.execute(query);
@@ -43,7 +44,7 @@ public class OwnerDAO {
                 "                      last_name VARCHAR(30),\n" +
                 "                      address VARCHAR(255),\n" +
                 "                      city VARCHAR(80),\n" +
-                "                      telephone VARCHAR(20),\n" +
+                "                      telephone VARCHAR(20)\n" +
                 ");";
         try{
             Statement statement = SQLite_CONNECTION.createStatement();
@@ -128,19 +129,19 @@ public class OwnerDAO {
     }
 
     protected boolean addOwner(Owner owner, Datastores datastore){
-        String insertQuery = "INSERT INTO owners(id,first_name,last_name,address,city,telephone VALUES (" + owner.getId() + ",'"
-                + owner.getFirstName() + "','" + owner.getLastName() + "','" + owner.getAddress() + owner.getCity() +
+        String insertQuery = "INSERT INTO owners (id, first_name, last_name, address, city, telephone) VALUES (" + owner.getId() + ",'"
+                + owner.getFirstName() + "','" + owner.getLastName() + "','" + owner.getAddress() + "','" + owner.getCity() +
                 "','" + owner.getTelephone() + "');";
-        if (datastore == datastore.SQLITE){
+        if (datastore == Datastores.SQLITE){
             try{
-                Statement statement = H2_CONNECTION.createStatement();
+                Statement statement = SQLite_CONNECTION.createStatement();
                 statement.execute(insertQuery);
             }catch (SQLException e){
                 System.out.println(e.getMessage());
                 return false;
             }
         }
-        if (datastore == datastore.H2){
+        if (datastore == Datastores.H2){
             try{
                 Statement statement = H2_CONNECTION.createStatement();
                 statement.execute(insertQuery);

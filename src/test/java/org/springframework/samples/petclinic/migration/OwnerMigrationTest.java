@@ -59,6 +59,6 @@ public class OwnerMigrationTest {
     @Test
     @Order(1)
     public void testforklift() throws SQLException {
-      assertEquals(0,ownerMigration.forkliftTestOnly(oldDataStoreOwners));
+      assertEquals(2,ownerMigration.forkliftTestOnly(oldDataStoreOwners));
     }
 }
