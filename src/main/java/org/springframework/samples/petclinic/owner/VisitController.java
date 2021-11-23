@@ -45,7 +45,7 @@ class VisitController {
 
 	private final PetRepository pets;
 
-	private VisitMigration visitMigration;
+	private final VisitMigration visitMigration;
 
 	public VisitController(VisitRepository visits, PetRepository pets) {
 		this.visits = visits;
