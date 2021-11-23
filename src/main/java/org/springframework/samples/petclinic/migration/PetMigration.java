@@ -10,7 +10,7 @@ import java.util.Map;
 import java.sql.SQLException;
 import java.util.Objects;
 
-public class PetMigration {
+public class PetMigration implements IMigration<Pet> {
 
 
     private final PetDAO petDAO;

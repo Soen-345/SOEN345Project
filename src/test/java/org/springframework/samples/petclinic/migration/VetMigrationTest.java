@@ -98,7 +98,7 @@ public class VetMigrationTest {
         vetMigration.shadowWriteToNewDatastore(vet5);
 
 
-        assertTrue(vetMigration.shadowReadConsistencyChecker(vet5));
+        assertTrue(vetMigration.shadowReadWriteConsistencyChecker(vet5));
 
 
     }
