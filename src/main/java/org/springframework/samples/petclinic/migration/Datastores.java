@@ -1,6 +1,6 @@
 package org.springframework.samples.petclinic.migration;
 
-public enum Datastore {
+public enum Datastores {
 
     SQLITE,
     H2

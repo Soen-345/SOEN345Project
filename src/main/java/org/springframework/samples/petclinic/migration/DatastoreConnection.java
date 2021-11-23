@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.migration;
 
+import org.sqlite.SQLiteConnection;
+
 import java.sql.*;
 
 public class DatastoreConnection {
@@ -10,15 +12,28 @@ public class DatastoreConnection {
     private static final String USERNAME = "sa";
     private static final String PASSWORD = "";
 
+    private static Connection SQLite_CONNECTION;
+    private  static Connection SQLite_TEST_CONNECTION;
+    private static Connection H2_CONNECTION;
+
 
 
     protected static Connection connectSqlite() {
         Connection conn = null;
-        if (DatastoreToggles.isUnderTest) {
+        if (MigrationToggles.isUnderTest) {
             try {
-                conn = DriverManager.getConnection(SQLite_URL_TEST);
+                if (SQLite_TEST_CONNECTION != null && !SQLite_TEST_CONNECTION.isClosed()) {
+                    conn = SQLite_TEST_CONNECTION;
+                    System.out.println("***Returning existing connection to test SQLite***");
+                }
+                else {
 
-                System.out.println("Connection to test SQLite successful");
+                    conn = DriverManager.getConnection(SQLite_URL_TEST);
+                    SQLite_TEST_CONNECTION = conn;
+                    System.out.println("***Connection to test SQLite successful***");
+                }
+
+
 
             }
             catch (SQLException e) {
@@ -27,9 +42,16 @@ public class DatastoreConnection {
         }
         else {
             try {
-                conn = DriverManager.getConnection(SQLite_URL);
 
-                System.out.println("Connection to SQLite successful");
+                if (SQLite_CONNECTION != null && !SQLite_CONNECTION.isClosed()) {
+                    conn = SQLite_CONNECTION;
+                    System.out.println("***Returning existing connection to SQLite***");
+                }
+                else {
+                    conn = DriverManager.getConnection(SQLite_URL);
+                    SQLite_CONNECTION = conn;
+                    System.out.println("***Connection to SQLite successful***");
+                }
 
             }
             catch (SQLException e) {
@@ -43,9 +65,16 @@ public class DatastoreConnection {
     protected static Connection connectH2() {
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection(H2_URL, USERNAME, PASSWORD);
+            if (H2_CONNECTION != null) {
+                conn = H2_CONNECTION;
+                System.out.println("***Returning existing connection to H2***");
+            }
+            else {
+                conn = DriverManager.getConnection(H2_URL, USERNAME, PASSWORD);
+                H2_CONNECTION = conn;
+                System.out.println("***Connection to H2 successful***");
+            }
 
-            System.out.println("Connection to H2 successful");
 
         }
         catch (SQLException e) {
