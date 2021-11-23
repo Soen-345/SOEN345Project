@@ -1,27 +1,26 @@
 package org.springframework.samples.petclinic.migration;
 
 import org.springframework.samples.petclinic.vet.Specialty;
-import org.springframework.samples.petclinic.vet.Vet;
 
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.Objects;
 
-public class SpecialtyMigration {
-    private final SpecialtyDAO specialtyDAO;
+public class SpecialtiesMigration {
+    private final SpecialtiesDAO specialtiesDAO;
 
-    public SpecialtyMigration() {
-        specialtyDAO = new SpecialtyDAO();
+    public SpecialtiesMigration() {
+        specialtiesDAO = new SpecialtiesDAO();
     }
 
     public int forklift() {
-        this.specialtyDAO.initTable();
+        this.specialtiesDAO.initTable();
         int numInsert = 0;
 
-        Map<Integer, Specialty> specialities = this.specialtyDAO.getAllSpecialities(Datastores.H2);
+        Map<Integer, Specialty> specialities = this.specialtiesDAO.getAllSpecialties(Datastores.H2);
 
         for (Specialty specialty : specialities.values()) {
-            boolean success = this.specialtyDAO.addSpecialty(specialty, Datastores.SQLITE);
+            boolean success = this.specialtiesDAO.addSpecialty(specialty, Datastores.SQLITE);
             if (success) {
                 numInsert++;
             }
@@ -31,11 +30,11 @@ public class SpecialtyMigration {
 
     public int forkliftTestOnly(Map<Integer, Specialty> specialities) {
 
-        this.specialtyDAO.initTable();
+        this.specialtiesDAO.initTable();
         int numInsert = 0;
 
         for (Specialty specialty : specialities.values()) {
-            boolean success = this.specialtyDAO.addSpecialty(specialty, Datastores.SQLITE);
+            boolean success = this.specialtiesDAO.addSpecialty(specialty, Datastores.SQLITE);
             if (success) {
                 numInsert++;
             }
@@ -49,9 +48,9 @@ public class SpecialtyMigration {
         int inconsistencies = 0;
 
 
-        Map<Integer, Specialty> expected = this.specialtyDAO.getAllSpecialities(Datastores.H2);
+        Map<Integer, Specialty> expected = this.specialtiesDAO.getAllSpecialties(Datastores.H2);
 
-        Map<Integer, Specialty> actual = this.specialtyDAO.getAllSpecialities(Datastores.SQLITE);
+        Map<Integer, Specialty> actual = this.specialtiesDAO.getAllSpecialties(Datastores.SQLITE);
 
         for (Integer key : expected.keySet()) {
             Specialty exp = expected.get(key);
@@ -59,14 +58,14 @@ public class SpecialtyMigration {
             if (act == null) {
                 inconsistencies++;
                 logInconsistency(exp, null);
-                this.specialtyDAO.addSpecialty(exp, Datastores.SQLITE);
+                this.specialtiesDAO.addSpecialty(exp, Datastores.SQLITE);
             }
             if (act != null && (!Objects.equals(exp.getId(), act.getId()) || !exp.getName().equals(act.getName()) )) {
                 inconsistencies++;
 
                 logInconsistency(exp, act);
 
-                this.specialtyDAO.update(exp, Datastores.SQLITE);
+                this.specialtiesDAO.update(exp, Datastores.SQLITE);
             }
         }
 
@@ -77,7 +76,7 @@ public class SpecialtyMigration {
 
         int inconsistencies = 0;
 
-        Map<Integer, Specialty> actual = this.specialtyDAO.getAllSpecialities(Datastores.SQLITE);
+        Map<Integer, Specialty> actual = this.specialtiesDAO.getAllSpecialties(Datastores.SQLITE);
 
         for (Integer key : expected.keySet()) {
             Specialty exp = expected.get(key);
@@ -85,14 +84,14 @@ public class SpecialtyMigration {
             if (act == null) {
                 inconsistencies++;
                 logInconsistency(exp, null);
-                this.specialtyDAO.addSpecialty(exp, Datastores.SQLITE);
+                this.specialtiesDAO.addSpecialty(exp, Datastores.SQLITE);
             }
             if (act != null && (!Objects.equals(exp.getId(), act.getId()) || !exp.getName().equals(act.getName()) )) {
                 inconsistencies++;
 
                 logInconsistency(exp, act);
 
-                this.specialtyDAO.update(exp, Datastores.SQLITE);
+                this.specialtiesDAO.update(exp, Datastores.SQLITE);
             }
         }
 
@@ -101,10 +100,10 @@ public class SpecialtyMigration {
 
     public boolean shadowReadConsistencyChecker(Specialty exp) {
 
-        Specialty act = this.specialtyDAO.getSpecialty(exp.getId(), Datastores.SQLITE);
+        Specialty act = this.specialtiesDAO.getSpecialty(exp.getId(), Datastores.SQLITE);
 
         if (act == null) {
-            this.specialtyDAO.addSpecialty(exp, Datastores.SQLITE);
+            this.specialtiesDAO.addSpecialty(exp, Datastores.SQLITE);
 
             logInconsistency(exp, null);
 
@@ -115,7 +114,7 @@ public class SpecialtyMigration {
 
             logInconsistency(exp, act);
 
-            this.specialtyDAO.update(exp, Datastores.SQLITE);
+            this.specialtiesDAO.update(exp, Datastores.SQLITE);
 
             return false;
         }
@@ -137,10 +136,10 @@ public class SpecialtyMigration {
     }
 
     public void shadowWrite(Specialty specialty) {
-        this.specialtyDAO.addSpecialty(specialty, Datastores.SQLITE);
+        this.specialtiesDAO.addSpecialty(specialty, Datastores.SQLITE);
     }
 
     public void closeConnections() throws SQLException {
-        this.specialtyDAO.closeConnections();
+        this.specialtiesDAO.closeConnections();
     }
 }

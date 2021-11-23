@@ -12,8 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class SpecialityMigrationTest {
-    private static SpecialtyMigration specialtyMigration;
+public class SpecialtiesMigrationTest {
+    private static SpecialtiesMigration specialtiesMigration;
 
     private static Map<Integer, Specialty> oldDataStoreVets;
 
@@ -28,7 +28,7 @@ public class SpecialityMigrationTest {
 
         MigrationToggles.isUnderTest = true;
 
-        specialtyMigration = new SpecialtyMigration();
+        specialtiesMigration = new SpecialtiesMigration();
 
         specialty1 = Mockito.mock(Specialty.class);
         specialty2 = Mockito.mock(Specialty.class);
@@ -66,7 +66,7 @@ public class SpecialityMigrationTest {
     @Order(1)
     public void testForklift() {
 
-        assertEquals(3, specialtyMigration.forkliftTestOnly(oldDataStoreVets));
+        assertEquals(3, specialtiesMigration.forkliftTestOnly(oldDataStoreVets));
 
     }
 
@@ -77,7 +77,7 @@ public class SpecialityMigrationTest {
         oldDataStoreVets.put(specialty4.getId(), specialty4);
 
 
-        assertEquals(1, specialtyMigration.checkConsistenciesTestOnly(oldDataStoreVets));
+        assertEquals(1, specialtiesMigration.checkConsistenciesTestOnly(oldDataStoreVets));
     }
 
     @Test
@@ -87,17 +87,17 @@ public class SpecialityMigrationTest {
         oldDataStoreVets.put(specialty5.getId(), specialty5);
 
 
-        specialtyMigration.shadowWrite(specialty5);
+        specialtiesMigration.shadowWrite(specialty5);
 
 
-        assertTrue(specialtyMigration.shadowReadConsistencyChecker(specialty5));
+        assertTrue(specialtiesMigration.shadowReadConsistencyChecker(specialty5));
 
 
     }
 
     @AfterAll
     public static void closeConnection() throws SQLException {
-        specialtyMigration.closeConnections();
+        specialtiesMigration.closeConnections();
     }
 
 

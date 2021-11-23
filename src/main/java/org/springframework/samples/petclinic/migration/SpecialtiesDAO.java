@@ -6,17 +6,17 @@ import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SpecialtyDAO {
+public class SpecialtiesDAO {
     private Connection SQLite_CONNECTION;
     private Connection H2_CONNECTION;
 
-    public SpecialtyDAO() {
+    public SpecialtiesDAO() {
         SQLite_CONNECTION = DatastoreConnection.connectSqlite();
         H2_CONNECTION = DatastoreConnection.connectH2();
     }
 
     protected void initTable() {
-        String query = "DROP TABLE IF EXISTS specialities;";
+        String query = "DROP TABLE IF EXISTS specialties;";
         try {
             Statement statement = SQLite_CONNECTION.createStatement();
             statement.execute(query);
@@ -29,7 +29,7 @@ public class SpecialtyDAO {
     protected void createSpecialtyTable() {
 
         String createQuery =
-                "CREATE TABLE IF NOT EXISTS specialities (\n" +
+                "CREATE TABLE IF NOT EXISTS specialties (\n" +
                         "                      id         INTEGER IDENTITY PRIMARY KEY,\n" +
                         "                      name  VARCHAR(80)\n" +
                         ");";
@@ -43,7 +43,7 @@ public class SpecialtyDAO {
 
     protected Specialty getSpecialty(Integer specialtyId, Datastores datastore) {
         Specialty specialty = null;
-        String query = "SELECT id, name FROM specialities WHERE id = " + specialtyId + ";";
+        String query = "SELECT id, name FROM specialties WHERE id = " + specialtyId + ";";
         if (datastore == Datastores.SQLITE) {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
@@ -67,9 +67,9 @@ public class SpecialtyDAO {
         return specialty;
     }
 
-    protected Map<Integer, Specialty> getAllSpecialities(Datastores datastore) {
+    protected Map<Integer, Specialty> getAllSpecialties(Datastores datastore) {
         Map<Integer, Specialty> specialities = new HashMap<>();
-        String query = "SELECT * FROM specialities;";
+        String query = "SELECT * FROM specialties;";
         if (datastore == Datastores.SQLITE) {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
@@ -101,7 +101,7 @@ public class SpecialtyDAO {
     }
 
     protected boolean addSpecialty(Specialty specialty, Datastores datastore) {
-        String insertQuery = "INSERT INTO specialities (id, name) VALUES (" + specialty.getId()
+        String insertQuery = "INSERT INTO specialties (id, name) VALUES (" + specialty.getId()
                 + ",'" + specialty.getName() + "');";
         if (datastore == Datastores.SQLITE) {
             try {
@@ -125,7 +125,7 @@ public class SpecialtyDAO {
     }
 
     protected void update(Specialty specialty, Datastores datastore) {
-        String query = "UPDATE specialities SET name = '" + specialty.getName()
+        String query = "UPDATE specialties SET name = '" + specialty.getName()
                 + "' WHERE id = " + specialty.getId() + ";";
         if (datastore == Datastores.SQLITE) {
             try {
