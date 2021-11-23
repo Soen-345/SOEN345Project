@@ -42,9 +42,12 @@ public class VetDAO {
                 "                      first_name VARCHAR(30),\n" +
                 "                      last_name  VARCHAR(30)\n" +
                 ");";
+        String indexQuery = "CREATE INDEX vets_last_name ON vets (last_name);";
         try {
             Statement statement = SQLite_CONNECTION.createStatement();
             statement.execute(createQuery);
+            Statement statement1 = SQLite_CONNECTION.createStatement();
+            statement1.execute(indexQuery);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
