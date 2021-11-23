@@ -19,6 +19,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.springframework.samples.petclinic.migration.VisitMigration;
 import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
@@ -44,9 +45,12 @@ class VisitController {
 
 	private final PetRepository pets;
 
+	private VisitMigration visitMigration;
+
 	public VisitController(VisitRepository visits, PetRepository pets) {
 		this.visits = visits;
 		this.pets = pets;
+		this.visitMigration = new VisitMigration();
 	}
 
 	@InitBinder
@@ -68,6 +72,9 @@ class VisitController {
 		model.put("pet", pet);
 		Visit visit = new Visit();
 		pet.addVisit(visit);
+
+		// TODO - shadow read
+
 		return visit;
 	}
 
@@ -85,6 +92,10 @@ class VisitController {
 		}
 		else {
 			this.visits.save(visit);
+
+			this.visitMigration.shadowWriteToNewDatastore(visit);
+			this.visitMigration.shadowReadWriteConsistencyChecker(visit);
+
 			return "redirect:/owners/{ownerId}";
 		}
 	}

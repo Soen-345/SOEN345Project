@@ -100,15 +100,15 @@ public class VisitMigrationTest {
 
     @Test
     @Order(3)
-    public void testShadowReadConsistencyChecker() {
+    public void testShadowReadWriteConsistencyChecker() {
 
         oldDataStoreVisits.put(visit5.getId(), visit5);
 
 
-        visitMigration.shadowWrite(visit5);
+        visitMigration.shadowWriteToNewDatastore(visit5);
 
 
-        assertTrue(visitMigration.shadowReadConsistencyChecker(visit5));
+        assertTrue(visitMigration.shadowReadWriteConsistencyChecker(visit5));
 
 
     }

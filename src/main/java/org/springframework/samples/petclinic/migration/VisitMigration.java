@@ -104,7 +104,7 @@ public class VisitMigration {
         return inconsistencies;
     }
 
-    public boolean shadowReadConsistencyChecker(Visit exp) {
+    public boolean shadowReadWriteConsistencyChecker(Visit exp) {
 
         Visit act = this.visitDAO.getVisit(exp.getId(), Datastores.SQLITE);
 
@@ -142,7 +142,7 @@ public class VisitMigration {
         }
     }
 
-    public void shadowWrite(Visit visit) {
+    public void shadowWriteToNewDatastore(Visit visit) {
         this.visitDAO.addVisit(visit, Datastores.SQLITE);
     }
 
