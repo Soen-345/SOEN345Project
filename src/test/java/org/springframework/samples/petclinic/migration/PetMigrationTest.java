@@ -53,27 +53,27 @@ public class PetMigrationTest {
         when(pet2.getId()).thenReturn(2);
         when(pet2.getName()).thenReturn("Coco");
         when(pet2.getBirthDate()).thenReturn(PetMigration.convertToLocalDateViaInstant(date));
-        when(pet2.getTypeId()).thenReturn(1);
-        when(pet2.getOwnerId()).thenReturn(1);
+        when(pet2.getTypeId()).thenReturn(2);
+        when(pet2.getOwnerId()).thenReturn(2);
 
 
         when(pet3.getId()).thenReturn(3);
         when(pet3.getName()).thenReturn("Mr. turtle");
         when(pet3.getBirthDate()).thenReturn(PetMigration.convertToLocalDateViaInstant(date));
-        when(pet3.getTypeId()).thenReturn(1);
-        when(pet3.getOwnerId()).thenReturn(1);
+        when(pet3.getTypeId()).thenReturn(3);
+        when(pet3.getOwnerId()).thenReturn(3);
 
         when(pet4.getId()).thenReturn(4);
         when(pet4.getName()).thenReturn("Latte");
         when(pet4.getBirthDate()).thenReturn(PetMigration.convertToLocalDateViaInstant(date));
-        when(pet4.getTypeId()).thenReturn(1);
-        when(pet4.getOwnerId()).thenReturn(1);
+        when(pet4.getTypeId()).thenReturn(4);
+        when(pet4.getOwnerId()).thenReturn(4);
 
         when(pet5.getId()).thenReturn(5);
         when(pet5.getName()).thenReturn("Pumpkin");
         when(pet5.getBirthDate()).thenReturn(PetMigration.convertToLocalDateViaInstant(date));
-        when(pet5.getTypeId()).thenReturn(1);
-        when(pet5.getOwnerId()).thenReturn(1);
+        when(pet5.getTypeId()).thenReturn(5);
+        when(pet5.getOwnerId()).thenReturn(5);
 
 
         oldDataStorePets = new HashMap<>();
