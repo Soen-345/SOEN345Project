@@ -144,7 +144,7 @@ public class VetMigration {
         }
     }
 
-    public void shadowWrite(Vet vet) {
+    public void shadowWriteToNewDatastore(Vet vet) {
         this.vetDAO.addVet(vet, Datastores.SQLITE);
     }
 

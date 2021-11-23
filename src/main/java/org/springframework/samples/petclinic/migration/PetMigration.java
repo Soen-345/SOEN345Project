@@ -1,9 +1,7 @@
 package org.springframework.samples.petclinic.migration;
 
+import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.Pet;
-import org.springframework.samples.petclinic.vet.Vet;
-import org.springframework.samples.petclinic.visit.Visit;
-
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -105,7 +103,7 @@ public class PetMigration {
 
         return inconsistencies;
     }
-    public boolean shadowReadConsistencyChecker(Pet exp) {
+    public boolean shadowReadWriteConsistencyChecker(Pet exp) {
 
         Pet act = this.petDAO.getPet(exp.getId(), Datastores.SQLITE);
 
@@ -143,9 +141,9 @@ public class PetMigration {
         }
     }
 
-    public boolean shadowWrite(Pet pet) {
+    public void shadowWriteToNewDatastore(Pet pet, Owner owner) {
+        pet.setOwner(owner);
         this.petDAO.addPet(pet, Datastores.SQLITE);
-        return false;
     }
 
     public void closeConnections() throws SQLException {

@@ -108,10 +108,10 @@ public class PetMigrationTest {
         oldDataStorePets.put(pet5.getId(), pet5);
 
 
-        petMigration.shadowWrite(pet5);
+        petMigration.shadowWriteToNewDatastore(pet5, null);
 
 
-        assertTrue(petMigration.shadowReadConsistencyChecker(pet5));
+        assertTrue(petMigration.shadowReadWriteConsistencyChecker(pet5));
 
 
     }

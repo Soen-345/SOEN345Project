@@ -16,8 +16,6 @@
 package org.springframework.samples.petclinic.owner;
 
 import org.springframework.samples.petclinic.migration.PetMigration;
-import org.springframework.samples.petclinic.migration.VetMigration;
-import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -27,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collection;
-import java.util.HashMap;
+
 
 /**
  * @author Juergen Hoeller
@@ -91,28 +89,17 @@ class PetController {
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		}
 		else {
-		/*
-			boolean consistent = petMigration.shadowWrite(pet);
-			if (!consistent) {
-				petMigration.checkConsistencies();
-			}
-*/
 			this.pets.save(pet);
+
+			this.petMigration.shadowWriteToNewDatastore(pet, owner);
+			this.petMigration.shadowReadWriteConsistencyChecker(pet);
+
 			return "redirect:/owners/{ownerId}";
 		}
 	}
 
 	@GetMapping("/pets/{petId}/edit")
 	public String initUpdateForm(@PathVariable("petId") int petId, ModelMap model) {
-
-		/*
-		for (Pet pet : this.pets.findAll()) {
-			boolean consistent = petMigration.shadowReadConsistencyChecker(pet);
-			if (!consistent) {
-				petMigration.checkConsistencies();
-			}
-		}
-		*/
 		Pet pet = this.pets.findById(petId);
 		model.put("pet", pet);
 		return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
@@ -126,13 +113,12 @@ class PetController {
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		}
 		else {
-			/*
-			boolean consistent = petMigration.shadowWrite(pet);
-			if (!consistent) {
-				petMigration.checkConsistencies();
-			} */
 			owner.addPet(pet);
 			this.pets.save(pet);
+
+			this.petMigration.shadowWriteToNewDatastore(pet, owner);
+			this.petMigration.shadowReadWriteConsistencyChecker(pet);
+
 			return "redirect:/owners/{ownerId}";
 		}
 	}

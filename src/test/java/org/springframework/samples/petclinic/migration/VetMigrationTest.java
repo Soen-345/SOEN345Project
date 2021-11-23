@@ -95,7 +95,7 @@ public class VetMigrationTest {
         oldDataStoreVets.put(vet5.getId(), vet5);
 
 
-        vetMigration.shadowWrite(vet5);
+        vetMigration.shadowWriteToNewDatastore(vet5);
 
 
         assertTrue(vetMigration.shadowReadConsistencyChecker(vet5));
