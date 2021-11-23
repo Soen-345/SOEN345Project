@@ -46,8 +46,8 @@ class PetController {
 
 	public PetController(PetRepository pets, OwnerRepository owners) {
 		this.pets = pets;
-		this.petMigration = new PetMigration();
 		this.owners = owners;
+		this.petMigration = new PetMigration();
 	}
 
 	@ModelAttribute("types")
