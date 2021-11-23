@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * @author Sevag Eordkian
  */
-public class VisitMigration {
+public class VisitMigration implements IMigration<Visit> {
 
     private final VisitDAO visitDAO;
 

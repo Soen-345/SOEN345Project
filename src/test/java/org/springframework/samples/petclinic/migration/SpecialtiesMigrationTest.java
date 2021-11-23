@@ -90,7 +90,7 @@ public class SpecialtiesMigrationTest {
         specialtiesMigration.shadowWrite(specialty5);
 
 
-        assertTrue(specialtiesMigration.shadowReadConsistencyChecker(specialty5));
+        assertTrue(specialtiesMigration.shadowReadWriteConsistencyChecker(specialty5));
 
 
     }

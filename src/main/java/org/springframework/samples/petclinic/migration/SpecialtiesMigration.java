@@ -6,7 +6,8 @@ import java.sql.SQLException;
 import java.util.Map;
 import java.util.Objects;
 
-public class SpecialtiesMigration {
+public class SpecialtiesMigration implements IMigration<Specialty> {
+
     private final SpecialtiesDAO specialtiesDAO;
 
     public SpecialtiesMigration() {
@@ -98,7 +99,7 @@ public class SpecialtiesMigration {
         return inconsistencies;
     }
 
-    public boolean shadowReadConsistencyChecker(Specialty exp) {
+    public boolean shadowReadWriteConsistencyChecker(Specialty exp) {
 
         Specialty act = this.specialtiesDAO.getSpecialty(exp.getId(), Datastores.SQLITE);
 

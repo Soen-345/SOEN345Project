@@ -51,7 +51,7 @@ class VetController {
 
 		// Shadow Reads & Incremental Replication
 		for (Vet vet : this.vets.findAll()) {
-			boolean consistent = vetMigration.shadowReadConsistencyChecker(vet);
+			boolean consistent = vetMigration.shadowReadWriteConsistencyChecker(vet);
 			if (!consistent) {
 				vetMigration.checkConsistencies();
 			}
