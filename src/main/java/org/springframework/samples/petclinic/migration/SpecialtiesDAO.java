@@ -33,9 +33,12 @@ public class SpecialtiesDAO {
                         "                      id         INTEGER IDENTITY PRIMARY KEY,\n" +
                         "                      name  VARCHAR(80)\n" +
                         ");";
+        String indexQuery = "CREATE INDEX specialties_name ON specialties (name);";
         try {
             Statement statement = SQLite_CONNECTION.createStatement();
             statement.execute(createQuery);
+            Statement statement1 = SQLite_CONNECTION.createStatement();
+            statement1.execute(indexQuery);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

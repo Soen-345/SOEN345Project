@@ -48,11 +48,16 @@ public class PetDAO {
                         "                      name VARCHAR(30),\n" +
                         "                      birth_date  DATE,\n" +
                         "               type_id INTEGER NOT NULL,\n"+
-                        "             owner_id INTEGER NOT NULL\n"+
+                        "             owner_id INTEGER NOT NULL, \n"+
+                        "FOREIGN KEY (owner_id) REFERENCES owners (id), \n" +
+                        "FOREIGN KEY (type_id) REFERENCES types (id)," +
                         ");";
+        String indexQuery = "CREATE INDEX pets_name ON pets (name);";
         try {
             Statement statement = SQLite_CONNECTION.createStatement();
             statement.execute(createQuery);
+            Statement statement1 = SQLite_CONNECTION.createStatement();
+            statement1.execute(indexQuery);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
