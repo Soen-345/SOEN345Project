@@ -18,9 +18,7 @@ package org.springframework.samples.petclinic;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.samples.petclinic.migration.Datastores;
 import org.springframework.samples.petclinic.migration.MigrationToggles;
-import org.springframework.samples.petclinic.migration.VetMigration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.util.HashMap;
@@ -36,6 +34,7 @@ import java.util.HashMap;
 public class PetClinicApplication {
 
 	public static void main(String[] args) {
+		MigrationToggles.isUnderTest = false;
 		SpringApplication.run(PetClinicApplication.class, args);
 	}
 
