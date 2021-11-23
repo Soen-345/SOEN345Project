@@ -50,7 +50,7 @@ public class PetDAO {
                         "               type_id INTEGER NOT NULL,\n"+
                         "             owner_id INTEGER NOT NULL, \n"+
                         "FOREIGN KEY (owner_id) REFERENCES owners (id), \n" +
-                        "FOREIGN KEY (type_id) REFERENCES types (id)," +
+                        "FOREIGN KEY (type_id) REFERENCES types (id)" +
                         ");";
         String indexQuery = "CREATE INDEX pets_name ON pets (name);";
         try {
