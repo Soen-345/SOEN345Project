@@ -158,7 +158,7 @@ class OwnerController {
                 return "redirect:/owners/{ownerId}";
             }
         }
-        return "Update owner feature not enabled"; 
+        return "Update owner feature not enabled";
     }
 
     /**
