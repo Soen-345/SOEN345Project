@@ -4,5 +4,5 @@ public class MigrationToggles {
 
     public static boolean isSQLiteEnabled = true;
     public static boolean isH2Enabled = true;
-    public static boolean isUnderTest = false;
+    public static boolean isUnderTest = true;
 }

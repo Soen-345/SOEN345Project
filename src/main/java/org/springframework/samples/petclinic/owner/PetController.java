@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import org.springframework.samples.petclinic.migration.PetMigration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collection;
+
 
 /**
  * @author Juergen Hoeller
@@ -37,12 +39,15 @@ class PetController {
 	private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
 
 	private final PetRepository pets;
+	private final PetMigration petMigration;
+
 
 	private final OwnerRepository owners;
 
 	public PetController(PetRepository pets, OwnerRepository owners) {
 		this.pets = pets;
 		this.owners = owners;
+		this.petMigration = new PetMigration();
 	}
 
 	@ModelAttribute("types")
@@ -85,6 +90,10 @@ class PetController {
 		}
 		else {
 			this.pets.save(pet);
+
+			this.petMigration.shadowWriteToNewDatastore(pet, owner);
+			this.petMigration.shadowReadWriteConsistencyChecker(pet);
+
 			return "redirect:/owners/{ownerId}";
 		}
 	}
@@ -106,6 +115,10 @@ class PetController {
 		else {
 			owner.addPet(pet);
 			this.pets.save(pet);
+
+			this.petMigration.shadowWriteToNewDatastore(pet, owner);
+			this.petMigration.shadowReadWriteConsistencyChecker(pet);
+
 			return "redirect:/owners/{ownerId}";
 		}
 	}
