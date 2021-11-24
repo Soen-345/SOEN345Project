@@ -7,7 +7,7 @@ public class OwnerToggles {
     public static boolean isSearchLastNameEnabled=false;
 
 
-    // toggle for existing feature
+    // toggle for existing featur
     // this toggle is for the adding owner button feature which is located in the "Find Owner" tab of the webpage
-    public static Boolean isAddOwnerButtonEnabled = true;
+    public static Boolean isAddOwnerButtonEnabled = false;
 }
