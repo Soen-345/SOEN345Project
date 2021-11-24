@@ -22,7 +22,9 @@ CREATE INDEX specialties_name ON specialties (name);
 
 CREATE TABLE vet_specialties (
                                  vet_id       INTEGER NOT NULL,
-                                 specialty_id INTEGER NOT NULL
+                                 specialty_id INTEGER NOT NULL,
+                                 FOREIGN KEY (vet_id) REFERENCES vets (id),
+                                 FOREIGN KEY (specialty_id) REFERENCES specialties (id)
 );
 
 CREATE TABLE types (
@@ -46,7 +48,9 @@ CREATE TABLE pets (
                       name       VARCHAR(30),
                       birth_date DATE,
                       type_id    INTEGER NOT NULL,
-                      owner_id   INTEGER NOT NULL
+                      owner_id   INTEGER NOT NULL,
+                      FOREIGN KEY (owner_id) REFERENCES owners (id),
+                      FOREIGN KEY (type_id) REFERENCES types (id)
 );
 CREATE INDEX pets_name ON pets (name);
 
@@ -54,6 +58,7 @@ CREATE TABLE visits (
                         id          INTEGER IDENTITY PRIMARY KEY,
                         pet_id      INTEGER NOT NULL,
                         visit_date  DATE,
-                        description VARCHAR(255)
+                        description VARCHAR(255),
+                        FOREIGN KEY (pet_id) REFERENCES pets (id)
 );
 CREATE INDEX visits_pet_id ON visits (pet_id);

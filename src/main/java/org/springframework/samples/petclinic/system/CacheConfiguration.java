@@ -32,6 +32,7 @@ import org.springframework.context.annotation.Configuration;
 @EnableCaching
 class CacheConfiguration {
 
+
 	@Bean
 	public JCacheManagerCustomizer petclinicCacheConfigurationCustomizer() {
 		return cm -> {

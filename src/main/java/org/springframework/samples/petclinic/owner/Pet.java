@@ -45,7 +45,6 @@ public class Pet extends NamedEntity {
 	@Column(name = "birth_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate birthDate;
-
 	@ManyToOne
 	@JoinColumn(name = "type_id")
 	private PetType type;
@@ -53,6 +52,7 @@ public class Pet extends NamedEntity {
 	@ManyToOne
 	@JoinColumn(name = "owner_id")
 	private Owner owner;
+
 
 	@Transient
 	private Set<Visit> visits = new LinkedHashSet<>();
@@ -67,11 +67,9 @@ public class Pet extends NamedEntity {
 		this.owner = owner;
 	}
 
-	public Pet(int id, String name, LocalDate birthDate, int typeId, int ownerId) {
+	public Pet(int id, String name, LocalDate birthDate) {
 		super(name, id);
 		this.birthDate = birthDate;
-		this.type.setId(typeId);
-		this.owner.setId(ownerId);
 	}
 
 	public void setBirthDate(LocalDate birthDate) {
@@ -94,7 +92,7 @@ public class Pet extends NamedEntity {
 		return this.owner;
 	}
 
-	protected void setOwner(Owner owner) {
+	public void setOwner(Owner owner) {
 		this.owner = owner;
 	}
 
@@ -118,6 +116,15 @@ public class Pet extends NamedEntity {
 	public void addVisit(Visit visit) {
 		getVisitsInternal().add(visit);
 		visit.setPetId(this.getId());
+	}
+	public Integer getTypeId() {
+		int typeId= type.getId();
+		return typeId;
+	}
+	public Integer getOwnerId() {
+
+		int ownerId= owner.getId();
+		return ownerId;
 	}
 
 }

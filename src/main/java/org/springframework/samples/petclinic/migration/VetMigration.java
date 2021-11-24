@@ -11,7 +11,7 @@ import java.util.Objects;
  * Shadow writes not applicable for Vets, the system doesn't let users create a vet.
  */
 
-public class VetMigration {
+public class VetMigration implements IMigration<Vet>{
 
     private final VetDAO vetDAO;
 
@@ -106,7 +106,7 @@ public class VetMigration {
         return inconsistencies;
     }
 
-    public boolean shadowReadConsistencyChecker(Vet exp) {
+    public boolean shadowReadWriteConsistencyChecker(Vet exp) {
 
         Vet act = this.vetDAO.getVet(exp.getId(), Datastores.SQLITE);
 
@@ -144,7 +144,7 @@ public class VetMigration {
         }
     }
 
-    public void shadowWrite(Vet vet) {
+    public void shadowWriteToNewDatastore(Vet vet) {
         this.vetDAO.addVet(vet, Datastores.SQLITE);
     }
 

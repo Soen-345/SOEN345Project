@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.migration;
 
 import org.springframework.samples.petclinic.visit.Visit;
 
+import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,11 +42,16 @@ public class VisitDAO {
                         "                        id          INTEGER IDENTITY PRIMARY KEY,\n" +
                         "                        pet_id      INTEGER NOT NULL,\n" +
                         "                        visit_date  DATE,\n" +
-                        "                        description VARCHAR(255)\n" +
+                        "                        description VARCHAR(255), \n" +
+                        "                       FOREIGN KEY (pet_id) REFERENCES pets (id)" +
                         ");";
+        String indexQuery = "CREATE INDEX visits_pet_id ON visits (pet_id);";
         try {
             Statement statement = SQLite_CONNECTION.createStatement();
             statement.execute(createQuery);
+            Statement statement2 = SQLite_CONNECTION.createStatement();
+            statement2.execute(indexQuery);
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
