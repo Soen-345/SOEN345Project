@@ -36,7 +36,7 @@ import java.util.HashMap;
 public class PetClinicApplication {
 
 	public static void main(String[] args) {
-
+		MigrationToggles.isUnderTest = false;
 		SpringApplication.run(PetClinicApplication.class, args);
 	}
 
