@@ -138,21 +138,27 @@ class OwnerController {
 
     @GetMapping("/owners/{ownerId}/edit")
     public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
-        Owner owner = this.owners.findById(ownerId);
-        model.addAttribute(owner);
-        return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
+        if (OwnerToggles.isUpdateOwnerEnabled) {
+            Owner owner = this.owners.findById(ownerId);
+            model.addAttribute(owner);
+            return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
+        }
+        return null;
     }
 
     @PostMapping("/owners/{ownerId}/edit")
     public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result,
                                          @PathVariable("ownerId") int ownerId) {
-        if (result.hasErrors()) {
-            return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
-        } else {
-            owner.setId(ownerId);
-            this.owners.save(owner);
-            return "redirect:/owners/{ownerId}";
+        if (OwnerToggles.isUpdateOwnerEnabled) {
+            if (result.hasErrors()) {
+                return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
+            } else {
+                owner.setId(ownerId);
+                this.owners.save(owner);
+                return "redirect:/owners/{ownerId}";
+            }
         }
+        return "Update owner feature not enabled"; 
     }
 
     /**
