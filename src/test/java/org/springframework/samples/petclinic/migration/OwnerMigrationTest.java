@@ -24,7 +24,7 @@ public class OwnerMigrationTest {
 
     static Owner owner1;
     static Owner owner2;
-
+    static Owner owner3;
 
     @BeforeEach
     public void setup(){
@@ -32,6 +32,7 @@ public class OwnerMigrationTest {
         ownerMigration = new OwnerMigration();
         owner1 = Mockito.mock(Owner.class);
         owner2 = Mockito.mock(Owner.class);
+        owner3 = Mockito.mock(Owner.class);
         // owner 1 data
         when(owner1.getId()).thenReturn(1);
         when(owner1.getFirstName()).thenReturn("George");
@@ -48,6 +49,13 @@ public class OwnerMigrationTest {
         when(owner2.getCity()).thenReturn("Sun Prairie");
         when(owner2.getTelephone()).thenReturn("6085551749");
 
+        when(owner3.getId()).thenReturn(3);
+        when(owner3.getFirstName()).thenReturn("Eduardo");
+        when(owner3.getLastName()).thenReturn("Rodriquez");
+        when(owner3.getAddress()).thenReturn("2693 Commerce St.");
+        when(owner3.getCity()).thenReturn("McFarland");
+        when(owner3.getTelephone()).thenReturn("6085558763");
+
         oldDataStoreOwners = new HashMap<>();
 
         oldDataStoreOwners.put(owner1.getId(),owner1);
@@ -60,5 +68,13 @@ public class OwnerMigrationTest {
     @Order(1)
     public void testforklift() throws SQLException {
       assertEquals(2,ownerMigration.forkliftTestOnly(oldDataStoreOwners));
+    }
+
+    @Test
+    @Order(2)
+    public void testCheckConsistency(){
+        oldDataStoreOwners.put(owner3.getId(),owner3);
+
+        assertEquals(1,ownerMigration.checkConsistenciesTestOnly(oldDataStoreOwners));
     }
 }
