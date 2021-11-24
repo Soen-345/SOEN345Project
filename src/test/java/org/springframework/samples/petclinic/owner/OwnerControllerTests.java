@@ -165,7 +165,7 @@ class OwnerControllerTests {
 
 	@Test
 	void testInitUpdateOwnerForm() throws Exception {
-
+		OwnerToggles.isUpdateOwnerEnabled = true;
 		mockMvc.perform(get("/owners/{ownerId}/edit", TEST_OWNER_ID)).andExpect(status().isOk())
 				.andExpect(model().attributeExists("owner"))
 				.andExpect(model().attribute("owner", hasProperty("lastName", is("Franklin"))))
@@ -178,6 +178,7 @@ class OwnerControllerTests {
 
 	@Test
 	void testProcessUpdateOwnerFormSuccess() throws Exception {
+		OwnerToggles.isUpdateOwnerEnabled = true;
 		mockMvc.perform(post("/owners/{ownerId}/edit", TEST_OWNER_ID).param("firstName", "Joe")
 				.param("lastName", "Bloggs").param("address", "123 Caramel Street").param("city", "London")
 				.param("telephone", "01616291589")).andExpect(status().is3xxRedirection())
