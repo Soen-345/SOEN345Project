@@ -5,17 +5,18 @@ import org.springframework.samples.petclinic.visit.Visit;
 
 
 import javax.xml.crypto.Data;
+import java.sql.SQLException;
 import java.util.Map;
 /**
  * @author Alireza Ziarizi
  */
-public class OwnerMigration {
+public class OwnerMigration implements IMigration<Owner> {
     private final OwnerDAO ownerDAO;
 
     public OwnerMigration(){
         ownerDAO = new OwnerDAO();
     }
-
+    @Override
     public int forklift() {
         this.ownerDAO.initTable();
         int numInsert = 0;
@@ -28,6 +29,26 @@ public class OwnerMigration {
             }
         }
         return numInsert;
+    }
+
+    @Override
+    public int checkConsistencies() {
+        return 0;
+    }
+
+    @Override
+    public boolean shadowReadWriteConsistencyChecker(Owner owner) {
+        return false;
+    }
+
+    @Override
+    public void logInconsistency(Owner expected, Owner actual) {
+
+    }
+
+    @Override
+    public void closeConnections() throws SQLException {
+
     }
 
     public int forkliftTestOnly(Map<Integer, Owner> owners){
