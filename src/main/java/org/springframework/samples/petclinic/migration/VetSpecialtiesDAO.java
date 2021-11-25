@@ -101,4 +101,26 @@ public class VetSpecialtiesDAO {
     }
 
 
+    public void update(VetSpecialties vetSpecialtie, Datastores datastore) {
+        String query = "UPDATE vet_specialties SET specialty_id = '" +
+                vetSpecialtie.getSpecialty_id() + "'WHERE vet_id = "
+                + vetSpecialtie.getVet_id() + ";";
+
+        if(datastore == Datastores.SQLITE){
+            try{
+                Statement statement = SQLite_CONNECTION.createStatement();
+                statement.execute(query);
+            }catch (SQLException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        if (datastore == Datastores.H2){
+            try{
+                Statement statement = H2_CONNECTION.createStatement();
+                statement.execute(query);
+            }catch (SQLException e){
+                System.out.println(e.getMessage());
+            }
+        }
+    }
 }

@@ -1,9 +1,6 @@
 package org.springframework.samples.petclinic.migration;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 import org.springframework.samples.petclinic.vet.VetSpecialties;
 
@@ -22,7 +19,7 @@ public class VetSpecialtiesTest {
     static VetSpecialties vetspe1;
     static VetSpecialties vetspe2;
     static VetSpecialties vetspe3;
-
+    static VetSpecialties vetspe4;
     @BeforeEach
     public void setup(){
         MigrationToggles.isUnderTest = true;
@@ -30,6 +27,7 @@ public class VetSpecialtiesTest {
         vetspe1 = Mockito.mock(VetSpecialties.class);
         vetspe2 = Mockito.mock(VetSpecialties.class);
         vetspe3 = Mockito.mock(VetSpecialties.class);
+        vetspe4 = Mockito.mock(VetSpecialties.class);
 
         // vetspecialties 1 data
         when(vetspe1.getVet_id()).thenReturn(2);
@@ -41,6 +39,9 @@ public class VetSpecialtiesTest {
         when(vetspe3.getVet_id()).thenReturn(3);
         when(vetspe3.getSpecialty_id()).thenReturn(3);
 
+        when(vetspe4.getVet_id()).thenReturn(4);
+        when(vetspe4.getSpecialty_id()).thenReturn(2);
+
         oldDataStoreVetSpecialties = new HashMap<>();
         oldDataStoreVetSpecialties.put(vetspe1.getVet_id(),vetspe1);
         oldDataStoreVetSpecialties.put(vetspe2.getVet_id(),vetspe2);
@@ -48,8 +49,17 @@ public class VetSpecialtiesTest {
 
 
     @Test
+    @Order(1)
     public void testforklift() throws SQLException {
         assertEquals(2,VetSpecialtiesMigration.forkliftTestOnly(oldDataStoreVetSpecialties));
+    }
+
+    @Test
+    @Order(2)
+    public void testCheckConsistency(){
+        oldDataStoreVetSpecialties.put(vetspe3.getVet_id(),vetspe3);
+        assertEquals(1,VetSpecialtiesMigration.checkConsistenciesTestOnly(oldDataStoreVetSpecialties));
+
     }
 
 }
