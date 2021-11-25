@@ -110,7 +110,7 @@ public class OwnerDAO {
         }
         if(datastore == Datastores.H2) {
             try {
-                Statement statement = SQLite_CONNECTION.createStatement();
+                Statement statement = H2_CONNECTION.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
                     owner.put(resultSet.getInt("id"),
@@ -154,5 +154,8 @@ public class OwnerDAO {
     }
 
 
-
+    public void closeConnections() throws SQLException {
+        SQLite_CONNECTION.close();
+        H2_CONNECTION.close();
+    }
 }

@@ -93,10 +93,26 @@ public class OwnerMigration implements IMigration<Owner> {
         return inconsistencies;
     }
 
+    public void shadowWriteToNewDatastore(Owner owner){
+     this.ownerDAO.addOwner(owner,Datastores.SQLITE);
+
+    }
 
     @Override
-    public boolean shadowReadWriteConsistencyChecker(Owner owner) {
-        return false;
+    public boolean shadowReadWriteConsistencyChecker(Owner exp) {
+        Owner actual = this.ownerDAO.getOwner(exp.getId(),Datastores.SQLITE);
+
+        if(actual == null){
+            this.ownerDAO.addOwner(exp,Datastores.SQLITE);
+            // log
+            return false;
+        }
+        if(!comapre(actual,exp)){
+            this.ownerDAO.addOwner(exp,Datastores.SQLITE);
+            // log
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -106,7 +122,7 @@ public class OwnerMigration implements IMigration<Owner> {
 
     @Override
     public void closeConnections() throws SQLException {
-
+        this.ownerDAO.closeConnections();
     }
 
 

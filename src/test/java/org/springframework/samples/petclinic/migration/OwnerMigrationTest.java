@@ -25,6 +25,7 @@ public class OwnerMigrationTest {
     static Owner owner1;
     static Owner owner2;
     static Owner owner3;
+    static Owner owner4;
 
     @BeforeEach
     public void setup(){
@@ -33,6 +34,7 @@ public class OwnerMigrationTest {
         owner1 = Mockito.mock(Owner.class);
         owner2 = Mockito.mock(Owner.class);
         owner3 = Mockito.mock(Owner.class);
+        owner4 = Mockito.mock(Owner.class);
         // owner 1 data
         when(owner1.getId()).thenReturn(1);
         when(owner1.getFirstName()).thenReturn("George");
@@ -56,6 +58,13 @@ public class OwnerMigrationTest {
         when(owner3.getCity()).thenReturn("McFarland");
         when(owner3.getTelephone()).thenReturn("6085558763");
 
+        when(owner4.getId()).thenReturn(4);
+        when(owner4.getFirstName()).thenReturn("Harold");
+        when(owner4.getLastName()).thenReturn("Davis");
+        when(owner4.getAddress()).thenReturn("563 Friendly St.");
+        when(owner4.getCity()).thenReturn("Windsor");
+        when(owner4.getTelephone()).thenReturn("6085553198");
+
         oldDataStoreOwners = new HashMap<>();
 
         oldDataStoreOwners.put(owner1.getId(),owner1);
@@ -76,5 +85,16 @@ public class OwnerMigrationTest {
         oldDataStoreOwners.put(owner3.getId(),owner3);
 
         assertEquals(1,ownerMigration.checkConsistenciesTestOnly(oldDataStoreOwners));
+    }
+
+    @Test
+    @Order(3)
+    public void testShadowReadWriteConsistencyChecker(){
+        oldDataStoreOwners.put(owner4.getId(),owner4);
+
+        ownerMigration.shadowReadWriteConsistencyChecker(owner4);
+
+        assertTrue(ownerMigration.shadowReadWriteConsistencyChecker(owner4));
+
     }
 }
