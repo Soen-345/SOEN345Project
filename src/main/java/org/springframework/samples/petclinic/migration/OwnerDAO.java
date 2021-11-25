@@ -85,7 +85,7 @@ public class OwnerDAO {
                 System.out.println(e.getMessage());
             }
         }
-        return owner;
+        return Owner;
     }
 
     protected Map<Integer, Owner> getAllowners(Datastores datastore){
