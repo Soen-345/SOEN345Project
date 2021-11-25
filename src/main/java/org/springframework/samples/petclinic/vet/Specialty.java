@@ -39,4 +39,5 @@ public class Specialty extends NamedEntity implements Serializable {
 		super(name, id);
 	}
 
+
 }
