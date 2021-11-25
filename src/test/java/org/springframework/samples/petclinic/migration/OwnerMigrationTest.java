@@ -97,4 +97,9 @@ public class OwnerMigrationTest {
         assertTrue(ownerMigration.shadowReadWriteConsistencyChecker(owner4));
 
     }
+
+    @AfterAll
+    public static void closeConnection() throws SQLException {
+        ownerMigration.closeConnections();
+    }
 }

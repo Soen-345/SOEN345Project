@@ -153,6 +153,29 @@ public class OwnerDAO {
         return true;
     }
 
+    protected void update(Owner owner, Datastores datastore){
+        String query = "UPDATE owners SET first_name =" + owner.getFirstName() + ", last_name = " + owner.getLastName() +
+                ", address = " + owner.getLastName() + ", city = " + owner.getCity() + ", telephone = '" + owner.getTelephone()
+                + "'WHERE id = " + owner.getId() + ";";
+        if (datastore == Datastores.SQLITE) {
+            try {
+                Statement statement = SQLite_CONNECTION.createStatement();
+                statement.execute(query);
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        if (datastore == Datastores.H2) {
+            try {
+                Statement statement = H2_CONNECTION.createStatement();
+                statement.execute(query);
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+
 
     public void closeConnections() throws SQLException {
         SQLite_CONNECTION.close();

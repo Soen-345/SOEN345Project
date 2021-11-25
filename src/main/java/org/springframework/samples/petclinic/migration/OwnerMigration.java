@@ -64,7 +64,7 @@ public class OwnerMigration implements IMigration<Owner> {
             if(!comapre(actualOwener,expectedOwner)){
                 inconsistencies++;
                 //log
-                this.ownerDAO.addOwner(expectedOwner,Datastores.SQLITE);
+                this.ownerDAO.update(expectedOwner,Datastores.SQLITE);
             }
         }
 
@@ -86,7 +86,7 @@ public class OwnerMigration implements IMigration<Owner> {
             if(!comapre(actualOwener,expectedOwner)){
                 inconsistencies++;
                 //log
-                this.ownerDAO.addOwner(expectedOwner,Datastores.SQLITE);
+                this.ownerDAO.update(expectedOwner,Datastores.SQLITE);
             }
 
         }
@@ -108,7 +108,7 @@ public class OwnerMigration implements IMigration<Owner> {
             return false;
         }
         if(!comapre(actual,exp)){
-            this.ownerDAO.addOwner(exp,Datastores.SQLITE);
+            this.ownerDAO.update(exp,Datastores.SQLITE);
             // log
             return false;
         }
