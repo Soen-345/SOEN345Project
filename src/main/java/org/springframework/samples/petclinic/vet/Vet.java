@@ -50,28 +50,12 @@ public class Vet extends Person {
 			inverseJoinColumns = @JoinColumn(name = "specialty_id"))
 	private Set<Specialty> specialties;
 
-	public Vet() {
-		super();
-		this.specialties = new HashSet<>();
+	public Vet () {
+		specialties = new HashSet<> ();
 	}
 
-	public Vet(Integer id, String first, String last) {
-		super(first, last, id);
-	}
-
-	public Vet(HashSet<Specialty> hashSet) {
-		super();
-		this.specialties = hashSet;
-	}
-
-	public Vet(Integer id, Specialty specialty) {
-		super(id);
-		this.specialties.add(specialty);
-	}
-
-	public Vet(HashSet<Specialty> hashSet, String first, String last, Integer id) {
-		super(first, last, id);
-		this.specialties = hashSet;
+	public Vet (Set <Specialty> specialties){
+		this.specialties = specialties;
 	}
 
 	protected Set<Specialty> getSpecialtiesInternal() {

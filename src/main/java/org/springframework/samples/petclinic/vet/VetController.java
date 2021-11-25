@@ -36,6 +36,7 @@ class VetController {
 	private final VetRepository vets;
 	private final VetMigration vetMigration;
 
+
 	public VetController(VetRepository clinicService) {
 		this.vets = clinicService;
 		this.vetMigration = new VetMigration();
