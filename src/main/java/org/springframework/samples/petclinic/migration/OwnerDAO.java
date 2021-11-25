@@ -85,10 +85,10 @@ public class OwnerDAO {
                 System.out.println(e.getMessage());
             }
         }
-        return Owner;
+        return owner;
     }
 
-    protected Map<Integer, Owner> getAllowners(Datastores datastore){
+    protected Map<Integer, Owner> getAllOwners(Datastores datastore){
         Map<Integer,Owner> owner = new HashMap<>();
         String query = "SELECT * FROM owners;";
         if(datastore == Datastores.SQLITE) {

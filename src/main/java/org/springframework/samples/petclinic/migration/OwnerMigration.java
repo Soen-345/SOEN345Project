@@ -1,10 +1,8 @@
 package org.springframework.samples.petclinic.migration;
 
 import org.springframework.samples.petclinic.owner.Owner;
-import org.springframework.samples.petclinic.visit.Visit;
 
 
-import javax.xml.crypto.Data;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.Objects;
@@ -22,7 +20,7 @@ public class OwnerMigration implements IMigration<Owner> {
     public int forklift() {
         this.ownerDAO.initTable();
         int numInsert = 0;
-        Map<Integer,Owner> owners = this.ownerDAO.getAllowners(Datastores.H2);
+        Map<Integer,Owner> owners = this.ownerDAO.getAllOwners(Datastores.H2);
 
         for(Owner owner : owners.values()){
             boolean success = this.ownerDAO.addOwner(owner,Datastores.SQLITE);
@@ -49,8 +47,8 @@ public class OwnerMigration implements IMigration<Owner> {
     public int checkConsistencies() {
         int inconsistencies = 0;
 
-        Map<Integer, Owner> expected =  this.ownerDAO.getAllowners(Datastores.H2);
-        Map<Integer, Owner> actual =  this.ownerDAO.getAllowners(Datastores.SQLITE);
+        Map<Integer, Owner> expected =  this.ownerDAO.getAllOwners(Datastores.H2);
+        Map<Integer, Owner> actual =  this.ownerDAO.getAllOwners(Datastores.SQLITE);
 
         for(Integer key : expected.keySet()){
             Owner expectedOwner = expected.get(key);
@@ -72,7 +70,7 @@ public class OwnerMigration implements IMigration<Owner> {
     }
 
     public int checkConsistenciesTestOnly(Map<Integer,Owner> expected){
-        Map<Integer, Owner> actual =  this.ownerDAO.getAllowners(Datastores.SQLITE);
+        Map<Integer, Owner> actual =  this.ownerDAO.getAllOwners(Datastores.SQLITE);
         int inconsistencies = 0;
         for(Integer key : expected.keySet()){
             Owner expectedOwner = expected.get(key);
