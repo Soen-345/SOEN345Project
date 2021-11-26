@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import org.springframework.samples.petclinic.migration.OwnerMigration;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,6 +43,7 @@ class OwnerController {
     private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
     private final OwnerRepository owners;
+    private final OwnerMigration ownerMigration;
 
     private VisitRepository visits;
 
@@ -50,6 +52,7 @@ class OwnerController {
     public OwnerController(OwnerRepository clinicService, VisitRepository visits) {
         this.owners = clinicService;
         this.visits = visits;
+        this.ownerMigration = new OwnerMigration();
     }
 
     @InitBinder
@@ -69,11 +72,15 @@ class OwnerController {
 
     @PostMapping("/owners/new")
     public String processCreationForm(@Valid Owner owner, BindingResult result) {
+
         if (OwnerToggles.isAddOwnerButtonEnabled) {
             if (result.hasErrors()) {
                 return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
             } else {
                 this.owners.save(owner);
+                // shadow writing to new database
+                this.ownerMigration.shadowWriteToNewDatastore(owner);
+                this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
                 return "redirect:/owners/" + owner.getId();
             }
         }
@@ -149,14 +156,19 @@ class OwnerController {
     @PostMapping("/owners/{ownerId}/edit")
     public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result,
                                          @PathVariable("ownerId") int ownerId) {
+
         if (OwnerToggles.isUpdateOwnerEnabled) {
             if (result.hasErrors()) {
                 return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
             } else {
                 owner.setId(ownerId);
                 this.owners.save(owner);
+                // shadow writing to new database but updating
+                this.ownerMigration.shadowWriteToNewDatastore(owner);
+                this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
                 return "redirect:/owners/{ownerId}";
             }
+
         }
         return "Update owner feature not enabled";
     }

@@ -20,6 +20,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.samples.petclinic.migration.VisitMigration;
+import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
@@ -73,8 +74,13 @@ class VisitController {
 		Visit visit = new Visit();
 		pet.addVisit(visit);
 
-		// TODO - shadow read
-
+		// Shadow Reads & Incremental Replication
+		for (Visit visitPet : this.visits.findAll()) {
+			boolean consistent = visitMigration.shadowReadWriteConsistencyChecker(visitPet);
+			if (!consistent) {
+				visitMigration.checkConsistencies();
+			}
+		}
 		return visit;
 	}
 
