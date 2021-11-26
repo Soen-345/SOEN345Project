@@ -15,6 +15,8 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.samples.petclinic.migration.OwnerMigration;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
@@ -46,6 +48,8 @@ class OwnerController {
     private final OwnerMigration ownerMigration;
 
     private VisitRepository visits;
+
+    private static Logger logger = LogManager.getLogger();
 
 
 
