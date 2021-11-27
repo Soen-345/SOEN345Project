@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * @author Alireza ziarizi
  */
-public class OwnerDAO {
+public class OwnerDAO implements IDAO<Owner> {
     private Connection SQLite_CONNECTION;
     private Connection H2_CONNECTION;
 
@@ -24,8 +24,7 @@ public class OwnerDAO {
         H2_CONNECTION = DatastoreConnection.connectH2();
     }
 
-    protected void initTable(){
-
+    public void initTable(){
         String query = "DROP TABLE IF EXISTS owners;";
         try{
             Statement statement = SQLite_CONNECTION.createStatement();
@@ -36,7 +35,7 @@ public class OwnerDAO {
         this.createOwnerTable();
     }
 
-    protected void createOwnerTable(){
+    private void createOwnerTable(){
         String createQuery =
                 "CREATE TABLE IF NOT EXISTS owners (\n" +
                 "                      id         INTEGER IDENTITY PRIMARY KEY,\n" +
@@ -54,7 +53,7 @@ public class OwnerDAO {
         }
     }
 
-    protected Owner getOwner(Integer ownerId, Datastores datastore){
+    public Owner get(Integer ownerId, Datastores datastore){
         Owner owner = null;
         String query = "SELECT id, first_name, last_name, address, city, telephone FROM owners WHERE id = " + ownerId + ";";
         if(datastore == Datastores.SQLITE) {
@@ -88,7 +87,7 @@ public class OwnerDAO {
         return owner;
     }
 
-    protected Map<Integer, Owner> getAllOwners(Datastores datastore){
+    public Map<Integer, Owner> getAll(Datastores datastore){
         Map<Integer,Owner> owner = new HashMap<>();
         String query = "SELECT * FROM owners;";
         if(datastore == Datastores.SQLITE) {
@@ -128,7 +127,7 @@ public class OwnerDAO {
      return owner;
     }
 
-    protected boolean addOwner(Owner owner, Datastores datastore){
+    public boolean add(Owner owner, Datastores datastore){
         String insertQuery = "INSERT INTO owners (id, first_name, last_name, address, city, telephone) VALUES (" + owner.getId() + ",'"
                 + owner.getFirstName() + "','" + owner.getLastName() + "','" + owner.getAddress() + "','" + owner.getCity() +
                 "','" + owner.getTelephone() + "');";
@@ -153,7 +152,7 @@ public class OwnerDAO {
         return true;
     }
 
-    protected void update(Owner owner, Datastores datastore){
+    public void update(Owner owner, Datastores datastore){
         String query = "UPDATE owners SET first_name =" + owner.getFirstName() + ", last_name = " + owner.getLastName() +
                 ", address = " + owner.getLastName() + ", city = " + owner.getCity() + ", telephone = '" + owner.getTelephone()
                 + "'WHERE id = " + owner.getId() + ";";

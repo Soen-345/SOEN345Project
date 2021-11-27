@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * @author Sevag Eordkian
  */
-public class VetDAO {
+public class VetDAO implements IDAO<Vet>{
 
     private Connection SQLite_CONNECTION;
     private Connection H2_CONNECTION;
@@ -23,7 +23,7 @@ public class VetDAO {
         H2_CONNECTION = DatastoreConnection.connectH2();
     }
 
-    protected void initTable() {
+    public void initTable() {
         String query = "DROP TABLE IF EXISTS vets;";
         try {
             Statement statement = SQLite_CONNECTION.createStatement();
@@ -34,8 +34,7 @@ public class VetDAO {
         this.createVetTable();
     }
 
-    protected void createVetTable() {
-
+    private void createVetTable() {
         String createQuery =
                 "CREATE TABLE IF NOT EXISTS vets (\n" +
                 "                      id         INTEGER IDENTITY PRIMARY KEY,\n" +
@@ -53,7 +52,7 @@ public class VetDAO {
         }
     }
 
-    protected Vet getVet(Integer vetId, Datastores datastore) {
+    public Vet get(Integer vetId, Datastores datastore) {
         Vet vet = null;
         String query = "SELECT id, first_name, last_name FROM vets WHERE id = " + vetId + ";";
         if (datastore == Datastores.SQLITE) {
@@ -81,7 +80,7 @@ public class VetDAO {
         return vet;
     }
 
-    protected Map<Integer, Vet> getAllVets(Datastores datastore) {
+    public Map<Integer, Vet> getAll(Datastores datastore) {
         Map<Integer, Vet> vets = new HashMap<>();
         String query = "SELECT * FROM vets;";
         if (datastore == Datastores.SQLITE) {
@@ -116,7 +115,7 @@ public class VetDAO {
         return vets;
     }
 
-    protected boolean addVet(Vet vet, Datastores datastore) {
+    public boolean add(Vet vet, Datastores datastore) {
         String insertQuery = "INSERT INTO vets (id, first_name, last_name) VALUES (" + vet.getId()
                 + ",'" + vet.getFirstName() + "','" + vet.getLastName() + "');";
         if (datastore == Datastores.SQLITE) {
@@ -140,7 +139,7 @@ public class VetDAO {
         return true;
     }
 
-    protected void update(Vet vet, Datastores datastore) {
+    public void update(Vet vet, Datastores datastore) {
         String query = "UPDATE vets SET first_name = '" + vet.getFirstName()
                 + "', last_name = '" + vet.getLastName() + "' WHERE id = " + vet.getId() + ";";
         if (datastore == Datastores.SQLITE) {
@@ -162,7 +161,7 @@ public class VetDAO {
 
     }
 
-    protected void closeConnections() throws SQLException {
+    public void closeConnections() throws SQLException {
         SQLite_CONNECTION.close();
         H2_CONNECTION.close();
     }

@@ -23,23 +23,23 @@ public class PetMigration implements IMigration<Pet> {
         this.petDAO.initTable();
         int numInsert = 0;
 
-        Map<Integer, Pet> pets = this.petDAO.getAllPets(Datastores.H2);
+        Map<Integer, Pet> pets = this.petDAO.getAll(Datastores.H2);
 
         for (Pet pet : pets.values()) {
-            boolean success = this.petDAO.addPet(pet, Datastores.SQLITE);
+            boolean success = this.petDAO.add(pet, Datastores.SQLITE);
             if (success) {
                 numInsert++;
             }
         }
         return numInsert;
     }
-    public int forkliftTestOnly(Map<Integer, Pet> pets) {
 
+    public int forkliftTestOnly(Map<Integer, Pet> pets) {
         this.petDAO.initTable();
         int numInsert = 0;
 
         for (Pet pet : pets.values()) {
-            boolean success = this.petDAO.addPet(pet, Datastores.SQLITE);
+            boolean success = this.petDAO.add(pet, Datastores.SQLITE);
             if (success) {
                 numInsert++;
             }
@@ -52,10 +52,9 @@ public class PetMigration implements IMigration<Pet> {
 
         int inconsistencies = 0;
 
+        Map<Integer, Pet> expected = this.petDAO.getAll(Datastores.H2);
 
-        Map<Integer, Pet> expected = this.petDAO.getAllPets(Datastores.H2);
-
-        Map<Integer, Pet> actual = this.petDAO.getAllPets(Datastores.SQLITE);
+        Map<Integer, Pet> actual = this.petDAO.getAll(Datastores.SQLITE);
 
         for (Integer key : expected.keySet()) {
             Pet exp = expected.get(key);
@@ -63,7 +62,7 @@ public class PetMigration implements IMigration<Pet> {
             if (act == null) {
                 inconsistencies++;
                 logInconsistency(exp, null);
-                this.petDAO.addPet(exp, Datastores.SQLITE);
+                this.petDAO.add(exp, Datastores.SQLITE);
             }
             if (act != null && (!Objects.equals(exp.getId(), act.getId()) || !exp.getName().equals(act.getName()) ||
                     !exp.getBirthDate().equals(act.getBirthDate()) || !exp.getTypeId().equals(act.getTypeId()) || !exp.getOwnerId().equals(act.getOwnerId()))) {
@@ -77,11 +76,12 @@ public class PetMigration implements IMigration<Pet> {
 
         return inconsistencies;
     }
+
     public int checkConsistenciesTestOnly(Map<Integer, Pet> expected) {
 
         int inconsistencies = 0;
 
-        Map<Integer, Pet> actual = this.petDAO.getAllPets(Datastores.SQLITE);
+        Map<Integer, Pet> actual = this.petDAO.getAll(Datastores.SQLITE);
 
         for (Integer key : expected.keySet()) {
             Pet exp = expected.get(key);
@@ -89,7 +89,7 @@ public class PetMigration implements IMigration<Pet> {
             if (act == null) {
                 inconsistencies++;
                 logInconsistency(exp, null);
-                this.petDAO.addPet(exp, Datastores.SQLITE);
+                this.petDAO.add(exp, Datastores.SQLITE);
             }
             if (act != null && (!Objects.equals(exp.getId(), act.getId()) || !exp.getName().equals(act.getName()) ||
                     !exp.getBirthDate().equals(act.getBirthDate()) || !exp.getTypeId().equals(act.getTypeId()) || !exp.getOwnerId().equals(act.getOwnerId()))) {
@@ -103,12 +103,13 @@ public class PetMigration implements IMigration<Pet> {
 
         return inconsistencies;
     }
+
     public boolean shadowReadWriteConsistencyChecker(Pet exp) {
 
-        Pet act = this.petDAO.getPet(exp.getId(), Datastores.SQLITE);
+        Pet act = this.petDAO.get(exp.getId(), Datastores.SQLITE);
 
         if (act == null) {
-            this.petDAO.addPet(exp, Datastores.SQLITE);
+            this.petDAO.add(exp, Datastores.SQLITE);
 
             logInconsistency(exp, null);
 
@@ -143,14 +144,15 @@ public class PetMigration implements IMigration<Pet> {
 
     public void shadowWriteToNewDatastore(Pet pet, Owner owner) {
         pet.setOwner(owner);
-        this.petDAO.addPet(pet, Datastores.SQLITE);
+        this.petDAO.add(pet, Datastores.SQLITE);
     }
 
     public void closeConnections() throws SQLException {
         this.petDAO.closeConnections();
     }
-    public static LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
-        return dateToConvert.toInstant()
+
+    public static LocalDate convertToLocalDate(java.util.Date birth_date) {
+        return birth_date.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
     }

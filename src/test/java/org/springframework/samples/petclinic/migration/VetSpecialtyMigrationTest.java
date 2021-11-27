@@ -2,7 +2,7 @@ package org.springframework.samples.petclinic.migration;
 
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
-import org.springframework.samples.petclinic.vet.VetSpecialties;
+import org.springframework.samples.petclinic.vet.VetSpecialty;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -12,22 +12,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class VetSpecialtiesTest {
+public class VetSpecialtyMigrationTest {
     private static VetSpecialtiesMigration VetSpecialtiesMigration;
-    private static Map<Integer, VetSpecialties> oldDataStoreVetSpecialties;
+    private static Map<Integer, VetSpecialty> oldDataStoreVetSpecialties;
 
-    static VetSpecialties vetspe1;
-    static VetSpecialties vetspe2;
-    static VetSpecialties vetspe3;
-    static VetSpecialties vetspe4;
+    static VetSpecialty vetspe1;
+    static VetSpecialty vetspe2;
+    static VetSpecialty vetspe3;
+    static VetSpecialty vetspe4;
     @BeforeEach
     public void setup(){
         MigrationToggles.isUnderTest = true;
         VetSpecialtiesMigration = new VetSpecialtiesMigration();
-        vetspe1 = Mockito.mock(VetSpecialties.class);
-        vetspe2 = Mockito.mock(VetSpecialties.class);
-        vetspe3 = Mockito.mock(VetSpecialties.class);
-        vetspe4 = Mockito.mock(VetSpecialties.class);
+        vetspe1 = Mockito.mock(VetSpecialty.class);
+        vetspe2 = Mockito.mock(VetSpecialty.class);
+        vetspe3 = Mockito.mock(VetSpecialty.class);
+        vetspe4 = Mockito.mock(VetSpecialty.class);
 
         // vetspecialties 1 data
         when(vetspe1.getVet_id()).thenReturn(2);

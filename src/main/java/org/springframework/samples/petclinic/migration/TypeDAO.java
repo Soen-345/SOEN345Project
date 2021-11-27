@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TypeDAO {
+public class TypeDAO implements IDAO<PetType>{
     private Connection SQLite_CONNECTION;
     private Connection H2_CONNECTION;
 
@@ -18,7 +18,7 @@ public class TypeDAO {
         H2_CONNECTION = DatastoreConnection.connectH2();
     }
 
-    protected void initTable() {
+    public void initTable() {
         String query = "DROP TABLE IF EXISTS types;";
         try {
             Statement statement = SQLite_CONNECTION.createStatement();
@@ -29,8 +29,7 @@ public class TypeDAO {
         this.createTypeTable();
     }
 
-    protected void createTypeTable() {
-
+    private void createTypeTable() {
         String createQuery =
                 "CREATE TABLE IF NOT EXISTS types (\n" +
                         "                      id         INTEGER IDENTITY PRIMARY KEY,\n" +
@@ -47,7 +46,7 @@ public class TypeDAO {
         }
     }
 
-    protected PetType getType(Integer typeId, Datastores datastore) {
+    public PetType get(Integer typeId, Datastores datastore) {
         PetType type = null;
         String query = "SELECT id, name FROM types WHERE id = " + typeId + ";";
         if (datastore == Datastores.SQLITE) {
@@ -73,7 +72,7 @@ public class TypeDAO {
         return type;
     }
 
-    protected Map<Integer, PetType> getAllTypes(Datastores datastore) {
+    public Map<Integer, PetType> getAll(Datastores datastore) {
         Map<Integer, PetType> types = new HashMap<>();
         String query = "SELECT * FROM types;";
         if (datastore == Datastores.SQLITE) {
@@ -106,7 +105,7 @@ public class TypeDAO {
         return types;
     }
 
-    protected boolean addType(PetType type, Datastores datastore) {
+    public boolean add(PetType type, Datastores datastore) {
         String insertQuery = "INSERT INTO types (id, name) VALUES (" + type.getId()
                 + ",'" + type.getName() + "');";
         if (datastore == Datastores.SQLITE) {
@@ -130,7 +129,7 @@ public class TypeDAO {
         return true;
     }
 
-    protected void update(PetType type, Datastores datastore) {
+    public void update(PetType type, Datastores datastore) {
         String query = "UPDATE types SET name = '" + type.getName()
                 + "' WHERE id = " + type.getId() + ";";
         if (datastore == Datastores.SQLITE) {
@@ -152,7 +151,7 @@ public class TypeDAO {
 
     }
 
-    protected void closeConnections() throws SQLException {
+    public void closeConnections() throws SQLException {
         SQLite_CONNECTION.close();
         H2_CONNECTION.close();
     }

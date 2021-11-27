@@ -13,30 +13,31 @@ import java.util.Objects;
 public class OwnerMigration implements IMigration<Owner> {
     private final OwnerDAO ownerDAO;
 
-    public OwnerMigration(){
+    public OwnerMigration() {
         ownerDAO = new OwnerDAO();
     }
+
     @Override
     public int forklift() {
         this.ownerDAO.initTable();
         int numInsert = 0;
-        Map<Integer,Owner> owners = this.ownerDAO.getAllOwners(Datastores.H2);
+        Map<Integer, Owner> owners = this.ownerDAO.getAll(Datastores.H2);
 
-        for(Owner owner : owners.values()){
-            boolean success = this.ownerDAO.addOwner(owner,Datastores.SQLITE);
-            if(success){
+        for (Owner owner : owners.values()) {
+            boolean success = this.ownerDAO.add(owner, Datastores.SQLITE);
+            if (success) {
                 numInsert++;
             }
         }
         return numInsert;
     }
 
-    public int forkliftTestOnly(Map<Integer, Owner> owners){
+    public int forkliftTestOnly(Map<Integer, Owner> owners) {
         this.ownerDAO.initTable();
         int numInsert = 0;
-        for(Owner owner : owners.values()){
-            boolean success = this.ownerDAO.addOwner(owner,Datastores.SQLITE);
-            if(success){
+        for (Owner owner : owners.values()) {
+            boolean success = this.ownerDAO.add(owner, Datastores.SQLITE);
+            if (success) {
                 numInsert++;
             }
         }
@@ -47,66 +48,66 @@ public class OwnerMigration implements IMigration<Owner> {
     public int checkConsistencies() {
         int inconsistencies = 0;
 
-        Map<Integer, Owner> expected =  this.ownerDAO.getAllOwners(Datastores.H2);
-        Map<Integer, Owner> actual =  this.ownerDAO.getAllOwners(Datastores.SQLITE);
+        Map<Integer, Owner> expected = this.ownerDAO.getAll(Datastores.H2);
+        Map<Integer, Owner> actual = this.ownerDAO.getAll(Datastores.SQLITE);
 
-        for(Integer key : expected.keySet()){
+        for (Integer key : expected.keySet()) {
             Owner expectedOwner = expected.get(key);
             Owner actualOwener = actual.get(key);
 
-            if(actualOwener == null){
-                inconsistencies++;
-               // log
-                this.ownerDAO.addOwner(expectedOwner,Datastores.SQLITE);
-            }
-            if(!comapre(actualOwener,expectedOwner)){
-                inconsistencies++;
-                //log
-                this.ownerDAO.update(expectedOwner,Datastores.SQLITE);
-            }
-        }
-
-        return inconsistencies;
-    }
-
-    public int checkConsistenciesTestOnly(Map<Integer,Owner> expected){
-        Map<Integer, Owner> actual =  this.ownerDAO.getAllOwners(Datastores.SQLITE);
-        int inconsistencies = 0;
-        for(Integer key : expected.keySet()){
-            Owner expectedOwner = expected.get(key);
-            Owner actualOwener = actual.get(key);
-
-            if(actualOwener == null){
+            if (actualOwener == null) {
                 inconsistencies++;
                 // log
-                this.ownerDAO.addOwner(expectedOwner,Datastores.SQLITE);
+                this.ownerDAO.add(expectedOwner, Datastores.SQLITE);
             }
-            if(!comapre(actualOwener,expectedOwner)){
+            if (!comapre(actualOwener, expectedOwner)) {
                 inconsistencies++;
                 //log
-                this.ownerDAO.update(expectedOwner,Datastores.SQLITE);
+                this.ownerDAO.update(expectedOwner, Datastores.SQLITE);
+            }
+        }
+
+        return inconsistencies;
+    }
+
+    public int checkConsistenciesTestOnly(Map<Integer, Owner> expected) {
+        Map<Integer, Owner> actual = this.ownerDAO.getAll(Datastores.SQLITE);
+        int inconsistencies = 0;
+        for (Integer key : expected.keySet()) {
+            Owner expectedOwner = expected.get(key);
+            Owner actualOwener = actual.get(key);
+
+            if (actualOwener == null) {
+                inconsistencies++;
+                // log
+                this.ownerDAO.add(expectedOwner, Datastores.SQLITE);
+            }
+            if (!comapre(actualOwener, expectedOwner)) {
+                inconsistencies++;
+                //log
+                this.ownerDAO.update(expectedOwner, Datastores.SQLITE);
             }
 
         }
         return inconsistencies;
     }
 
-    public void shadowWriteToNewDatastore(Owner owner){
-     this.ownerDAO.addOwner(owner,Datastores.SQLITE);
+    public void shadowWriteToNewDatastore(Owner owner) {
+        this.ownerDAO.add(owner, Datastores.SQLITE);
 
     }
 
     @Override
     public boolean shadowReadWriteConsistencyChecker(Owner exp) {
-        Owner actual = this.ownerDAO.getOwner(exp.getId(),Datastores.SQLITE);
+        Owner actual = this.ownerDAO.get(exp.getId(), Datastores.SQLITE);
 
-        if(actual == null){
-            this.ownerDAO.addOwner(exp,Datastores.SQLITE);
+        if (actual == null) {
+            this.ownerDAO.add(exp, Datastores.SQLITE);
             // log
             return false;
         }
-        if(!comapre(actual,exp)){
-            this.ownerDAO.update(exp,Datastores.SQLITE);
+        if (!comapre(actual, exp)) {
+            this.ownerDAO.update(exp, Datastores.SQLITE);
             // log
             return false;
         }
@@ -123,23 +124,12 @@ public class OwnerMigration implements IMigration<Owner> {
         this.ownerDAO.closeConnections();
     }
 
-
-
-    public int checkConsistencies(Map<Integer, Owner> owners) {
-        return 0;
-    }
-
-
-    public void logInconsistency(Integer expected, Integer actual) {
-
-    }
-    protected boolean comapre(Owner actual,Owner expected){
-        if(actual !=null && (!Objects.equals(expected.getId(),actual.getId()) || !expected.getFirstName().equals(actual.getFirstName())
+    private boolean comapre(Owner actual, Owner expected) {
+        if (actual != null && (!Objects.equals(expected.getId(), actual.getId()) || !expected.getFirstName().equals(actual.getFirstName())
                 || !expected.getLastName().equals(actual.getLastName()) || !expected.getAddress().equals(actual.getAddress()) ||
-                !expected.getCity().equals(actual.getCity()) || !expected.getTelephone().equals(actual.getTelephone()) )){
+                !expected.getCity().equals(actual.getCity()) || !expected.getTelephone().equals(actual.getTelephone()))) {
             return false;
         }
-
         return true;
     }
 }

@@ -1,18 +1,14 @@
 package org.springframework.samples.petclinic.migration;
 
-import org.springframework.samples.petclinic.owner.Owner;
-import org.springframework.samples.petclinic.vet.Vet;
-import org.springframework.samples.petclinic.vet.VetSpecialties;
+import org.springframework.samples.petclinic.vet.VetSpecialty;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * @author Alireza Ziarizi
  */
-public class VetSpecialtiesMigration implements IMigration {
+public class VetSpecialtiesMigration implements IMigration<VetSpecialty> {
     private final VetSpecialtiesDAO vetSpecialtiesDAO;
 
     public VetSpecialtiesMigration() {
@@ -24,10 +20,10 @@ public class VetSpecialtiesMigration implements IMigration {
         this.vetSpecialtiesDAO.initTable();
         int numInsert = 0;
 
-        Map<Integer, VetSpecialties> vetSpecialties = this.vetSpecialtiesDAO.getAllVetSpecialties(Datastores.H2);
+        Map<Integer, VetSpecialty> vetSpecialties = this.vetSpecialtiesDAO.getAll(Datastores.H2);
 
-        for(VetSpecialties vetSpecialtie : vetSpecialties.values()){
-            boolean success = this.vetSpecialtiesDAO.addVetSpecialties(vetSpecialtie,Datastores.SQLITE);
+        for(VetSpecialty vetSpecialtie : vetSpecialties.values()){
+            boolean success = this.vetSpecialtiesDAO.add(vetSpecialtie,Datastores.SQLITE);
             if(success){
                 numInsert++;
             }
@@ -35,11 +31,11 @@ public class VetSpecialtiesMigration implements IMigration {
 
         return numInsert;
     }
-    public int forkliftTestOnly(Map<Integer, VetSpecialties> VetSpecialties){
+    public int forkliftTestOnly(Map<Integer, VetSpecialty> VetSpecialties){
         this.vetSpecialtiesDAO.initTable();
         int numInsert = 0;
-        for(VetSpecialties vetSpecialtie : VetSpecialties.values()){
-            boolean success = this.vetSpecialtiesDAO.addVetSpecialties(vetSpecialtie,Datastores.SQLITE);
+        for(VetSpecialty vetSpecialtie : VetSpecialties.values()){
+            boolean success = this.vetSpecialtiesDAO.add(vetSpecialtie,Datastores.SQLITE);
             if(success){
                 numInsert++;
             }
@@ -50,40 +46,17 @@ public class VetSpecialtiesMigration implements IMigration {
     @Override
     public int checkConsistencies() {
         int inconsistencies = 0;
-        Map<Integer,VetSpecialties> expected = this.vetSpecialtiesDAO.getAllVetSpecialties(Datastores.H2);
-        Map<Integer,VetSpecialties> actual = this.vetSpecialtiesDAO.getAllVetSpecialties(Datastores.SQLITE);
+        Map<Integer, VetSpecialty> expected = this.vetSpecialtiesDAO.getAll(Datastores.H2);
+        Map<Integer, VetSpecialty> actual = this.vetSpecialtiesDAO.getAll(Datastores.SQLITE);
 
         for(Integer key : expected.keySet()){
-            VetSpecialties expectedvetsp = expected.get(key);
-            VetSpecialties actualvetsp = actual.get(key);
+            VetSpecialty expectedvetsp = expected.get(key);
+            VetSpecialty actualvetsp = actual.get(key);
 
             if(actualvetsp == null){
                 inconsistencies++;
                 // log
-                this.vetSpecialtiesDAO.addVetSpecialties(expectedvetsp,Datastores.SQLITE);
-            }
-            if(!comapre(actualvetsp,expectedvetsp)){
-                inconsistencies++;
-                //log
-                this.vetSpecialtiesDAO.update(expectedvetsp,Datastores.SQLITE);
-            }
-
-        }
-        return 0;
-    }
-
-    public int checkConsistenciesTestOnly(Map<Integer,VetSpecialties> expected) {
-        Map<Integer,VetSpecialties>  actual = this.vetSpecialtiesDAO.getAllVetSpecialties(Datastores.SQLITE);
-        int inconsistencies = 0;
-
-        for(Integer key : expected.keySet()){
-            VetSpecialties expectedvetsp = expected.get(key);
-            VetSpecialties actualvetsp = actual.get(key);
-
-            if(actualvetsp == null){
-                inconsistencies++;
-                // log
-                this.vetSpecialtiesDAO.addVetSpecialties(expectedvetsp,Datastores.SQLITE);
+                this.vetSpecialtiesDAO.add(expectedvetsp,Datastores.SQLITE);
             }
             if(!comapre(actualvetsp,expectedvetsp)){
                 inconsistencies++;
@@ -95,7 +68,30 @@ public class VetSpecialtiesMigration implements IMigration {
         return inconsistencies;
     }
 
-    private boolean comapre(VetSpecialties actualvetsp, VetSpecialties expectedvetsp) {
+    public int checkConsistenciesTestOnly(Map<Integer, VetSpecialty> expected) {
+        Map<Integer, VetSpecialty>  actual = this.vetSpecialtiesDAO.getAll(Datastores.SQLITE);
+        int inconsistencies = 0;
+
+        for(Integer key : expected.keySet()){
+            VetSpecialty expectedvetsp = expected.get(key);
+            VetSpecialty actualvetsp = actual.get(key);
+
+            if(actualvetsp == null){
+                inconsistencies++;
+                // log
+                this.vetSpecialtiesDAO.add(expectedvetsp,Datastores.SQLITE);
+            }
+            if(!comapre(actualvetsp,expectedvetsp)){
+                inconsistencies++;
+                //log
+                this.vetSpecialtiesDAO.update(expectedvetsp,Datastores.SQLITE);
+            }
+
+        }
+        return inconsistencies;
+    }
+
+    private boolean comapre(VetSpecialty actualvetsp, VetSpecialty expectedvetsp) {
         if(actualvetsp != null && actualvetsp.getSpecialty_id() == expectedvetsp.getSpecialty_id() &&
         actualvetsp.getVet_id() == expectedvetsp.getVet_id()){
             return false;
@@ -104,17 +100,18 @@ public class VetSpecialtiesMigration implements IMigration {
     }
 
     @Override
-    public boolean shadowReadWriteConsistencyChecker(Object o) {
+    public boolean shadowReadWriteConsistencyChecker(VetSpecialty vetSpecialty) {
         return false;
     }
 
     @Override
-    public void logInconsistency(Object expected, Object actual) {
+    public void logInconsistency(VetSpecialty expected, VetSpecialty actual) {
 
     }
 
     @Override
     public void closeConnections() throws SQLException {
+        vetSpecialtiesDAO.closeConnections();
 
     }
 }

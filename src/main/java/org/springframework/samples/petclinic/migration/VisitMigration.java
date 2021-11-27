@@ -24,10 +24,10 @@ public class VisitMigration implements IMigration<Visit> {
         this.visitDAO.initTable();
         int numInsert = 0;
 
-        Map<Integer, Visit> visits = this.visitDAO.getAllVisits(Datastores.H2);
+        Map<Integer, Visit> visits = this.visitDAO.getAll(Datastores.H2);
 
         for (Visit visit : visits.values()) {
-            boolean success = this.visitDAO.addVisit(visit, Datastores.SQLITE);
+            boolean success = this.visitDAO.add(visit, Datastores.SQLITE);
             if (success) {
                 numInsert++;
             }
@@ -41,7 +41,7 @@ public class VisitMigration implements IMigration<Visit> {
         int numInsert = 0;
 
         for (Visit visit : visits.values()) {
-            boolean success = this.visitDAO.addVisit(visit, Datastores.SQLITE);
+            boolean success = this.visitDAO.add(visit, Datastores.SQLITE);
             if (success) {
                 numInsert++;
             }
@@ -53,9 +53,9 @@ public class VisitMigration implements IMigration<Visit> {
 
         int inconsistencies = 0;
 
-        Map<Integer, Visit> expected = this.visitDAO.getAllVisits(Datastores.H2);
+        Map<Integer, Visit> expected = this.visitDAO.getAll(Datastores.H2);
 
-        Map<Integer, Visit> actual = this.visitDAO.getAllVisits(Datastores.SQLITE);
+        Map<Integer, Visit> actual = this.visitDAO.getAll(Datastores.SQLITE);
 
         for (Integer key : expected.keySet()) {
             Visit exp = expected.get(key);
@@ -63,7 +63,7 @@ public class VisitMigration implements IMigration<Visit> {
             if (act == null) {
                 inconsistencies++;
                 logInconsistency(exp, null);
-                this.visitDAO.addVisit(exp, Datastores.SQLITE);
+                this.visitDAO.add(exp, Datastores.SQLITE);
             }
             if (act != null && (!exp.getId().equals(act.getId()) || !exp.getPetId().equals(act.getPetId()) ||
                     !exp.getDate().equals(act.getDate()) || !exp.getDescription().equals(act.getDescription()))) {
@@ -81,7 +81,7 @@ public class VisitMigration implements IMigration<Visit> {
 
         int inconsistencies = 0;
 
-        Map<Integer, Visit> actual = this.visitDAO.getAllVisits(Datastores.SQLITE);
+        Map<Integer, Visit> actual = this.visitDAO.getAll(Datastores.SQLITE);
 
         for (Integer key : expected.keySet()) {
             Visit exp = expected.get(key);
@@ -89,7 +89,7 @@ public class VisitMigration implements IMigration<Visit> {
             if (act == null) {
                 inconsistencies++;
                 logInconsistency(exp, null);
-                this.visitDAO.addVisit(exp, Datastores.SQLITE);
+                this.visitDAO.add(exp, Datastores.SQLITE);
             }
             if (act != null && (!exp.getId().equals(act.getId()) || !exp.getPetId().equals(act.getPetId()) ||
                     !exp.getDate().equals(act.getDate()) || !exp.getDescription().equals(act.getDescription()))) {
@@ -106,10 +106,10 @@ public class VisitMigration implements IMigration<Visit> {
 
     public boolean shadowReadWriteConsistencyChecker(Visit exp) {
 
-        Visit act = this.visitDAO.getVisit(exp.getId(), Datastores.SQLITE);
+        Visit act = this.visitDAO.get(exp.getId(), Datastores.SQLITE);
 
         if (act == null) {
-            this.visitDAO.addVisit(exp, Datastores.SQLITE);
+            this.visitDAO.add(exp, Datastores.SQLITE);
 
             logInconsistency(exp, null);
 
@@ -143,7 +143,7 @@ public class VisitMigration implements IMigration<Visit> {
     }
 
     public void shadowWriteToNewDatastore(Visit visit) {
-        this.visitDAO.addVisit(visit, Datastores.SQLITE);
+        this.visitDAO.add(visit, Datastores.SQLITE);
     }
 
     public void closeConnections() throws SQLException {
