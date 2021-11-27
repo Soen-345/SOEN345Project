@@ -4,6 +4,7 @@ package org.springframework.samples.petclinic.migration;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 
+import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.Pet;
 
 
@@ -28,6 +29,8 @@ public class PetMigrationTest {
     static Pet pet4;
     static Pet pet5;
 
+    static Owner owner;
+
 
     @BeforeAll
     public static void setup() {
@@ -42,6 +45,14 @@ public class PetMigrationTest {
         pet4 = Mockito.mock(Pet.class);
         pet5 = Mockito.mock(Pet.class);
 
+        owner = Mockito.mock(Owner.class);
+
+        when(owner.getId()).thenReturn(1);
+        when(owner.getFirstName()).thenReturn("George");
+        when(owner.getLastName()).thenReturn("Franklin");
+        when(owner.getAddress()).thenReturn("110 W. Liberty St.");
+        when(owner.getCity()).thenReturn("Madison");
+        when(owner.getTelephone()).thenReturn("6085551023");
 
         when(pet1.getId()).thenReturn(1);
         when(pet1.getName()).thenReturn("Rusty");
@@ -108,7 +119,7 @@ public class PetMigrationTest {
         oldDataStorePets.put(pet5.getId(), pet5);
 
 
-        petMigration.shadowWriteToNewDatastore(pet5, null);
+        petMigration.shadowWriteToNewDatastore(pet5, owner);
 
 
         assertTrue(petMigration.shadowReadWriteConsistencyChecker(pet5));
