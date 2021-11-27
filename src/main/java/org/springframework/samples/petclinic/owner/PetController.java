@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import org.springframework.samples.petclinic.migration.MigrationToggles;
 import org.springframework.samples.petclinic.migration.PetMigration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -89,18 +90,28 @@ class PetController {
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		}
 		else {
-			this.pets.save(pet);
-
-			this.petMigration.shadowWriteToNewDatastore(pet, owner);
-			this.petMigration.shadowReadWriteConsistencyChecker(pet);
-
+			if (MigrationToggles.isH2Enabled) {
+				this.pets.save(pet);
+			}
+			if (MigrationToggles.isSQLiteEnabled) {
+				this.petMigration.shadowWriteToNewDatastore(pet, owner);
+				this.petMigration.shadowReadWriteConsistencyChecker(pet);
+			}
 			return "redirect:/owners/{ownerId}";
 		}
 	}
 
 	@GetMapping("/pets/{petId}/edit")
 	public String initUpdateForm(@PathVariable("petId") int petId, ModelMap model) {
-		Pet pet = this.pets.findById(petId);
+		Pet pet = null;
+		if (MigrationToggles.isH2Enabled) {
+			pet = this.pets.findById(petId);
+		}
+		if (MigrationToggles.isSQLiteEnabled) {
+			assert pet != null;
+			this.petMigration.shadowReadWriteConsistencyChecker(pet);
+		}
+
 		model.put("pet", pet);
 		return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 	}
@@ -114,11 +125,13 @@ class PetController {
 		}
 		else {
 			owner.addPet(pet);
-			this.pets.save(pet);
-
-			this.petMigration.shadowWriteToNewDatastore(pet, owner);
-			this.petMigration.shadowReadWriteConsistencyChecker(pet);
-
+			if (MigrationToggles.isH2Enabled) {
+				this.pets.save(pet);
+			}
+			if (MigrationToggles.isSQLiteEnabled) {
+				this.petMigration.shadowWriteToNewDatastore(pet, owner);
+				this.petMigration.shadowReadWriteConsistencyChecker(pet);
+			}
 			return "redirect:/owners/{ownerId}";
 		}
 	}

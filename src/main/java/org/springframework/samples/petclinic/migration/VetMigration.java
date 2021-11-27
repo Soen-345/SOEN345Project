@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.vet.Vet;
 
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 
@@ -133,6 +134,10 @@ public class VetMigration implements IMigration<Vet>{
         }
 
         return true;
+    }
+
+    public Collection<Vet> findAll() {
+        return this.vetDAO.getAll(Datastores.SQLITE).values();
     }
 
     public void logInconsistency(Vet expected, Vet actual) {

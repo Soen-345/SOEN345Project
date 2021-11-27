@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.vet;
 
+import org.springframework.samples.petclinic.migration.MigrationToggles;
 import org.springframework.samples.petclinic.migration.VetMigration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,13 +47,17 @@ class VetController {
 		// Here we are returning an object of type 'Vets' rather than a collection of Vet
 		// objects so it is simpler for Object-Xml mapping
 		Vets vets = new Vets();
-		vets.getVetList().addAll(this.vets.findAll());
-		model.put("vets", vets);
 
-		// Shadow Reads & Incremental Replication
-		for (Vet vet : this.vets.findAll()) {
-			vetMigration.shadowReadWriteConsistencyChecker(vet);
+		if (MigrationToggles.isH2Enabled) {
+			vets.getVetList().addAll(this.vets.findAll());
 		}
+
+		if (MigrationToggles.isSQLiteEnabled) {
+			// enable when read only from sqlite
+			// vets.getVetList().addAll(this.vetMigration.findAll());
+		}
+
+		model.put("vets", vets);
 
 		return "vets/vetList";
 	}
@@ -62,7 +67,14 @@ class VetController {
 		// Here we are returning an object of type 'Vets' rather than a collection of Vet
 		// objects so it is simpler for JSon/Object mapping
 		Vets vets = new Vets();
-		vets.getVetList().addAll(this.vets.findAll());
+		if (MigrationToggles.isH2Enabled) {
+			vets.getVetList().addAll(this.vets.findAll());
+		}
+
+		if (MigrationToggles.isSQLiteEnabled) {
+			// enable when read only from sqlite
+			// vets.getVetList().addAll(this.vetMigration.findAll());
+		}
 
 		return vets;
 	}
