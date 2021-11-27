@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="WARN">
-    <Properties>
+<Configuration status="INFO">
+   <Properties>
         <Property name="csvLog.fileName">ownerLog</Property>
         <Property name="file-header">Time-Nanos, Time-Millis, Level, Thread ID, Thread Name, Thread Priority, Message, Logger-FQCN, Logger-Name, Marker, Thrown-Proxy, Source, Context-Map, Context-Stack</Property>
     </Properties>
     <Appenders>
-        <RollingFile name="csvFile" 
+        <RollingFile name="csvFile"
                      fileName="logs/${csvLog.fileName}.csv"
                      filePattern="${csvLog.filename}-%d{MM-dd-yyyy}-%i.csv" >
             <CsvLogEventLayout delimiter="," header="${file-header}\n"/>

@@ -17,6 +17,7 @@ package org.springframework.samples.petclinic.owner;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.springframework.samples.petclinic.migration.OwnerMigration;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
@@ -49,8 +50,8 @@ class OwnerController {
 
     private VisitRepository visits;
 
+    //private static Logger analytics = LogManager.getLogger("Analytics");
     private static Logger analytics = LogManager.getLogger("Analytics");
-
 
 
     public OwnerController(OwnerRepository clinicService, VisitRepository visits) {
@@ -96,9 +97,10 @@ class OwnerController {
         model.put("owner", new Owner());
         if(OwnerToggles.isSearchLastNameEnabled)
             model.put("nameType","Last");
-        if(OwnerToggles.isSearchFirstNameEnabled)
+        if(OwnerToggles.isSearchFirstNameEnabled) {
             model.put("nameType", "First");
-
+            analytics.info("Name processing...");
+        }
         return "owners/findOwners";
     }
 
@@ -124,7 +126,7 @@ class OwnerController {
 
             // find owners by first name
             results = this.owners.findByFirstName(owner.getFirstName());
-            analytics.info("List of names: " + results);
+            analytics.info("Name: " + results);
 
         }
         if(OwnerToggles.isSearchFirstNameEnabled||OwnerToggles.isSearchLastNameEnabled){
