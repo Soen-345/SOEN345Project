@@ -113,7 +113,8 @@ class OwnerController {
             }
 
             if (MigrationToggles.isSQLiteEnabled) {
-                results = ownerMigration.shadowReadByLastName(owner.getLastName());
+              //  results = ownerMigration.shadowReadByLastName(owner.getLastName());
+                this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
             }
 
         }
@@ -127,7 +128,8 @@ class OwnerController {
                 results = this.owners.findByFirstName(owner.getFirstName());
             }
             if (MigrationToggles.isSQLiteEnabled) {
-                results = this.ownerMigration.shadowReadByFirstName(owner.getFirstName());
+              //  results = this.ownerMigration.shadowReadByFirstName(owner.getFirstName());
+                this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
             }
         }
         if (OwnerToggles.isSearchFirstNameEnabled || OwnerToggles.isSearchLastNameEnabled) {
@@ -138,11 +140,6 @@ class OwnerController {
             } else if (results.size() == 1) {
                 // 1 owner found
                 owner = results.iterator().next();
-
-                // shadow read check
-                if (MigrationToggles.isSQLiteEnabled) {
-                    ownerMigration.shadowReadWriteConsistencyChecker(owner);
-                }
 
                 return "redirect:/owners/" + owner.getId();
             } else {
@@ -165,7 +162,7 @@ class OwnerController {
                 owner = this.owners.findById(ownerId);
             }
             if (MigrationToggles.isSQLiteEnabled) {
-                owner = this.ownerMigration.shadowRead(ownerId);
+                this.ownerMigration.shadowReadWriteConsistencyChecker(this.ownerMigration.shadowRead(ownerId));
             }
             assert owner != null;
             model.addAttribute(owner);
@@ -211,11 +208,10 @@ class OwnerController {
             owner = this.owners.findById(ownerId);
         }
         if (MigrationToggles.isSQLiteEnabled) {
-            owner = this.ownerMigration.shadowRead(ownerId);
+            this.ownerMigration.shadowReadWriteConsistencyChecker(this.ownerMigration.shadowRead(ownerId));
         }
         if (owner != null) {
             for (Pet pet : owner.getPets()) {
-                // TODO - shadow read visits
                 pet.setVisitsInternal(visits.findByPetId(pet.getId()));
             }
             mav.addObject(owner);

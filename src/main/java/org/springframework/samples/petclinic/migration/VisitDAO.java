@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.migration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.visit.Visit;
 
 import java.sql.*;
@@ -12,6 +14,8 @@ import java.util.Map;
  * @author Sevag Eordkian
  */
 public class VisitDAO implements IDAO<Visit>{
+
+    private static final Logger log = LoggerFactory.getLogger(VisitDAO.class);
 
     private Connection SQLite_CONNECTION;
     private Connection H2_CONNECTION;
@@ -27,7 +31,7 @@ public class VisitDAO implements IDAO<Visit>{
             Statement statement = SQLite_CONNECTION.createStatement();
             statement.execute(query);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
         }
         this.createVisitTable();
     }
@@ -49,7 +53,7 @@ public class VisitDAO implements IDAO<Visit>{
             statement2.execute(indexQuery);
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 
@@ -71,7 +75,7 @@ public class VisitDAO implements IDAO<Visit>{
                                     resultSet.getString("description")));
                 }
             } catch (SQLException | ParseException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         if (datastore == Datastores.H2) {
@@ -88,7 +92,7 @@ public class VisitDAO implements IDAO<Visit>{
                                     resultSet.getString("description")));
                 }
             } catch (SQLException | ParseException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return visits;
@@ -105,7 +109,7 @@ public class VisitDAO implements IDAO<Visit>{
                 statement.execute(insertQuery);
             }
             catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
                 return false;
             }
         }
@@ -114,7 +118,7 @@ public class VisitDAO implements IDAO<Visit>{
                 Statement statement = H2_CONNECTION.createStatement();
                 statement.execute(insertQuery);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
                 return false;
             }
         }
@@ -130,7 +134,7 @@ public class VisitDAO implements IDAO<Visit>{
                 Statement statement = SQLite_CONNECTION.createStatement();
                 statement.execute(query);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         if (datastore == Datastores.H2) {
@@ -138,7 +142,7 @@ public class VisitDAO implements IDAO<Visit>{
                 Statement statement = H2_CONNECTION.createStatement();
                 statement.execute(query);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
     }
@@ -157,7 +161,7 @@ public class VisitDAO implements IDAO<Visit>{
                                         .parse(resultSet.getString("visit_date"))),
                         resultSet.getString("description"));
             } catch (SQLException | ParseException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         if (datastore == Datastores.H2) {
@@ -169,7 +173,7 @@ public class VisitDAO implements IDAO<Visit>{
                         VisitMigration.convertToLocalDateViaInstant(resultSet.getDate("visit_date")),
                         resultSet.getString("description"));
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return visit;

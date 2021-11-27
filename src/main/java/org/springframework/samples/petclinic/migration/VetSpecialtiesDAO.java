@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.migration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.samples.petclinic.vet.VetSpecialty;
 /**
@@ -13,6 +15,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class VetSpecialtiesDAO implements IDAO<VetSpecialty>{
+
+    private static final Logger log = LoggerFactory.getLogger(VetSpecialtiesDAO.class);
+
     private Connection SQLite_CONNECTION;
     private Connection H2_CONNECTION;
 
@@ -27,7 +32,7 @@ public class VetSpecialtiesDAO implements IDAO<VetSpecialty>{
             Statement statement = SQLite_CONNECTION.createStatement();
             statement.execute(query);
         } catch (SQLException e){
-            System.out.println(e.getMessage());
+            log.warn(e.getMessage());
         }
         this.createVetSpecialities();
     }
@@ -40,7 +45,7 @@ public class VetSpecialtiesDAO implements IDAO<VetSpecialty>{
             Statement statement = SQLite_CONNECTION.createStatement();
             statement.execute(createQuery);
         } catch (SQLException e){
-            System.out.println(e.getMessage());
+            log.warn(e.getMessage());
         }
     }
 
@@ -56,7 +61,7 @@ public class VetSpecialtiesDAO implements IDAO<VetSpecialty>{
                             resultSet.getInt("specialty_id")));
                 }
             }catch (SQLException e){
-                System.out.println(e.getMessage());
+                log.warn(e.getMessage());
             }
         }
         if(datastore == Datastores.H2){
@@ -69,7 +74,7 @@ public class VetSpecialtiesDAO implements IDAO<VetSpecialty>{
                 }
 
             }catch (SQLException e){
-                System.out.println(e.getMessage());
+                log.warn(e.getMessage());
             }
         }
         return vetSpecialties;
@@ -84,7 +89,7 @@ public class VetSpecialtiesDAO implements IDAO<VetSpecialty>{
                 Statement statement = SQLite_CONNECTION.createStatement();
                 statement.execute(insertQuery);
             }catch (SQLException e){
-                System.out.println(e.getMessage());
+                log.warn(e.getMessage());
                 return false;
             }
         }
@@ -93,7 +98,7 @@ public class VetSpecialtiesDAO implements IDAO<VetSpecialty>{
                 Statement statement = H2_CONNECTION.createStatement();
                 statement.execute(insertQuery);
             }catch (SQLException e){
-                System.out.println(e.getMessage());
+                log.warn(e.getMessage());
                 return false;
             }
         }
@@ -110,7 +115,7 @@ public class VetSpecialtiesDAO implements IDAO<VetSpecialty>{
                 vetSpecialty = new VetSpecialty(resultSet.getInt("vet_id"),
                         resultSet.getInt("specialty_id"));
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.warn(e.getMessage());
             }
         }
         if (datastore == Datastores.H2) {
@@ -120,7 +125,7 @@ public class VetSpecialtiesDAO implements IDAO<VetSpecialty>{
                 vetSpecialty = new VetSpecialty(resultSet.getInt("vet_id"),
                         resultSet.getInt("specialty_id"));
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.warn(e.getMessage());
             }
         }
         return vetSpecialty;
@@ -137,7 +142,7 @@ public class VetSpecialtiesDAO implements IDAO<VetSpecialty>{
                 Statement statement = SQLite_CONNECTION.createStatement();
                 statement.execute(query);
             }catch (SQLException e){
-                System.out.println(e.getMessage());
+                log.warn(e.getMessage());
             }
         }
         if (datastore == Datastores.H2){
@@ -145,7 +150,7 @@ public class VetSpecialtiesDAO implements IDAO<VetSpecialty>{
                 Statement statement = H2_CONNECTION.createStatement();
                 statement.execute(query);
             }catch (SQLException e){
-                System.out.println(e.getMessage());
+                log.warn(e.getMessage());
             }
         }
     }

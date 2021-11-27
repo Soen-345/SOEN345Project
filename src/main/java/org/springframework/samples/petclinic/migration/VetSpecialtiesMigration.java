@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.migration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.vet.VetSpecialty;
 
 import java.sql.SQLException;
@@ -9,6 +11,9 @@ import java.util.Map;
  * @author Alireza Ziarizi
  */
 public class VetSpecialtiesMigration implements IMigration<VetSpecialty> {
+
+    private static final Logger log = LoggerFactory.getLogger(VisitMigration.class);
+
     private final VetSpecialtiesDAO vetSpecialtiesDAO;
 
     public VetSpecialtiesMigration() {
@@ -59,7 +64,7 @@ public class VetSpecialtiesMigration implements IMigration<VetSpecialty> {
             }
             if(!compare(actualvetsp,expectedvetsp)){
                 inconsistencies++;
-                //log
+                logInconsistency(expectedvetsp, actualvetsp);
                 this.vetSpecialtiesDAO.update(expectedvetsp,Datastores.SQLITE);
             }
 
@@ -93,9 +98,9 @@ public class VetSpecialtiesMigration implements IMigration<VetSpecialty> {
     private boolean compare(VetSpecialty actualvetsp, VetSpecialty expectedvetsp) {
         if(actualvetsp != null && actualvetsp.getSpecialty_id() == expectedvetsp.getSpecialty_id() &&
         actualvetsp.getVet_id() == expectedvetsp.getVet_id()){
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     public boolean shadowReadWriteConsistencyChecker(VetSpecialty vetSpecialty) {
@@ -104,6 +109,16 @@ public class VetSpecialtiesMigration implements IMigration<VetSpecialty> {
 
 
     public void logInconsistency(VetSpecialty expected, VetSpecialty actual) {
+
+        if (actual == null) {
+            log.warn("Vet Specialty Table Inconsistency - \n " +
+                    "Expected: " + expected.toString() + "\n" +
+                    "Actual: NULL");
+        } else {
+            log.warn("Vet Specialty Table Inconsistency - \n " +
+                    "Expected: " + expected.toString() + "\n"
+                    + "Actual: " + actual.toString());
+        }
 
     }
 

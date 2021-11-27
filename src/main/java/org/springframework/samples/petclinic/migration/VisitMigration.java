@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.migration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.visit.Visit;
 
 import java.sql.SQLException;
@@ -14,6 +16,8 @@ import java.util.Map;
  */
 public class VisitMigration implements IMigration<Visit> {
 
+    private static final Logger log = LoggerFactory.getLogger(VisitMigration.class);
+
     private final VisitDAO visitDAO;
 
     public VisitMigration() {
@@ -21,6 +25,7 @@ public class VisitMigration implements IMigration<Visit> {
     }
 
     public int forklift() {
+
         this.visitDAO.initTable();
         int numInsert = 0;
 
@@ -132,11 +137,11 @@ public class VisitMigration implements IMigration<Visit> {
     public void logInconsistency(Visit expected, Visit actual) {
 
         if (actual == null) {
-            System.out.println("Visit Table Inconsistency - \n " +
+            log.warn("Visit Table Inconsistency - \n " +
                     "Expected: " + expected.getId() + " " + expected.getPetId() + " " + expected.getDate() + " " + expected.getDescription() + "\n"
                     + "Actual: NULL");
         } else {
-            System.out.println("Visit Table Inconsistency - \n " +
+            log.warn("Visit Table Inconsistency - \n " +
                     "Expected: " + expected.getId() + " " + expected.getPetId() + " " + expected.getDate() + " " + expected.getDescription() + "\n"
                     + "Actual: " + actual.getId() + " " + actual.getPetId() + " " + actual.getDate() + " " + actual.getDescription());
         }

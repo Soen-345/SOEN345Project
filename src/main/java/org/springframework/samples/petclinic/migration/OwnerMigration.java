@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.migration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.Pet;
 
@@ -13,6 +15,9 @@ import java.util.Objects;
  * @author Alireza Ziarizi
  */
 public class OwnerMigration implements IMigration<Owner> {
+
+    private static final Logger log = LoggerFactory.getLogger(OwnerMigration.class);
+
     private final OwnerDAO ownerDAO;
     private final PetDAO petDAO;
 
@@ -22,6 +27,7 @@ public class OwnerMigration implements IMigration<Owner> {
     }
 
     public int forklift() {
+
         this.ownerDAO.initTable();
         int numInsert = 0;
         Map<Integer, Owner> owners = this.ownerDAO.getAll(Datastores.H2);
@@ -55,14 +61,14 @@ public class OwnerMigration implements IMigration<Owner> {
 
         for (Integer key : expected.keySet()) {
             Owner expectedOwner = expected.get(key);
-            Owner actualOwener = actual.get(key);
+            Owner actualOwner = actual.get(key);
 
-            if (actualOwener == null) {
+            if (actualOwner == null) {
                 inconsistencies++;
-                // log
+                logInconsistency(expectedOwner, actualOwner);
                 this.ownerDAO.add(expectedOwner, Datastores.SQLITE);
             }
-            if (!compare(actualOwener, expectedOwner)) {
+            if (!compare(actualOwner, expectedOwner)) {
                 inconsistencies++;
                 //log
                 this.ownerDAO.update(expectedOwner, Datastores.SQLITE);
@@ -135,7 +141,15 @@ public class OwnerMigration implements IMigration<Owner> {
 
 
     public void logInconsistency(Owner expected, Owner actual) {
-
+        if (actual == null) {
+            log.warn("Owner Table Inconsistency - \n " +
+                    "Expected: " + expected.toString() + "\n" +
+                    "Actual: NULL");
+        } else {
+            log.warn("Owner Table Inconsistency - \n " +
+                    "Expected: " + expected.toString() + "\n"
+                    + "Actual: " + actual.toString());
+        }
     }
 
 

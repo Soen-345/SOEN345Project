@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.migration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.vet.Vet;
 
 import java.sql.Connection;
@@ -15,6 +17,8 @@ import java.util.Map;
  */
 public class VetDAO implements IDAO<Vet>{
 
+    private static final Logger log = LoggerFactory.getLogger(VetDAO.class);
+
     private Connection SQLite_CONNECTION;
     private Connection H2_CONNECTION;
 
@@ -29,7 +33,7 @@ public class VetDAO implements IDAO<Vet>{
             Statement statement = SQLite_CONNECTION.createStatement();
             statement.execute(query);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
         }
         this.createVetTable();
     }
@@ -48,7 +52,7 @@ public class VetDAO implements IDAO<Vet>{
             Statement statement1 = SQLite_CONNECTION.createStatement();
             statement1.execute(indexQuery);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 
@@ -63,7 +67,7 @@ public class VetDAO implements IDAO<Vet>{
                         resultSet.getString("first_name"),
                         resultSet.getString("last_name"));
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         if (datastore == Datastores.H2) {
@@ -74,7 +78,7 @@ public class VetDAO implements IDAO<Vet>{
                         resultSet.getString("first_name"),
                         resultSet.getString("last_name"));
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return vet;
@@ -94,7 +98,7 @@ public class VetDAO implements IDAO<Vet>{
                                     resultSet.getString("last_name")));
                 }
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         if (datastore == Datastores.H2) {
@@ -108,7 +112,7 @@ public class VetDAO implements IDAO<Vet>{
                                     resultSet.getString("last_name")));
                 }
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
 
@@ -123,7 +127,7 @@ public class VetDAO implements IDAO<Vet>{
                 Statement statement = SQLite_CONNECTION.createStatement();
                 statement.execute(insertQuery);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
                 return false;
             }
         }
@@ -132,7 +136,7 @@ public class VetDAO implements IDAO<Vet>{
                 Statement statement = H2_CONNECTION.createStatement();
                 statement.execute(insertQuery);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
                 return false;
             }
         }
@@ -147,7 +151,7 @@ public class VetDAO implements IDAO<Vet>{
                 Statement statement = SQLite_CONNECTION.createStatement();
                 statement.execute(query);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         if (datastore == Datastores.H2) {
@@ -155,7 +159,7 @@ public class VetDAO implements IDAO<Vet>{
                 Statement statement = H2_CONNECTION.createStatement();
                 statement.execute(query);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
 

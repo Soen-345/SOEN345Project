@@ -19,8 +19,9 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.springframework.samples.petclinic.migration.MigrationToggles;
+import org.springframework.samples.petclinic.migration.PetMigration;
 import org.springframework.samples.petclinic.migration.VisitMigration;
-import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
@@ -48,10 +49,13 @@ class VisitController {
 
 	private final VisitMigration visitMigration;
 
+	private final PetMigration petMigration;
+
 	public VisitController(VisitRepository visits, PetRepository pets) {
 		this.visits = visits;
 		this.pets = pets;
 		this.visitMigration = new VisitMigration();
+		this.petMigration = new PetMigration();
 	}
 
 	@InitBinder
@@ -68,7 +72,16 @@ class VisitController {
 	 */
 	@ModelAttribute("visit")
 	public Visit loadPetWithVisit(@PathVariable("petId") int petId, Map<String, Object> model) {
-		Pet pet = this.pets.findById(petId);
+
+		Pet pet = null;
+		if (MigrationToggles.isH2Enabled) {
+			pet = this.pets.findById(petId);
+		}
+		if (MigrationToggles.isSQLiteEnabled) {
+			this.petMigration.shadowReadWriteConsistencyChecker(this.petMigration.shadowRead(petId));
+		}
+
+		assert pet != null;
 		pet.setVisitsInternal(this.visits.findByPetId(petId));
 		model.put("pet", pet);
 		Visit visit = new Visit();
@@ -76,10 +89,7 @@ class VisitController {
 
 		// Shadow Reads & Incremental Replication
 		for (Visit visitPet : this.visits.findAll()) {
-			boolean consistent = visitMigration.shadowReadWriteConsistencyChecker(visitPet);
-			if (!consistent) {
-				visitMigration.checkConsistencies();
-			}
+			visitMigration.shadowReadWriteConsistencyChecker(visitPet);
 		}
 		return visit;
 	}

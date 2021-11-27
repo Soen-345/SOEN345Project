@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.migration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.vet.Specialty;
 
 import java.sql.*;
@@ -7,6 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SpecialtiesDAO implements IDAO<Specialty> {
+
+    private static final Logger log = LoggerFactory.getLogger(SpecialtiesDAO.class);
+
     private Connection SQLite_CONNECTION;
     private Connection H2_CONNECTION;
 
@@ -21,7 +26,7 @@ public class SpecialtiesDAO implements IDAO<Specialty> {
             Statement statement = SQLite_CONNECTION.createStatement();
             statement.execute(query);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
         }
         this.createSpecialtyTable();
     }
@@ -39,7 +44,7 @@ public class SpecialtiesDAO implements IDAO<Specialty> {
             Statement statement1 = SQLite_CONNECTION.createStatement();
             statement1.execute(indexQuery);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 
@@ -53,7 +58,7 @@ public class SpecialtiesDAO implements IDAO<Specialty> {
                 specialty = new Specialty(resultSet.getString("name"),
                         resultSet.getInt("id"));
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         if (datastore == Datastores.H2) {
@@ -63,7 +68,7 @@ public class SpecialtiesDAO implements IDAO<Specialty> {
                 specialty = new Specialty(resultSet.getString("name"),
                         resultSet.getInt("id"));
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return specialty;
@@ -82,7 +87,7 @@ public class SpecialtiesDAO implements IDAO<Specialty> {
                                     resultSet.getInt("id")));
                 }
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         if (datastore == Datastores.H2) {
@@ -95,7 +100,7 @@ public class SpecialtiesDAO implements IDAO<Specialty> {
                                     resultSet.getInt("id")));
                 }
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
 
@@ -110,7 +115,7 @@ public class SpecialtiesDAO implements IDAO<Specialty> {
                 Statement statement = SQLite_CONNECTION.createStatement();
                 statement.execute(insertQuery);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
                 return false;
             }
         }
@@ -119,7 +124,7 @@ public class SpecialtiesDAO implements IDAO<Specialty> {
                 Statement statement = H2_CONNECTION.createStatement();
                 statement.execute(insertQuery);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
                 return false;
             }
         }
@@ -134,7 +139,7 @@ public class SpecialtiesDAO implements IDAO<Specialty> {
                 Statement statement = SQLite_CONNECTION.createStatement();
                 statement.execute(query);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         if (datastore == Datastores.H2) {
@@ -142,7 +147,7 @@ public class SpecialtiesDAO implements IDAO<Specialty> {
                 Statement statement = H2_CONNECTION.createStatement();
                 statement.execute(query);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
 

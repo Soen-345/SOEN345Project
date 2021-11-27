@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.migration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.vet.Vet;
 
@@ -17,6 +19,9 @@ import java.util.Map;
  * @author Alireza ziarizi
  */
 public class OwnerDAO implements IDAO<Owner> {
+
+    private static final Logger log = LoggerFactory.getLogger(OwnerDAO.class);
+
     private Connection SQLite_CONNECTION;
     private Connection H2_CONNECTION;
 
@@ -32,7 +37,7 @@ public class OwnerDAO implements IDAO<Owner> {
             Statement statement = SQLite_CONNECTION.createStatement();
             statement.execute(query);
         } catch (SQLException e){
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
         }
         this.createOwnerTable();
     }
@@ -51,7 +56,7 @@ public class OwnerDAO implements IDAO<Owner> {
             Statement statement = SQLite_CONNECTION.createStatement();
             statement.execute(createQuery);
         } catch (SQLException e){
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 
@@ -69,7 +74,7 @@ public class OwnerDAO implements IDAO<Owner> {
                         resultSet.getString("city"),
                         resultSet.getString("telephone"));
             } catch (SQLException e){
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         if (datastore == Datastores.H2){
@@ -83,7 +88,7 @@ public class OwnerDAO implements IDAO<Owner> {
                         resultSet.getString("city"),
                         resultSet.getString("telephone"));
             }catch (SQLException e){
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return owner;
@@ -106,7 +111,7 @@ public class OwnerDAO implements IDAO<Owner> {
                                     resultSet.getString("telephone")));
                 }
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         if(datastore == Datastores.H2) {
@@ -123,7 +128,7 @@ public class OwnerDAO implements IDAO<Owner> {
                                     resultSet.getString("telephone")));
                 }
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
      return owner;
@@ -138,7 +143,7 @@ public class OwnerDAO implements IDAO<Owner> {
                 Statement statement = SQLite_CONNECTION.createStatement();
                 statement.execute(insertQuery);
             }catch (SQLException e){
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
                 return false;
             }
         }
@@ -147,7 +152,7 @@ public class OwnerDAO implements IDAO<Owner> {
                 Statement statement = H2_CONNECTION.createStatement();
                 statement.execute(insertQuery);
             }catch (SQLException e){
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
                 return false;
             }
         }
@@ -155,15 +160,15 @@ public class OwnerDAO implements IDAO<Owner> {
     }
 
     public void update(Owner owner, Datastores datastore){
-        String query = "UPDATE owners SET first_name =" + owner.getFirstName() + ", last_name = " + owner.getLastName() +
-                ", address = " + owner.getLastName() + ", city = " + owner.getCity() + ", telephone = '" + owner.getTelephone()
-                + "'WHERE id = " + owner.getId() + ";";
+        String query = "UPDATE owners SET first_name = '" + owner.getFirstName() + "', last_name = '" + owner.getLastName() +
+                "', address = '" + owner.getAddress() + "', city = '" + owner.getCity() + "', telephone = '" + owner.getTelephone()
+                + "' WHERE id = " + owner.getId() + ";";
         if (datastore == Datastores.SQLITE) {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
                 statement.execute(query);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         if (datastore == Datastores.H2) {
@@ -171,9 +176,54 @@ public class OwnerDAO implements IDAO<Owner> {
                 Statement statement = H2_CONNECTION.createStatement();
                 statement.execute(query);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
+    }
+
+
+    public Collection<Owner> getByLastName(String lastName, Datastores datastore) {
+        Collection<Owner> owners = new HashSet<>();
+        String query = "SELECT id, first_name, last_name, address, city, telephone FROM owners WHERE last_name = '" + lastName + "';";
+        if(datastore == Datastores.SQLITE) {
+            try {
+                Statement statement = SQLite_CONNECTION.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                while (resultSet.next()) {
+                    owners.add(new Owner(resultSet.getInt("id"),
+                                    resultSet.getString("first_name"),
+                                    resultSet.getString("last_name"),
+                                    resultSet.getString("address"),
+                                    resultSet.getString("city"),
+                                    resultSet.getString("telephone")));
+                }
+            } catch (SQLException e) {
+                log.error(e.getMessage());
+            }
+        }
+        return owners;
+    }
+
+    public Collection<Owner> getByFirstName(String firstName, Datastores datastore) {
+        Collection<Owner> owners = new HashSet<>();
+        String query = "SELECT id, first_name, last_name, address, city, telephone FROM owners WHERE first_name = '" + firstName + "';";
+        if(datastore == Datastores.SQLITE) {
+            try {
+                Statement statement = SQLite_CONNECTION.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                while (resultSet.next()) {
+                    owners.add(new Owner(resultSet.getInt("id"),
+                                    resultSet.getString("first_name"),
+                                    resultSet.getString("last_name"),
+                                    resultSet.getString("address"),
+                                    resultSet.getString("city"),
+                                    resultSet.getString("telephone")));
+                }
+            } catch (SQLException e) {
+                log.error(e.getMessage());
+            }
+        }
+        return owners;
     }
 
 
@@ -183,47 +233,4 @@ public class OwnerDAO implements IDAO<Owner> {
         H2_CONNECTION.close();
     }
 
-    public Collection<Owner> getByLastName(String lastName, Datastores datastore) {
-        Collection<Owner> owners = new HashSet<>();
-        String query = "SELECT id, first_name, last_name, address, city, telephone FROM owners WHERE last_name = " + lastName + ";";
-        if(datastore == Datastores.SQLITE) {
-            try {
-                Statement statement = SQLite_CONNECTION.createStatement();
-                ResultSet resultSet = statement.executeQuery(query);
-                while (resultSet.next()) {
-                    owners.add(new Owner(resultSet.getInt("id"),
-                                    resultSet.getString("first_name"),
-                                    resultSet.getString("last_name"),
-                                    resultSet.getString("address"),
-                                    resultSet.getString("city"),
-                                    resultSet.getString("telephone")));
-                }
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        return owners;
-    }
-
-    public Collection<Owner> getByFirstName(String firstName, Datastores datastore) {
-        Collection<Owner> owners = new HashSet<>();
-        String query = "SELECT id, first_name, last_name, address, city, telephone FROM owners WHERE first_name = " + firstName + ";";
-        if(datastore == Datastores.SQLITE) {
-            try {
-                Statement statement = SQLite_CONNECTION.createStatement();
-                ResultSet resultSet = statement.executeQuery(query);
-                while (resultSet.next()) {
-                    owners.add(new Owner(resultSet.getInt("id"),
-                                    resultSet.getString("first_name"),
-                                    resultSet.getString("last_name"),
-                                    resultSet.getString("address"),
-                                    resultSet.getString("city"),
-                                    resultSet.getString("telephone")));
-                }
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        return owners;
-    }
 }
