@@ -23,10 +23,10 @@ public class VetMigration implements IMigration<Vet>{
         this.vetDAO.initTable();
         int numInsert = 0;
 
-        Map<Integer, Vet> vets = this.vetDAO.getAllVets(Datastores.H2);
+        Map<Integer, Vet> vets = this.vetDAO.getAll(Datastores.H2);
 
         for (Vet vet : vets.values()) {
-            boolean success = this.vetDAO.addVet(vet, Datastores.SQLITE);
+            boolean success = this.vetDAO.add(vet, Datastores.SQLITE);
             if (success) {
                 numInsert++;
             }
@@ -40,7 +40,7 @@ public class VetMigration implements IMigration<Vet>{
         int numInsert = 0;
 
         for (Vet vet : vets.values()) {
-            boolean success = this.vetDAO.addVet(vet, Datastores.SQLITE);
+            boolean success = this.vetDAO.add(vet, Datastores.SQLITE);
             if (success) {
                 numInsert++;
             }
@@ -53,10 +53,9 @@ public class VetMigration implements IMigration<Vet>{
 
         int inconsistencies = 0;
 
+        Map<Integer, Vet> expected = this.vetDAO.getAll(Datastores.H2);
 
-        Map<Integer, Vet> expected = this.vetDAO.getAllVets(Datastores.H2);
-
-        Map<Integer, Vet> actual = this.vetDAO.getAllVets(Datastores.SQLITE);
+        Map<Integer, Vet> actual = this.vetDAO.getAll(Datastores.SQLITE);
 
         for (Integer key : expected.keySet()) {
             Vet exp = expected.get(key);
@@ -64,7 +63,7 @@ public class VetMigration implements IMigration<Vet>{
             if (act == null) {
                 inconsistencies++;
                 logInconsistency(exp, null);
-                this.vetDAO.addVet(exp, Datastores.SQLITE);
+                this.vetDAO.add(exp, Datastores.SQLITE);
             }
             if (act != null && (!Objects.equals(exp.getId(), act.getId()) || !exp.getFirstName().equals(act.getFirstName()) ||
                     !exp.getLastName().equals(act.getLastName()))) {
@@ -83,7 +82,7 @@ public class VetMigration implements IMigration<Vet>{
 
         int inconsistencies = 0;
 
-        Map<Integer, Vet> actual = this.vetDAO.getAllVets(Datastores.SQLITE);
+        Map<Integer, Vet> actual = this.vetDAO.getAll(Datastores.SQLITE);
 
         for (Integer key : expected.keySet()) {
             Vet exp = expected.get(key);
@@ -91,7 +90,7 @@ public class VetMigration implements IMigration<Vet>{
             if (act == null) {
                 inconsistencies++;
                 logInconsistency(exp, null);
-                this.vetDAO.addVet(exp, Datastores.SQLITE);
+                this.vetDAO.add(exp, Datastores.SQLITE);
             }
             if (act != null && (!Objects.equals(exp.getId(), act.getId()) || !exp.getFirstName().equals(act.getFirstName()) ||
                     !exp.getLastName().equals(act.getLastName()))) {
@@ -108,10 +107,10 @@ public class VetMigration implements IMigration<Vet>{
 
     public boolean shadowReadWriteConsistencyChecker(Vet exp) {
 
-        Vet act = this.vetDAO.getVet(exp.getId(), Datastores.SQLITE);
+        Vet act = this.vetDAO.get(exp.getId(), Datastores.SQLITE);
 
         if (act == null) {
-            this.vetDAO.addVet(exp, Datastores.SQLITE);
+            this.vetDAO.add(exp, Datastores.SQLITE);
 
             logInconsistency(exp, null);
 
@@ -145,7 +144,7 @@ public class VetMigration implements IMigration<Vet>{
     }
 
     public void shadowWriteToNewDatastore(Vet vet) {
-        this.vetDAO.addVet(vet, Datastores.SQLITE);
+        this.vetDAO.add(vet, Datastores.SQLITE);
     }
 
     public void closeConnections() throws SQLException {

@@ -2,19 +2,16 @@ package org.springframework.samples.petclinic.migration;
 
 import org.springframework.samples.petclinic.visit.Visit;
 
-import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author Sevag Eordkian
  */
-public class VisitDAO {
+public class VisitDAO implements IDAO<Visit>{
 
     private Connection SQLite_CONNECTION;
     private Connection H2_CONNECTION;
@@ -24,7 +21,7 @@ public class VisitDAO {
         H2_CONNECTION = DatastoreConnection.connectH2();
     }
 
-    protected void initTable() {
+    public void initTable() {
         String query = "DROP TABLE IF EXISTS visits;";
         try {
             Statement statement = SQLite_CONNECTION.createStatement();
@@ -35,8 +32,7 @@ public class VisitDAO {
         this.createVisitTable();
     }
 
-    protected void createVisitTable() {
-
+    private void createVisitTable() {
         String createQuery =
                 "CREATE TABLE IF NOT EXISTS visits (\n" +
                         "                        id          INTEGER IDENTITY PRIMARY KEY,\n" +
@@ -57,7 +53,7 @@ public class VisitDAO {
         }
     }
 
-    protected Map<Integer, Visit> getAllVisits(Datastores datastore) {
+    public Map<Integer, Visit> getAll(Datastores datastore) {
         Map<Integer, Visit> visits = new HashMap<>();
         String query = "SELECT * FROM visits;";
 
@@ -98,7 +94,7 @@ public class VisitDAO {
         return visits;
     }
 
-    protected boolean addVisit(Visit visit, Datastores datastore) {
+    public boolean add(Visit visit, Datastores datastore) {
         String insertQuery = "INSERT INTO visits (id, pet_id, visit_date, description) " +
                 "VALUES (" + visit.getId() + "," + visit.getPetId() + ",'" +
                 java.sql.Date.valueOf(visit.getDate()) +
@@ -125,7 +121,7 @@ public class VisitDAO {
         return true;
     }
 
-    protected void update(Visit visit, Datastores datastore) {
+    public void update(Visit visit, Datastores datastore) {
         String query = "UPDATE visits SET pet_id = " + visit.getPetId()
                 + ", visit_date = " + Date.valueOf(visit.getDate())
                 +", description = '" + visit.getDescription() + "' WHERE id = " + visit.getId() + ";";
@@ -147,7 +143,7 @@ public class VisitDAO {
         }
     }
 
-    protected Visit getVisit(Integer visitId, Datastores datastore) {
+    public Visit get(Integer visitId, Datastores datastore) {
         Visit visit = null;
         String query = "SELECT id, pet_id, visit_date, description FROM visits WHERE id = " + visitId + ";";
         if (datastore == Datastores.SQLITE) {
@@ -179,7 +175,7 @@ public class VisitDAO {
         return visit;
     }
 
-    protected void closeConnections() throws SQLException {
+    public void closeConnections() throws SQLException {
         SQLite_CONNECTION.close();
         H2_CONNECTION.close();
     }

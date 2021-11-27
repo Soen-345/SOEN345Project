@@ -8,13 +8,15 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 /**
  * @author Alireza ziarizi
  */
-public class OwnerDAO {
+public class OwnerDAO implements IDAO<Owner> {
     private Connection SQLite_CONNECTION;
     private Connection H2_CONNECTION;
 
@@ -24,8 +26,7 @@ public class OwnerDAO {
         H2_CONNECTION = DatastoreConnection.connectH2();
     }
 
-    protected void initTable(){
-
+    public void initTable(){
         String query = "DROP TABLE IF EXISTS owners;";
         try{
             Statement statement = SQLite_CONNECTION.createStatement();
@@ -36,7 +37,7 @@ public class OwnerDAO {
         this.createOwnerTable();
     }
 
-    protected void createOwnerTable(){
+    private void createOwnerTable(){
         String createQuery =
                 "CREATE TABLE IF NOT EXISTS owners (\n" +
                 "                      id         INTEGER IDENTITY PRIMARY KEY,\n" +
@@ -54,7 +55,7 @@ public class OwnerDAO {
         }
     }
 
-    protected Owner getOwner(Integer ownerId, Datastores datastore){
+    public Owner get(Integer ownerId, Datastores datastore){
         Owner owner = null;
         String query = "SELECT id, first_name, last_name, address, city, telephone FROM owners WHERE id = " + ownerId + ";";
         if(datastore == Datastores.SQLITE) {
@@ -88,7 +89,7 @@ public class OwnerDAO {
         return owner;
     }
 
-    protected Map<Integer, Owner> getAllOwners(Datastores datastore){
+    public Map<Integer, Owner> getAll(Datastores datastore){
         Map<Integer,Owner> owner = new HashMap<>();
         String query = "SELECT * FROM owners;";
         if(datastore == Datastores.SQLITE) {
@@ -128,7 +129,7 @@ public class OwnerDAO {
      return owner;
     }
 
-    protected boolean addOwner(Owner owner, Datastores datastore){
+    public boolean add(Owner owner, Datastores datastore){
         String insertQuery = "INSERT INTO owners (id, first_name, last_name, address, city, telephone) VALUES (" + owner.getId() + ",'"
                 + owner.getFirstName() + "','" + owner.getLastName() + "','" + owner.getAddress() + "','" + owner.getCity() +
                 "','" + owner.getTelephone() + "');";
@@ -153,7 +154,7 @@ public class OwnerDAO {
         return true;
     }
 
-    protected void update(Owner owner, Datastores datastore){
+    public void update(Owner owner, Datastores datastore){
         String query = "UPDATE owners SET first_name =" + owner.getFirstName() + ", last_name = " + owner.getLastName() +
                 ", address = " + owner.getLastName() + ", city = " + owner.getCity() + ", telephone = '" + owner.getTelephone()
                 + "'WHERE id = " + owner.getId() + ";";
@@ -180,5 +181,49 @@ public class OwnerDAO {
     public void closeConnections() throws SQLException {
         SQLite_CONNECTION.close();
         H2_CONNECTION.close();
+    }
+
+    public Collection<Owner> getByLastName(String lastName, Datastores datastore) {
+        Collection<Owner> owners = new HashSet<>();
+        String query = "SELECT id, first_name, last_name, address, city, telephone FROM owners WHERE last_name = " + lastName + ";";
+        if(datastore == Datastores.SQLITE) {
+            try {
+                Statement statement = SQLite_CONNECTION.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                while (resultSet.next()) {
+                    owners.add(new Owner(resultSet.getInt("id"),
+                                    resultSet.getString("first_name"),
+                                    resultSet.getString("last_name"),
+                                    resultSet.getString("address"),
+                                    resultSet.getString("city"),
+                                    resultSet.getString("telephone")));
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return owners;
+    }
+
+    public Collection<Owner> getByFirstName(String firstName, Datastores datastore) {
+        Collection<Owner> owners = new HashSet<>();
+        String query = "SELECT id, first_name, last_name, address, city, telephone FROM owners WHERE first_name = " + firstName + ";";
+        if(datastore == Datastores.SQLITE) {
+            try {
+                Statement statement = SQLite_CONNECTION.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                while (resultSet.next()) {
+                    owners.add(new Owner(resultSet.getInt("id"),
+                                    resultSet.getString("first_name"),
+                                    resultSet.getString("last_name"),
+                                    resultSet.getString("address"),
+                                    resultSet.getString("city"),
+                                    resultSet.getString("telephone")));
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return owners;
     }
 }
