@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.migration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.Pet;
 import org.springframework.samples.petclinic.owner.PetType;
@@ -23,6 +25,8 @@ import java.sql.Statement;
 
 public class PetDAO implements IDAO<Pet> {
 
+    private static final Logger log = LoggerFactory.getLogger(PetDAO.class);
+
     private final Connection SQLite_CONNECTION;
     private Connection H2_CONNECTION;
 
@@ -37,7 +41,7 @@ public class PetDAO implements IDAO<Pet> {
             Statement statement = SQLite_CONNECTION.createStatement();
             statement.execute(query);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
         }
         this.createPetTable();
     }
@@ -60,7 +64,7 @@ public class PetDAO implements IDAO<Pet> {
             Statement statement1 = SQLite_CONNECTION.createStatement();
             statement1.execute(indexQuery);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 
@@ -80,7 +84,7 @@ public class PetDAO implements IDAO<Pet> {
                 pet.setType(new PetType(resultSet.getInt("type_id")));
 
             } catch (SQLException | ParseException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         if (datastore == Datastores.H2) {
@@ -96,7 +100,7 @@ public class PetDAO implements IDAO<Pet> {
                 pet.setType(new PetType(resultSet.getInt("type_id")));
 
             } catch (SQLException | ParseException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return pet;
@@ -122,7 +126,7 @@ public class PetDAO implements IDAO<Pet> {
                     pets.put(resultSet.getInt("id"), pet);
                 }
             } catch (SQLException | ParseException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         if (datastore == Datastores.H2) {
@@ -142,7 +146,7 @@ public class PetDAO implements IDAO<Pet> {
 
                 }
             } catch (SQLException | ParseException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
 
@@ -157,7 +161,7 @@ public class PetDAO implements IDAO<Pet> {
                 Statement statement = SQLite_CONNECTION.createStatement();
                 statement.execute(insertQuery);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
                 return false;
             }
         }
@@ -166,7 +170,7 @@ public class PetDAO implements IDAO<Pet> {
                 Statement statement = H2_CONNECTION.createStatement();
                 statement.execute(insertQuery);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
                 return false;
             }
         }
@@ -182,7 +186,7 @@ public class PetDAO implements IDAO<Pet> {
                 Statement statement = SQLite_CONNECTION.createStatement();
                 statement.execute(query);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         if (datastore == Datastores.H2) {
@@ -190,7 +194,7 @@ public class PetDAO implements IDAO<Pet> {
                 Statement statement = H2_CONNECTION.createStatement();
                 statement.execute(query);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
 
@@ -208,11 +212,10 @@ public class PetDAO implements IDAO<Pet> {
                             resultSet.getString("name"),
                             PetMigration.convertToLocalDate(new SimpleDateFormat("yyyy-MM-dd")
                                     .parse(resultSet.getString("birth_date"))));
-
                     pets.add(pet);
                 }
             } catch (SQLException | ParseException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return pets;

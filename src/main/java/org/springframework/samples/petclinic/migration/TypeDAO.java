@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.migration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.owner.PetType;
 
 import java.sql.Connection;
@@ -10,6 +12,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TypeDAO implements IDAO<PetType>{
+
+    private static final Logger log = LoggerFactory.getLogger(TypeDAO.class);
+
     private Connection SQLite_CONNECTION;
     private Connection H2_CONNECTION;
 
@@ -24,7 +29,7 @@ public class TypeDAO implements IDAO<PetType>{
             Statement statement = SQLite_CONNECTION.createStatement();
             statement.execute(query);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
         }
         this.createTypeTable();
     }
@@ -42,7 +47,7 @@ public class TypeDAO implements IDAO<PetType>{
             Statement statement1 = SQLite_CONNECTION.createStatement();
             statement1.execute(indexQuery);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 
@@ -56,7 +61,7 @@ public class TypeDAO implements IDAO<PetType>{
                 type = new PetType(resultSet.getInt("id"),
                         resultSet.getString("name"));
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         if (datastore == Datastores.H2) {
@@ -66,7 +71,7 @@ public class TypeDAO implements IDAO<PetType>{
                 type = new PetType(resultSet.getInt("id"),
                         resultSet.getString("name"));
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return type;
@@ -85,7 +90,7 @@ public class TypeDAO implements IDAO<PetType>{
                                     resultSet.getString("name")));
                 }
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         if (datastore == Datastores.H2) {
@@ -98,7 +103,7 @@ public class TypeDAO implements IDAO<PetType>{
                                     resultSet.getString("name")));
                 }
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
 
@@ -113,7 +118,7 @@ public class TypeDAO implements IDAO<PetType>{
                 Statement statement = SQLite_CONNECTION.createStatement();
                 statement.execute(insertQuery);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
                 return false;
             }
         }
@@ -122,7 +127,7 @@ public class TypeDAO implements IDAO<PetType>{
                 Statement statement = H2_CONNECTION.createStatement();
                 statement.execute(insertQuery);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
                 return false;
             }
         }
@@ -137,7 +142,7 @@ public class TypeDAO implements IDAO<PetType>{
                 Statement statement = SQLite_CONNECTION.createStatement();
                 statement.execute(query);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         if (datastore == Datastores.H2) {
@@ -145,7 +150,7 @@ public class TypeDAO implements IDAO<PetType>{
                 Statement statement = H2_CONNECTION.createStatement();
                 statement.execute(query);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
 

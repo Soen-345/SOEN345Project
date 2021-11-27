@@ -1,10 +1,14 @@
 package org.springframework.samples.petclinic.migration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sqlite.SQLiteConnection;
 
 import java.sql.*;
 
 public class DatastoreConnection {
+
+    private static final Logger log = LoggerFactory.getLogger(DatastoreConnection.class);
 
     private static final String SQLite_URL = "jdbc:sqlite:pet-clinic";
     private static final String SQLite_URL_TEST = "jdbc:sqlite:test-pet-clinic";
@@ -24,20 +28,16 @@ public class DatastoreConnection {
             try {
                 if (SQLite_TEST_CONNECTION != null && !SQLite_TEST_CONNECTION.isClosed()) {
                     conn = SQLite_TEST_CONNECTION;
-                    System.out.println("***Returning existing connection to test SQLite***");
                 }
                 else {
 
                     conn = DriverManager.getConnection(SQLite_URL_TEST);
                     SQLite_TEST_CONNECTION = conn;
-                    System.out.println("***Connection to test SQLite successful***");
+                    log.info("Connection to test SQLite successful");
                 }
-
-
-
             }
             catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         else {
@@ -45,17 +45,16 @@ public class DatastoreConnection {
 
                 if (SQLite_CONNECTION != null && !SQLite_CONNECTION.isClosed()) {
                     conn = SQLite_CONNECTION;
-                    System.out.println("***Returning existing connection to SQLite***");
                 }
                 else {
                     conn = DriverManager.getConnection(SQLite_URL);
                     SQLite_CONNECTION = conn;
-                    System.out.println("***Connection to SQLite successful***");
+                    log.info("Connection to SQLite successful");
                 }
 
             }
             catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
 
@@ -67,18 +66,17 @@ public class DatastoreConnection {
         try {
             if (H2_CONNECTION != null) {
                 conn = H2_CONNECTION;
-                System.out.println("***Returning existing connection to H2***");
             }
             else {
                 conn = DriverManager.getConnection(H2_URL, USERNAME, PASSWORD);
                 H2_CONNECTION = conn;
-                System.out.println("***Connection to H2 successful***");
+                log.info("Connection to H2 successful");
             }
 
 
         }
         catch (SQLException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
         }
         return conn;
     }

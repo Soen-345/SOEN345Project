@@ -1,18 +1,19 @@
 package org.springframework.samples.petclinic.migration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.Pet;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Collection;
-import java.util.Date;
 import java.util.Map;
 import java.sql.SQLException;
 import java.util.Objects;
 
 public class PetMigration implements IMigration<Pet> {
 
+    private static final Logger log = LoggerFactory.getLogger(PetMigration.class);
 
     private final PetDAO petDAO;
 
@@ -21,6 +22,7 @@ public class PetMigration implements IMigration<Pet> {
     }
 
     public int forklift() {
+
         this.petDAO.initTable();
         int numInsert = 0;
 
@@ -133,11 +135,11 @@ public class PetMigration implements IMigration<Pet> {
     public void logInconsistency(Pet expected, Pet actual) {
 
         if (actual == null) {
-            System.out.println("Pet Table Inconsistency - \n " +
+            log.warn("Pet Table Inconsistency - \n " +
                     "Expected: " + expected.getId() + " " + expected.getName() + " " + expected.getBirthDate() + " " + expected.getTypeId() + " " + expected.getOwnerId() + "\n"
                     + "Actual: NULL");
         } else {
-            System.out.println("Pet Table Inconsistency - \n " +
+            log.warn("Pet Table Inconsistency - \n " +
                     "Expected: " + expected.getId() + " " + expected.getName() + " " + expected.getBirthDate() + " " + expected.getTypeId() + " " + expected.getOwnerId() + "\n"
                     + "Actual: " + actual.getId() + " " + actual.getName() + " " + actual.getBirthDate() + " " + actual.getTypeId() + " " + actual.getOwnerId());
         }
@@ -145,7 +147,12 @@ public class PetMigration implements IMigration<Pet> {
 
     public void shadowWriteToNewDatastore(Pet pet, Owner owner) {
         pet.setOwner(owner);
+        owner.addPet(pet);
         this.petDAO.add(pet, Datastores.SQLITE);
+    }
+
+    public Pet shadowRead(Integer petId) {
+        return this.petDAO.get(petId, Datastores.SQLITE);
     }
 
     public void closeConnections() throws SQLException {

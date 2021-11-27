@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.migration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.owner.PetType;
 
 import java.sql.SQLException;
@@ -7,6 +9,8 @@ import java.util.Map;
 import java.util.Objects;
 
 public class TypeMigration implements IMigration<PetType> {
+
+    private static final Logger log = LoggerFactory.getLogger(TypeMigration.class);
     private final TypeDAO typeDAO;
 
     public TypeMigration() {
@@ -14,6 +18,7 @@ public class TypeMigration implements IMigration<PetType> {
     }
 
     public int forklift() {
+
         this.typeDAO.initTable();
         int numInsert = 0;
 
@@ -125,11 +130,11 @@ public class TypeMigration implements IMigration<PetType> {
     public void logInconsistency(PetType expected, PetType actual) {
 
         if (actual == null) {
-            System.out.println("Types Table Inconsistency - \n " +
+            log.warn("Types Table Inconsistency - \n " +
                     "Expected: " + expected.getId() + " " +   expected.getName() + "\n"
                     + "Actual: NULL");
         } else {
-            System.out.println("Types Table Inconsistency - \n " +
+            log.warn("Types Table Inconsistency - \n " +
                     "Expected: " + expected.getId() + " "  + expected.getName() + "\n"
                     + "Actual: " + actual.getId() + " "  + actual.getName());
         }

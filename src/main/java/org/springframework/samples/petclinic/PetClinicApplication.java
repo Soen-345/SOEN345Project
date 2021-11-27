@@ -40,10 +40,11 @@ public class PetClinicApplication {
 	public static void main(String[] args) {
 
 		MigrationToggles.isUnderTest = false;
-		MigrationToggles.isSQLiteEnabled = false;
+		MigrationToggles.isSQLiteEnabled = true;
 		MigrationToggles.isH2Enabled = true;
 
 		SpringApplication.run(PetClinicApplication.class, args);
+
 	}
 
 }

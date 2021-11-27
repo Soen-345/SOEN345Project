@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.migration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.vet.Vet;
 
 import java.sql.SQLException;
@@ -13,6 +15,8 @@ import java.util.Objects;
 
 public class VetMigration implements IMigration<Vet>{
 
+    private static final Logger log = LoggerFactory.getLogger(VetMigration.class);
+
     private final VetDAO vetDAO;
 
     public VetMigration() {
@@ -20,6 +24,7 @@ public class VetMigration implements IMigration<Vet>{
     }
 
     public int forklift() {
+
         this.vetDAO.initTable();
         int numInsert = 0;
 
@@ -133,11 +138,11 @@ public class VetMigration implements IMigration<Vet>{
     public void logInconsistency(Vet expected, Vet actual) {
 
         if (actual == null) {
-            System.out.println("Vet Table Inconsistency - \n " +
+            log.warn("Vet Table Inconsistency - \n " +
                     "Expected: " + expected.getId() + " " + expected.getFirstName() + " " + expected.getLastName() + "\n"
                     + "Actual: NULL");
         } else {
-            System.out.println("Vet Table Inconsistency - \n " +
+            log.warn("Vet Table Inconsistency - \n " +
                     "Expected: " + expected.getId() + " " + expected.getFirstName() + " " + expected.getLastName() + "\n"
                     + "Actual: " + actual.getId() + " " + actual.getFirstName() + " " + actual.getLastName());
         }
