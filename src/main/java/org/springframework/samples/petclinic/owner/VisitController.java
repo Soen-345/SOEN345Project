@@ -87,10 +87,6 @@ class VisitController {
 		Visit visit = new Visit();
 		pet.addVisit(visit);
 
-		// Shadow Reads & Incremental Replication
-		for (Visit visitPet : this.visits.findAll()) {
-			visitMigration.shadowReadWriteConsistencyChecker(visitPet);
-		}
 		return visit;
 	}
 
@@ -107,11 +103,13 @@ class VisitController {
 			return "pets/createOrUpdateVisitForm";
 		}
 		else {
-			this.visits.save(visit);
-
-			this.visitMigration.shadowWriteToNewDatastore(visit);
-			this.visitMigration.shadowReadWriteConsistencyChecker(visit);
-
+			if (MigrationToggles.isH2Enabled) {
+				this.visits.save(visit);
+			}
+			if (MigrationToggles.isSQLiteEnabled) {
+				this.visitMigration.shadowWriteToNewDatastore(visit);
+				this.visitMigration.shadowReadWriteConsistencyChecker(visit);
+			}
 			return "redirect:/owners/{ownerId}";
 		}
 	}

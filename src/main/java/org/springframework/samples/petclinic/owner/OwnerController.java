@@ -77,10 +77,14 @@ class OwnerController {
             if (result.hasErrors()) {
                 return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
             } else {
-                this.owners.save(owner);
-                // shadow writing to new database
-                this.ownerMigration.shadowWriteToNewDatastore(owner);
-                this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
+                if (MigrationToggles.isH2Enabled) {
+                    this.owners.save(owner);
+                }
+                if (MigrationToggles.isSQLiteEnabled) {
+                    this.ownerMigration.shadowWriteToNewDatastore(owner);
+                    this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
+                }
+
                 return "redirect:/owners/" + owner.getId();
             }
         }
@@ -90,10 +94,12 @@ class OwnerController {
     @GetMapping("/owners/find")
     public String initFindForm(Map<String, Object> model) {
         model.put("owner", new Owner());
-        if (OwnerToggles.isSearchLastNameEnabled)
+        if (OwnerToggles.isSearchLastNameEnabled) {
             model.put("nameType", "Last");
-        if (OwnerToggles.isSearchFirstNameEnabled)
+        }
+        if (OwnerToggles.isSearchFirstNameEnabled) {
             model.put("nameType", "First");
+        }
 
         return "owners/findOwners";
     }
@@ -113,7 +119,7 @@ class OwnerController {
             }
 
             if (MigrationToggles.isSQLiteEnabled) {
-              //  results = ownerMigration.shadowReadByLastName(owner.getLastName());
+                //  results = ownerMigration.shadowReadByLastName(owner.getLastName());
                 this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
             }
 
@@ -128,7 +134,7 @@ class OwnerController {
                 results = this.owners.findByFirstName(owner.getFirstName());
             }
             if (MigrationToggles.isSQLiteEnabled) {
-              //  results = this.ownerMigration.shadowReadByFirstName(owner.getFirstName());
+                //  results = this.ownerMigration.shadowReadByFirstName(owner.getFirstName());
                 this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
             }
         }

@@ -155,7 +155,7 @@ public class PetDAO implements IDAO<Pet> {
 
     public boolean add(Pet pet, Datastores datastore) {
         String insertQuery = "INSERT INTO pets (id, name, birth_date, type_id, owner_id) VALUES (" + pet.getId()
-                + ",'" + pet.getName() + "','" + Date.valueOf(pet.getBirthDate()) + "','" + pet.getTypeId() + "','" + pet.getOwnerId() + "');";
+                + ",'" + pet.getName() + "','" + Date.valueOf(pet.getBirthDate()) + "'," + pet.getTypeId() + "," + pet.getOwnerId() + ");";
         if (datastore == Datastores.SQLITE) {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();

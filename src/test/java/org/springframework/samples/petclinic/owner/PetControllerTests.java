@@ -17,7 +17,6 @@
 package org.springframework.samples.petclinic.owner;
 
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -35,6 +34,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.time.LocalDate;
 
 /**
  * Test class for the {@link PetController}
@@ -73,6 +74,7 @@ class PetControllerTests {
 		when(max.getName()).thenReturn("max");
 		when(max.getOwner()).thenReturn(betty);
 		when(max.getType()).thenReturn(hamster);
+		when(max.getBirthDate()).thenReturn(LocalDate.now());
 		when(hamster.getName()).thenReturn("hamster");
 		when(betty.getPet("max")).thenReturn(max);
 		given(this.pets.findPetTypes()).willReturn(Lists.newArrayList(hamster));
