@@ -49,7 +49,7 @@ class OwnerController {
 
     private VisitRepository visits;
 
-    private static Logger logger = LogManager.getLogger();
+    private static Logger logger = LogManager.getLogger("Analytics");
 
 
 
@@ -125,6 +125,7 @@ class OwnerController {
 
             // find owners by first name
             results = this.owners.findByFirstName(owner.getFirstName());
+            logger.info("List of names\n" + results);
 
         }
         if(OwnerToggles.isSearchFirstNameEnabled||OwnerToggles.isSearchLastNameEnabled){
