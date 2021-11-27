@@ -4,13 +4,14 @@ import java.sql.SQLException;
 
 public interface IMigration<T> {
 
-    public int forklift();
+    int forklift();
 
-    public int checkConsistencies();
+    int checkConsistencies();
 
-    public boolean shadowReadWriteConsistencyChecker(T t);
+    boolean shadowReadWriteConsistencyChecker(T t);
 
-    public void logInconsistency(T expected, T actual);
+    void logInconsistency(T expected, T actual);
 
-    public void closeConnections() throws SQLException;
+    void closeConnections() throws SQLException;
+
 }

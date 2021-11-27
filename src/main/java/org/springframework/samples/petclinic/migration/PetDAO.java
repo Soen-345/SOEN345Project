@@ -11,7 +11,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import java.sql.Connection;
@@ -19,7 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class PetDAO implements IDAO<Pet>{
+public class PetDAO implements IDAO<Pet> {
 
     private final Connection SQLite_CONNECTION;
     private Connection H2_CONNECTION;
@@ -46,8 +48,8 @@ public class PetDAO implements IDAO<Pet>{
                         "                      id         INTEGER IDENTITY PRIMARY KEY,\n" +
                         "                      name VARCHAR(30),\n" +
                         "                      birth_date  DATE,\n" +
-                        "               type_id INTEGER NOT NULL,\n"+
-                        "             owner_id INTEGER NOT NULL, \n"+
+                        "               type_id INTEGER NOT NULL,\n" +
+                        "             owner_id INTEGER NOT NULL, \n" +
                         "FOREIGN KEY (owner_id) REFERENCES owners (id), \n" +
                         "FOREIGN KEY (type_id) REFERENCES types (id)" +
                         ");";
@@ -101,7 +103,6 @@ public class PetDAO implements IDAO<Pet>{
     }
 
 
-
     public Map<Integer, Pet> getAll(Datastores datastore) {
         Map<Integer, Pet> pets = new HashMap<>();
         String query = "SELECT * FROM pets";
@@ -150,7 +151,7 @@ public class PetDAO implements IDAO<Pet>{
 
     public boolean add(Pet pet, Datastores datastore) {
         String insertQuery = "INSERT INTO pets (id, name, birth_date, type_id, owner_id) VALUES (" + pet.getId()
-                + ",'" + pet.getName() + "','" + Date.valueOf(pet.getBirthDate()) + "','" + pet.getTypeId()+ "','"+pet.getOwnerId() + "');";
+                + ",'" + pet.getName() + "','" + Date.valueOf(pet.getBirthDate()) + "','" + pet.getTypeId() + "','" + pet.getOwnerId() + "');";
         if (datastore == Datastores.SQLITE) {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
@@ -174,7 +175,7 @@ public class PetDAO implements IDAO<Pet>{
 
     public void update(Pet pet, Datastores datastore) {
         String query = "UPDATE pets SET name = '" + pet.getName()
-                + "', birth_date = '" + Date.valueOf(pet.getBirthDate()) + "', type_id = '" +pet.getTypeId()+ "', owner_id = '" +pet.getOwnerId()+
+                + "', birth_date = '" + Date.valueOf(pet.getBirthDate()) + "', type_id = '" + pet.getTypeId() + "', owner_id = '" + pet.getOwnerId() +
                 "' WHERE id = " + pet.getId() + ";";
         if (datastore == Datastores.SQLITE) {
             try {
@@ -193,6 +194,28 @@ public class PetDAO implements IDAO<Pet>{
             }
         }
 
+    }
+
+    public Collection<Pet> getPetsByOwnerId(Integer ownerId, Datastores datastore) {
+        Collection<Pet> pets = new HashSet<>();
+        String query = "SELECT id, name, birth_date, type_id, owner_id FROM pets WHERE owner_id = " + ownerId + ";";
+        if (datastore == Datastores.SQLITE) {
+            try {
+                Statement statement = SQLite_CONNECTION.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                while (resultSet.next()) {
+                    Pet pet = new Pet(resultSet.getInt("id"),
+                            resultSet.getString("name"),
+                            PetMigration.convertToLocalDate(new SimpleDateFormat("yyyy-MM-dd")
+                                    .parse(resultSet.getString("birth_date"))));
+
+                    pets.add(pet);
+                }
+            } catch (SQLException | ParseException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return pets;
     }
 
     public void closeConnections() throws SQLException {

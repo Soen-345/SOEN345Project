@@ -8,7 +8,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -179,5 +181,49 @@ public class OwnerDAO implements IDAO<Owner> {
     public void closeConnections() throws SQLException {
         SQLite_CONNECTION.close();
         H2_CONNECTION.close();
+    }
+
+    public Collection<Owner> getByLastName(String lastName, Datastores datastore) {
+        Collection<Owner> owners = new HashSet<>();
+        String query = "SELECT id, first_name, last_name, address, city, telephone FROM owners WHERE last_name = " + lastName + ";";
+        if(datastore == Datastores.SQLITE) {
+            try {
+                Statement statement = SQLite_CONNECTION.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                while (resultSet.next()) {
+                    owners.add(new Owner(resultSet.getInt("id"),
+                                    resultSet.getString("first_name"),
+                                    resultSet.getString("last_name"),
+                                    resultSet.getString("address"),
+                                    resultSet.getString("city"),
+                                    resultSet.getString("telephone")));
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return owners;
+    }
+
+    public Collection<Owner> getByFirstName(String firstName, Datastores datastore) {
+        Collection<Owner> owners = new HashSet<>();
+        String query = "SELECT id, first_name, last_name, address, city, telephone FROM owners WHERE first_name = " + firstName + ";";
+        if(datastore == Datastores.SQLITE) {
+            try {
+                Statement statement = SQLite_CONNECTION.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                while (resultSet.next()) {
+                    owners.add(new Owner(resultSet.getInt("id"),
+                                    resultSet.getString("first_name"),
+                                    resultSet.getString("last_name"),
+                                    resultSet.getString("address"),
+                                    resultSet.getString("city"),
+                                    resultSet.getString("telephone")));
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return owners;
     }
 }

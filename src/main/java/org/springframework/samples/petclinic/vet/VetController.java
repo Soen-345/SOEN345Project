@@ -51,17 +51,14 @@ class VetController {
 
 		// Shadow Reads & Incremental Replication
 		for (Vet vet : this.vets.findAll()) {
-			boolean consistent = vetMigration.shadowReadWriteConsistencyChecker(vet);
-			if (!consistent) {
-				vetMigration.checkConsistencies();
-			}
+			vetMigration.shadowReadWriteConsistencyChecker(vet);
 		}
 
 		return "vets/vetList";
 	}
 
 	@GetMapping({ "/vets" })
-	public @ResponseBody Vets showResourcesVetList() throws SQLException {
+	public @ResponseBody Vets showResourcesVetList() {
 		// Here we are returning an object of type 'Vets' rather than a collection of Vet
 		// objects so it is simpler for JSon/Object mapping
 		Vets vets = new Vets();

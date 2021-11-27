@@ -15,7 +15,6 @@ public class VetSpecialtiesMigration implements IMigration<VetSpecialty> {
         vetSpecialtiesDAO = new VetSpecialtiesDAO();
     }
 
-    @Override
     public int forklift() {
         this.vetSpecialtiesDAO.initTable();
         int numInsert = 0;
@@ -58,7 +57,7 @@ public class VetSpecialtiesMigration implements IMigration<VetSpecialty> {
                 // log
                 this.vetSpecialtiesDAO.add(expectedvetsp,Datastores.SQLITE);
             }
-            if(!comapre(actualvetsp,expectedvetsp)){
+            if(!compare(actualvetsp,expectedvetsp)){
                 inconsistencies++;
                 //log
                 this.vetSpecialtiesDAO.update(expectedvetsp,Datastores.SQLITE);
@@ -81,7 +80,7 @@ public class VetSpecialtiesMigration implements IMigration<VetSpecialty> {
                 // log
                 this.vetSpecialtiesDAO.add(expectedvetsp,Datastores.SQLITE);
             }
-            if(!comapre(actualvetsp,expectedvetsp)){
+            if(!compare(actualvetsp,expectedvetsp)){
                 inconsistencies++;
                 //log
                 this.vetSpecialtiesDAO.update(expectedvetsp,Datastores.SQLITE);
@@ -91,7 +90,7 @@ public class VetSpecialtiesMigration implements IMigration<VetSpecialty> {
         return inconsistencies;
     }
 
-    private boolean comapre(VetSpecialty actualvetsp, VetSpecialty expectedvetsp) {
+    private boolean compare(VetSpecialty actualvetsp, VetSpecialty expectedvetsp) {
         if(actualvetsp != null && actualvetsp.getSpecialty_id() == expectedvetsp.getSpecialty_id() &&
         actualvetsp.getVet_id() == expectedvetsp.getVet_id()){
             return false;
@@ -99,19 +98,16 @@ public class VetSpecialtiesMigration implements IMigration<VetSpecialty> {
         return true;
     }
 
-    @Override
     public boolean shadowReadWriteConsistencyChecker(VetSpecialty vetSpecialty) {
         return false;
     }
 
-    @Override
+
     public void logInconsistency(VetSpecialty expected, VetSpecialty actual) {
 
     }
 
-    @Override
     public void closeConnections() throws SQLException {
         vetSpecialtiesDAO.closeConnections();
-
     }
 }

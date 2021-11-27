@@ -5,17 +5,17 @@ import java.util.Map;
 
 public interface IDAO<T> {
 
-    public void initTable();
+    void initTable();
 
-    public Map<Integer, T> getAll(Datastores datastore);
+    Map<Integer, T> getAll(Datastores datastore);
 
-    public boolean add(T t, Datastores datastore);
+    boolean add(T t, Datastores datastore);
 
-    public void update(T t, Datastores datastore);
+    void update(T t, Datastores datastore);
 
-    public T get(Integer id, Datastores datastore);
+    T get(Integer id, Datastores datastore);
 
-    public void closeConnections() throws SQLException;
+    void closeConnections() throws SQLException;
 
 
 }
