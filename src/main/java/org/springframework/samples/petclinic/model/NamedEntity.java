@@ -31,15 +31,24 @@ public class NamedEntity extends BaseEntity {
 	@Column(name = "name")
 	private String name;
 
-	public NamedEntity ()
-	{
-
+	public NamedEntity() {
+		super();
 	}
 
-	public NamedEntity (String name)
-	{
+	public NamedEntity(String name) {
+		super();
 		this.name = name;
 	}
+
+	public NamedEntity(Integer id) {
+		super(id);
+	}
+
+	public NamedEntity(String name, Integer id) {
+		super(id);
+		this.name = name;
+	}
+
 	public String getName() {
 		return this.name;
 	}

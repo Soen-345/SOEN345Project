@@ -49,7 +49,7 @@ class OwnerController {
 
     private VisitRepository visits;
 
-    private static Logger logger = LogManager.getLogger("Analytics");
+    private static Logger analytics = LogManager.getLogger("Analytics");
 
 
 
@@ -97,8 +97,7 @@ class OwnerController {
         if(OwnerToggles.isSearchLastNameEnabled)
             model.put("nameType","Last");
         if(OwnerToggles.isSearchFirstNameEnabled)
-            model.put("nameType","First");
-
+            model.put("nameType", "First");
 
         return "owners/findOwners";
     }
@@ -125,7 +124,7 @@ class OwnerController {
 
             // find owners by first name
             results = this.owners.findByFirstName(owner.getFirstName());
-            logger.info("List of names\n" + results);
+            analytics.info("List of names: " + results);
 
         }
         if(OwnerToggles.isSearchFirstNameEnabled||OwnerToggles.isSearchLastNameEnabled){
