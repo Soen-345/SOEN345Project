@@ -5,7 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.vet.Specialty;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SpecialtiesDAO implements IDAO<Specialty> {
@@ -74,17 +76,16 @@ public class SpecialtiesDAO implements IDAO<Specialty> {
         return specialty;
     }
 
-    public Map<Integer, Specialty> getAll(Datastores datastore) {
-        Map<Integer, Specialty> specialities = new HashMap<>();
+    public List<Specialty> getAll(Datastores datastore) {
+        List<Specialty> specialities = new ArrayList<>();
         String query = "SELECT * FROM specialties;";
         if (datastore == Datastores.SQLITE) {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
-                    specialities.put(resultSet.getInt("id"),
-                            new Specialty(resultSet.getString("name"),
-                                    resultSet.getInt("id")));
+                    specialities.add(new Specialty(resultSet.getString("name"),
+                            resultSet.getInt("id")));
                 }
             } catch (SQLException e) {
                 log.error(e.getMessage());
@@ -95,9 +96,8 @@ public class SpecialtiesDAO implements IDAO<Specialty> {
                 Statement statement = H2_CONNECTION.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
-                    specialities.put(resultSet.getInt("id"),
-                            new Specialty(resultSet.getString("name"),
-                                    resultSet.getInt("id")));
+                    specialities.add(new Specialty(resultSet.getString("name"),
+                            resultSet.getInt("id")));
                 }
             } catch (SQLException e) {
                 log.error(e.getMessage());
@@ -107,7 +107,20 @@ public class SpecialtiesDAO implements IDAO<Specialty> {
         return specialities;
     }
 
-    public boolean add(Specialty specialty, Datastores datastore) {
+    public boolean migrate(Specialty specialty) {
+        String insertQuery = "INSERT INTO specialties (id, name) VALUES (" + specialty.getId()
+                + ",'" + specialty.getName() + "');";
+            try {
+                Statement statement = SQLite_CONNECTION.createStatement();
+                statement.execute(insertQuery);
+            } catch (SQLException e) {
+                log.error(e.getMessage());
+                return false;
+            }
+        return true;
+    }
+
+    public void add(Specialty specialty, Datastores datastore) {
         String insertQuery = "INSERT INTO specialties (id, name) VALUES (" + specialty.getId()
                 + ",'" + specialty.getName() + "');";
         if (datastore == Datastores.SQLITE) {
@@ -116,7 +129,6 @@ public class SpecialtiesDAO implements IDAO<Specialty> {
                 statement.execute(insertQuery);
             } catch (SQLException e) {
                 log.error(e.getMessage());
-                return false;
             }
         }
         if (datastore == Datastores.H2) {
@@ -125,10 +137,8 @@ public class SpecialtiesDAO implements IDAO<Specialty> {
                 statement.execute(insertQuery);
             } catch (SQLException e) {
                 log.error(e.getMessage());
-                return false;
             }
         }
-        return true;
     }
 
     public void update(Specialty specialty, Datastores datastore) {

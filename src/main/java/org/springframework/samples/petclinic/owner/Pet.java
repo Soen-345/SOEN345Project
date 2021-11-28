@@ -105,6 +105,12 @@ public class Pet extends NamedEntity {
 
 	protected void setVisitsInternal(Collection<Visit> visits) {
 		this.visits = new LinkedHashSet<>(visits);
+		System.out.println("HAHAHAA: " + this.visits);
+	}
+
+	public void setVisits(List<Visit> visits) {
+		Set<Visit> visitSet = new HashSet<>(visits);
+		setVisitsInternal(visitSet);
 	}
 
 	public List<Visit> getVisits() {

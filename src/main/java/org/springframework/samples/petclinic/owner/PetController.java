@@ -93,7 +93,8 @@ class PetController {
                 this.pets.save(pet);
             }
             if (MigrationToggles.isSQLiteEnabled) {
-                this.petMigration.shadowWriteToNewDatastore(pet, owner);
+                pet.setOwner(owner);
+                this.petMigration.shadowWriteToNewDatastore(pet);
              //   this.petMigration.shadowReadWriteConsistencyChecker(pet);
             }
             return "redirect:/owners/{ownerId}";
@@ -106,7 +107,6 @@ class PetController {
         if (MigrationToggles.isH2Enabled) {
             pet = this.pets.findById(petId);
         }
-        assert pet != null;
         if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
             pet = this.petMigration.shadowRead(petId);
           //  this.petMigration.shadowReadWriteConsistencyChecker(pet);
@@ -128,7 +128,8 @@ class PetController {
                 this.pets.save(pet);
             }
             if (MigrationToggles.isSQLiteEnabled) {
-                this.petMigration.shadowWriteToNewDatastore(pet, owner);
+                pet.setOwner(owner);
+                this.petMigration.shadowWriteToNewDatastore(pet);
           //      this.petMigration.shadowReadWriteConsistencyChecker(pet);
             }
             return "redirect:/owners/{ownerId}";

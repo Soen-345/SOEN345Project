@@ -33,6 +33,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.samples.petclinic.migration.OwnerMigration;
+import org.springframework.samples.petclinic.migration.PetMigration;
+import org.springframework.samples.petclinic.migration.TypeMigration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -59,6 +62,15 @@ class PetControllerTests {
 	@MockBean
 	private OwnerRepository owners;
 
+	@MockBean
+	private OwnerMigration ownerMigration;
+
+	@MockBean
+	private PetMigration petMigration;
+
+	@MockBean
+	private TypeMigration typeMigration;
+
 	@Mock
 	private PetType hamster;
 
@@ -80,6 +92,10 @@ class PetControllerTests {
 		given(this.pets.findPetTypes()).willReturn(Lists.newArrayList(hamster));
 		given(this.owners.findById(TEST_OWNER_ID)).willReturn(betty);
 		given(this.pets.findById(TEST_PET_ID)).willReturn(max);
+
+		given(this.typeMigration.findTypes()).willReturn(Lists.newArrayList(hamster));
+		given(this.ownerMigration.shadowRead(TEST_OWNER_ID)).willReturn(betty);
+		given(this.petMigration.shadowRead(TEST_PET_ID)).willReturn(max);
 	}
 
 	@Test

@@ -7,7 +7,9 @@ import org.springframework.samples.petclinic.visit.Visit;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -57,8 +59,8 @@ public class VisitDAO implements IDAO<Visit>{
         }
     }
 
-    public Map<Integer, Visit> getAll(Datastores datastore) {
-        Map<Integer, Visit> visits = new HashMap<>();
+    public List<Visit> getAll(Datastores datastore) {
+        List<Visit> visits = new ArrayList<>();
         String query = "SELECT * FROM visits;";
 
         if (datastore == Datastores.SQLITE) {
@@ -66,13 +68,12 @@ public class VisitDAO implements IDAO<Visit>{
                 Statement statement = SQLite_CONNECTION.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
-                    visits.put(resultSet.getInt("id"),
-                            new Visit(resultSet.getInt("id"),
-                                    resultSet.getInt("pet_id"),
-                                    VisitMigration.convertToLocalDateViaInstant
-                                            (new SimpleDateFormat("yyyy-MM-dd")
-                                                    .parse(resultSet.getString("visit_date"))),
-                                    resultSet.getString("description")));
+                    visits.add(new Visit(resultSet.getInt("id"),
+                            resultSet.getInt("pet_id"),
+                            VisitMigration.convertToLocalDateViaInstant
+                                    (new SimpleDateFormat("yyyy-MM-dd")
+                                            .parse(resultSet.getString("visit_date"))),
+                            resultSet.getString("description")));
                 }
             } catch (SQLException | ParseException e) {
                 log.error(e.getMessage());
@@ -83,13 +84,12 @@ public class VisitDAO implements IDAO<Visit>{
                 Statement statement = H2_CONNECTION.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
-                    visits.put(resultSet.getInt("id"),
-                            new Visit(resultSet.getInt("id"),
-                                    resultSet.getInt("pet_id"),
-                                    VisitMigration.convertToLocalDateViaInstant
-                                            (new SimpleDateFormat("yyyy-MM-dd")
-                                                    .parse(resultSet.getString("visit_date"))),
-                                    resultSet.getString("description")));
+                    visits.add(new Visit(resultSet.getInt("id"),
+                            resultSet.getInt("pet_id"),
+                            VisitMigration.convertToLocalDateViaInstant
+                                    (new SimpleDateFormat("yyyy-MM-dd")
+                                            .parse(resultSet.getString("visit_date"))),
+                            resultSet.getString("description")));
                 }
             } catch (SQLException | ParseException e) {
                 log.error(e.getMessage());
@@ -98,9 +98,25 @@ public class VisitDAO implements IDAO<Visit>{
         return visits;
     }
 
-    public boolean add(Visit visit, Datastores datastore) {
+    public boolean migrate(Visit visit) {
         String insertQuery = "INSERT INTO visits (id, pet_id, visit_date, description) " +
                 "VALUES (" + visit.getId() + "," + visit.getPetId() + ",'" +
+                java.sql.Date.valueOf(visit.getDate()) +
+                "', '" + visit.getDescription()  +  "');";
+            try {
+                Statement statement = SQLite_CONNECTION.createStatement();
+                statement.execute(insertQuery);
+            }
+            catch (SQLException e) {
+                log.error(e.getMessage());
+                return false;
+            }
+        return true;
+    }
+
+    public void add(Visit visit, Datastores datastore) {
+        String insertQuery = "INSERT INTO visits (id, pet_id, visit_date, description) " +
+                "VALUES (NULL" + "," + visit.getPetId() + ",'" +
                 java.sql.Date.valueOf(visit.getDate()) +
                 "', '" + visit.getDescription()  +  "');";
         if (datastore == Datastores.SQLITE) {
@@ -110,7 +126,6 @@ public class VisitDAO implements IDAO<Visit>{
             }
             catch (SQLException e) {
                 log.error(e.getMessage());
-                return false;
             }
         }
         if (datastore == Datastores.H2) {
@@ -119,10 +134,8 @@ public class VisitDAO implements IDAO<Visit>{
                 statement.execute(insertQuery);
             } catch (SQLException e) {
                 log.error(e.getMessage());
-                return false;
             }
         }
-        return true;
     }
 
     public void update(Visit visit, Datastores datastore) {
@@ -177,6 +190,26 @@ public class VisitDAO implements IDAO<Visit>{
             }
         }
         return visit;
+    }
+
+    public List<Visit> getByPetId(Integer petId, Datastores datastore) {
+        List<Visit> visits = new ArrayList<>();
+        String query = "SELECT id, pet_id, visit_date, description FROM visits WHERE pet_id = " + petId + ";";
+        if (datastore == Datastores.SQLITE) {
+            try {
+                Statement statement = SQLite_CONNECTION.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                visits.add(new Visit(resultSet.getInt("id"),
+                        resultSet.getInt("pet_id"),
+                        VisitMigration.convertToLocalDateViaInstant
+                                (new SimpleDateFormat("yyyy-MM-dd")
+                                        .parse(resultSet.getString("visit_date"))),
+                        resultSet.getString("description")));
+            } catch (SQLException | ParseException e) {
+                log.error(e.getMessage());
+            }
+        }
+        return visits;
     }
 
     public void closeConnections() throws SQLException {

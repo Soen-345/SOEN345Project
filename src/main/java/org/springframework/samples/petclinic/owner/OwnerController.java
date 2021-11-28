@@ -218,9 +218,6 @@ class OwnerController {
          //   this.ownerMigration.shadowReadWriteConsistencyChecker(this.ownerMigration.shadowRead(ownerId));
         }
         if (owner != null) {
-            for (Pet pet : owner.getPets()) {
-                pet.setVisitsInternal(visits.findByPetId(pet.getId()));
-            }
             mav.addObject(owner);
         }
         return mav;

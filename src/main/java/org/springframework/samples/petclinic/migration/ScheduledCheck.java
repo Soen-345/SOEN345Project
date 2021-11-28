@@ -26,13 +26,15 @@ public class ScheduledCheck {
         if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isH2Enabled) {
 
             log.info("**** FORKLIFT STARTING ****");
-            ownerMigration.forklift();
-            petMigration.forklift();
-            visitMigration.forklift();
+
             vetMigration.forklift();
             specialtiesMigration.forklift();
             vetSpecialtiesMigration.forklift();
+            visitMigration.forklift();
+            ownerMigration.forklift();
             typeMigration.forklift();
+            petMigration.forklift();
+
             log.info("FORKLIFT COMPLETED");
         }
     }
@@ -43,17 +45,16 @@ public class ScheduledCheck {
     public void consistencyCheck() {
 
         if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isH2Enabled) {
+
             log.info("**** CONSISTENCY CHECKING STARTING ****");
 
-            int ownerCons = ownerMigration.checkConsistencies();
-            int petCons = petMigration.checkConsistencies();
             int visitCons = visitMigration.checkConsistencies();
+            int ownerCons = ownerMigration.checkConsistencies();
             int vetCons = vetMigration.checkConsistencies();
             int specialtyCons = specialtiesMigration.checkConsistencies();
             int vetSpecialtyCons = vetSpecialtiesMigration.checkConsistencies();
             int typeCons = typeMigration.checkConsistencies();
-
-            log.info("**** CONSISTENCY CHECKING DONE ****");
+            int petCons = petMigration.checkConsistencies();
 
             log.info("OWNER TABLE: " + ownerCons);
             log.info("PET TABLE: " + petCons);
@@ -62,6 +63,8 @@ public class ScheduledCheck {
             log.info("SPECIALTY TABLE: " + specialtyCons);
             log.info("VET SPECIALTY TABLE: " + vetSpecialtyCons);
             log.info("PET TYPES TABLE: " + typeCons);
+
+            log.info("**** CONSISTENCY CHECKING DONE ****");
         }
     }
 }

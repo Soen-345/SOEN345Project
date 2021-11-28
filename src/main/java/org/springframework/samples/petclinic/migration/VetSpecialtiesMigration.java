@@ -5,12 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.vet.VetSpecialty;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 /**
  * @author Alireza Ziarizi
  */
-public class VetSpecialtiesMigration implements IMigration<VetSpecialty> {
+public class VetSpecialtiesMigration  {
 
     private static final Logger log = LoggerFactory.getLogger(VisitMigration.class);
 
@@ -24,10 +25,10 @@ public class VetSpecialtiesMigration implements IMigration<VetSpecialty> {
         this.vetSpecialtiesDAO.initTable();
         int numInsert = 0;
 
-        Map<Integer, VetSpecialty> vetSpecialties = this.vetSpecialtiesDAO.getAll(Datastores.H2);
+        List<VetSpecialty> vetSpecialties = this.vetSpecialtiesDAO.getAll(Datastores.H2);
 
-        for(VetSpecialty vetSpecialtie : vetSpecialties.values()){
-            boolean success = this.vetSpecialtiesDAO.add(vetSpecialtie,Datastores.SQLITE);
+        for(VetSpecialty vetSpecialty : vetSpecialties){
+            boolean success = this.vetSpecialtiesDAO.migrate(vetSpecialty);
             if(success){
                 numInsert++;
             }
@@ -35,11 +36,12 @@ public class VetSpecialtiesMigration implements IMigration<VetSpecialty> {
 
         return numInsert;
     }
-    public int forkliftTestOnly(Map<Integer, VetSpecialty> VetSpecialties){
+    public int forkliftTestOnly(List<VetSpecialty> VetSpecialties){
         this.vetSpecialtiesDAO.initTable();
         int numInsert = 0;
-        for(VetSpecialty vetSpecialtie : VetSpecialties.values()){
-            boolean success = this.vetSpecialtiesDAO.add(vetSpecialtie,Datastores.SQLITE);
+
+        for(VetSpecialty vetSpecialty : VetSpecialties){
+            boolean success = this.vetSpecialtiesDAO.migrate(vetSpecialty);
             if(success){
                 numInsert++;
             }
@@ -47,64 +49,38 @@ public class VetSpecialtiesMigration implements IMigration<VetSpecialty> {
         return numInsert;
     }
 
-    @Override
+
     public int checkConsistencies() {
         int inconsistencies = 0;
-        Map<Integer, VetSpecialty> expected = this.vetSpecialtiesDAO.getAll(Datastores.H2);
-        Map<Integer, VetSpecialty> actual = this.vetSpecialtiesDAO.getAll(Datastores.SQLITE);
 
-        for(Integer key : expected.keySet()){
-            VetSpecialty expectedvetsp = expected.get(key);
-            VetSpecialty actualvetsp = actual.get(key);
+        List<VetSpecialty> expected = this.vetSpecialtiesDAO.getAll(Datastores.H2);
 
-            if(actualvetsp == null){
+        for(VetSpecialty exp : expected){
+            VetSpecialty act = this.vetSpecialtiesDAO.get(exp, Datastores.SQLITE);
+
+            if(act == null){
                 inconsistencies++;
-                // log
-                this.vetSpecialtiesDAO.add(expectedvetsp,Datastores.SQLITE);
+                logInconsistency(exp, null);
+                this.vetSpecialtiesDAO.add(exp, Datastores.SQLITE);
             }
-            if(!compare(actualvetsp,expectedvetsp)){
-                inconsistencies++;
-                logInconsistency(expectedvetsp, actualvetsp);
-                this.vetSpecialtiesDAO.update(expectedvetsp,Datastores.SQLITE);
-            }
-
         }
         return inconsistencies;
     }
 
-    public int checkConsistenciesTestOnly(Map<Integer, VetSpecialty> expected) {
-        Map<Integer, VetSpecialty>  actual = this.vetSpecialtiesDAO.getAll(Datastores.SQLITE);
+    public int checkConsistenciesTestOnly(List<VetSpecialty> expected) {
+
         int inconsistencies = 0;
 
-        for(Integer key : expected.keySet()){
-            VetSpecialty expectedvetsp = expected.get(key);
-            VetSpecialty actualvetsp = actual.get(key);
+        for(VetSpecialty exp : expected){
+            VetSpecialty act = this.vetSpecialtiesDAO.get(exp, Datastores.SQLITE);
 
-            if(actualvetsp == null){
+            if(act == null){
                 inconsistencies++;
-                // log
-                this.vetSpecialtiesDAO.add(expectedvetsp,Datastores.SQLITE);
+                logInconsistency(exp, null);
+                this.vetSpecialtiesDAO.add(exp, Datastores.SQLITE);
             }
-            if(!compare(actualvetsp,expectedvetsp)){
-                inconsistencies++;
-                //log
-                this.vetSpecialtiesDAO.update(expectedvetsp,Datastores.SQLITE);
-            }
-
         }
         return inconsistencies;
-    }
-
-    private boolean compare(VetSpecialty actualvetsp, VetSpecialty expectedvetsp) {
-        if(actualvetsp != null && actualvetsp.getSpecialty_id() == expectedvetsp.getSpecialty_id() &&
-        actualvetsp.getVet_id() == expectedvetsp.getVet_id()){
-            return true;
-        }
-        return false;
-    }
-
-    public boolean shadowReadWriteConsistencyChecker(VetSpecialty vetSpecialty) {
-        return false;
     }
 
 
@@ -112,12 +88,12 @@ public class VetSpecialtiesMigration implements IMigration<VetSpecialty> {
 
         if (actual == null) {
             log.warn("Vet Specialty Table Inconsistency - \n " +
-                    "Expected: " + expected.toString() + "\n" +
+                    "Expected: " + expected.getVet_id() + " " + expected.getSpecialty_id() + "\n" +
                     "Actual: NULL");
         } else {
             log.warn("Vet Specialty Table Inconsistency - \n " +
-                    "Expected: " + expected.toString() + "\n"
-                    + "Actual: " + actual.toString());
+                    "Expected: " + expected.getVet_id() + " " + expected.getSpecialty_id() + "\n"
+                    + "Actual: " + actual.getVet_id() + " " + actual.getSpecialty_id());
         }
 
     }

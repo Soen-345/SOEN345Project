@@ -1,15 +1,17 @@
 package org.springframework.samples.petclinic.migration;
 
 import java.sql.SQLException;
-import java.util.Map;
+import java.util.List;
 
 public interface IDAO<T> {
 
     void initTable();
 
-    Map<Integer, T> getAll(Datastores datastore);
+    List<T> getAll(Datastores datastore);
 
-    boolean add(T t, Datastores datastore);
+    boolean migrate(T t);
+
+    void add(T t, Datastores datastore);
 
     void update(T t, Datastores datastore);
 

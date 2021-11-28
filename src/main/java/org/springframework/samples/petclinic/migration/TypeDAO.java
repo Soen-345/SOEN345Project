@@ -8,7 +8,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TypeDAO implements IDAO<PetType>{
@@ -77,17 +79,16 @@ public class TypeDAO implements IDAO<PetType>{
         return type;
     }
 
-    public Map<Integer, PetType> getAll(Datastores datastore) {
-        Map<Integer, PetType> types = new HashMap<>();
+    public List<PetType> getAll(Datastores datastore) {
+        List<PetType> types = new ArrayList<>();
         String query = "SELECT * FROM types;";
         if (datastore == Datastores.SQLITE) {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
-                    types.put(resultSet.getInt("id"),
-                            new PetType(resultSet.getInt("id"),
-                                    resultSet.getString("name")));
+                    types.add(new PetType(resultSet.getInt("id"),
+                            resultSet.getString("name")));
                 }
             } catch (SQLException e) {
                 log.error(e.getMessage());
@@ -98,9 +99,8 @@ public class TypeDAO implements IDAO<PetType>{
                 Statement statement = H2_CONNECTION.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
-                    types.put(resultSet.getInt("id"),
-                            new PetType(resultSet.getInt("id"),
-                                    resultSet.getString("name")));
+                    types.add(new PetType(resultSet.getInt("id"),
+                            resultSet.getString("name")));
                 }
             } catch (SQLException e) {
                 log.error(e.getMessage());
@@ -110,8 +110,22 @@ public class TypeDAO implements IDAO<PetType>{
         return types;
     }
 
-    public boolean add(PetType type, Datastores datastore) {
+    public boolean migrate(PetType type) {
         String insertQuery = "INSERT INTO types (id, name) VALUES (" + type.getId()
+                + ",'" + type.getName() + "');";
+            try {
+                Statement statement = SQLite_CONNECTION.createStatement();
+                statement.execute(insertQuery);
+            } catch (SQLException e) {
+                log.error(e.getMessage());
+                return false;
+            }
+
+        return true;
+    }
+
+    public void add(PetType type, Datastores datastore) {
+        String insertQuery = "INSERT INTO types (id, name) VALUES (NULL"
                 + ",'" + type.getName() + "');";
         if (datastore == Datastores.SQLITE) {
             try {
@@ -119,7 +133,6 @@ public class TypeDAO implements IDAO<PetType>{
                 statement.execute(insertQuery);
             } catch (SQLException e) {
                 log.error(e.getMessage());
-                return false;
             }
         }
         if (datastore == Datastores.H2) {
@@ -128,10 +141,8 @@ public class TypeDAO implements IDAO<PetType>{
                 statement.execute(insertQuery);
             } catch (SQLException e) {
                 log.error(e.getMessage());
-                return false;
             }
         }
-        return true;
     }
 
     public void update(PetType type, Datastores datastore) {

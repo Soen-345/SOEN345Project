@@ -9,9 +9,9 @@ import org.springframework.samples.petclinic.owner.Pet;
 
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -20,7 +20,8 @@ import static org.mockito.Mockito.when;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class PetMigrationTest {
-    private static Map<Integer, Pet> oldDataStorePets;
+
+    private static List<Pet> oldDataStorePets;
 
     private static PetMigration petMigration;
     static Pet pet1;
@@ -55,7 +56,7 @@ public class PetMigrationTest {
         when(owner.getTelephone()).thenReturn("6085551023");
 
         when(pet1.getId()).thenReturn(1);
-        when(pet1.getName()).thenReturn("Rusty");
+        when(pet1.getName()).thenReturn("Max");
         when(pet1.getBirthDate()).thenReturn(PetMigration.convertToLocalDate(date));
         when(pet1.getTypeId()).thenReturn(1);
         when(pet1.getOwnerId()).thenReturn(1);
@@ -84,13 +85,13 @@ public class PetMigrationTest {
         when(pet5.getName()).thenReturn("Pumpkin");
         when(pet5.getBirthDate()).thenReturn(PetMigration.convertToLocalDate(date));
         when(pet5.getTypeId()).thenReturn(5);
-        when(pet5.getOwnerId()).thenReturn(5);
+        when(pet5.getOwnerId()).thenReturn(1);
 
 
-        oldDataStorePets = new HashMap<>();
-        oldDataStorePets.put(pet1.getId(), pet1);
-        oldDataStorePets.put(pet2.getId(), pet2);
-        oldDataStorePets.put(pet3.getId(), pet3);
+        oldDataStorePets = new ArrayList<>();
+        oldDataStorePets.add(pet1);
+        oldDataStorePets.add(pet2);
+        oldDataStorePets.add(pet3);
 
 
     }
@@ -107,7 +108,7 @@ public class PetMigrationTest {
     @Order(2)
     public void testCheckConsistency() {
 
-        oldDataStorePets.put(pet4.getId(), pet4);
+        oldDataStorePets.add(pet4);
 
         assertEquals(1, petMigration.checkConsistenciesTestOnly(oldDataStorePets));
     }
@@ -116,10 +117,10 @@ public class PetMigrationTest {
     @Order(3)
     public void testShadowReadConsistencyChecker() {
 
-        oldDataStorePets.put(pet5.getId(), pet5);
+        oldDataStorePets.add(pet5);
 
 
-        petMigration.shadowWriteToNewDatastore(pet5, owner);
+        petMigration.shadowWriteToNewDatastore(pet5);
 
 
         assertTrue(petMigration.shadowReadWriteConsistencyChecker(pet5));

@@ -9,7 +9,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -84,18 +86,17 @@ public class VetDAO implements IDAO<Vet>{
         return vet;
     }
 
-    public Map<Integer, Vet> getAll(Datastores datastore) {
-        Map<Integer, Vet> vets = new HashMap<>();
+    public List<Vet> getAll(Datastores datastore) {
+        List<Vet> vets = new ArrayList<>();
         String query = "SELECT * FROM vets;";
         if (datastore == Datastores.SQLITE) {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
-                    vets.put(resultSet.getInt("id"),
-                            new Vet(resultSet.getInt("id"),
-                                    resultSet.getString("first_name"),
-                                    resultSet.getString("last_name")));
+                    vets.add(new Vet(resultSet.getInt("id"),
+                            resultSet.getString("first_name"),
+                            resultSet.getString("last_name")));
                 }
             } catch (SQLException e) {
                 log.error(e.getMessage());
@@ -106,10 +107,9 @@ public class VetDAO implements IDAO<Vet>{
                 Statement statement = H2_CONNECTION.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
-                    vets.put(resultSet.getInt("id"),
-                            new Vet(resultSet.getInt("id"),
-                                    resultSet.getString("first_name"),
-                                    resultSet.getString("last_name")));
+                    vets.add(new Vet(resultSet.getInt("id"),
+                            resultSet.getString("first_name"),
+                            resultSet.getString("last_name")));
                 }
             } catch (SQLException e) {
                 log.error(e.getMessage());
@@ -119,8 +119,21 @@ public class VetDAO implements IDAO<Vet>{
         return vets;
     }
 
-    public boolean add(Vet vet, Datastores datastore) {
+    public boolean migrate(Vet vet) {
         String insertQuery = "INSERT INTO vets (id, first_name, last_name) VALUES (" + vet.getId()
+                + ",'" + vet.getFirstName() + "','" + vet.getLastName() + "');";
+            try {
+                Statement statement = SQLite_CONNECTION.createStatement();
+                statement.execute(insertQuery);
+            } catch (SQLException e) {
+                log.error(e.getMessage());
+                return false;
+            }
+        return true;
+    }
+
+    public void add(Vet vet, Datastores datastore) {
+        String insertQuery = "INSERT INTO vets (id, first_name, last_name) VALUES (NULL"
                 + ",'" + vet.getFirstName() + "','" + vet.getLastName() + "');";
         if (datastore == Datastores.SQLITE) {
             try {
@@ -128,7 +141,6 @@ public class VetDAO implements IDAO<Vet>{
                 statement.execute(insertQuery);
             } catch (SQLException e) {
                 log.error(e.getMessage());
-                return false;
             }
         }
         if (datastore == Datastores.H2) {
@@ -137,10 +149,8 @@ public class VetDAO implements IDAO<Vet>{
                 statement.execute(insertQuery);
             } catch (SQLException e) {
                 log.error(e.getMessage());
-                return false;
             }
         }
-        return true;
     }
 
     public void update(Vet vet, Datastores datastore) {

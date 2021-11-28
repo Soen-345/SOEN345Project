@@ -11,9 +11,7 @@ import org.springframework.samples.petclinic.visit.Visit;
 
 
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Sevag Eordkian
@@ -22,7 +20,7 @@ import java.util.Map;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class VisitMigrationTest {
 
-    private static Map<Integer, Visit> oldDataStoreVisits;
+    private static List<Visit> oldDataStoreVisits;
 
     private static VisitMigration visitMigration;
 
@@ -48,7 +46,7 @@ public class VisitMigrationTest {
         visit5 = Mockito.mock(Visit.class);
 
         when(visit1.getId()).thenReturn(12);
-        when(visit1.getPetId()).thenReturn(5);
+        when(visit1.getPetId()).thenReturn(1);
         when(visit1.getDate()).thenReturn(VisitMigration.convertToLocalDateViaInstant(date));
         when(visit1.getDescription()).thenReturn("General check");
 
@@ -72,11 +70,11 @@ public class VisitMigrationTest {
         when(visit5.getDate()).thenReturn(VisitMigration.convertToLocalDateViaInstant(date));
         when(visit5.getDescription()).thenReturn("Just a visit");
 
-        oldDataStoreVisits = new HashMap<>();
+        oldDataStoreVisits = new ArrayList<>();
 
-        oldDataStoreVisits.put(visit1.getId(), visit1);
-        oldDataStoreVisits.put(visit2.getId(), visit2);
-        oldDataStoreVisits.put(visit3.getId(), visit3);
+        oldDataStoreVisits.add(visit1);
+        oldDataStoreVisits.add(visit2);
+        oldDataStoreVisits.add(visit3);
 
     }
 
@@ -92,7 +90,7 @@ public class VisitMigrationTest {
     @Order(2)
     public void testCheckConsistency() {
 
-        oldDataStoreVisits.put(visit4.getId(), visit4);
+        oldDataStoreVisits.add(visit4);
 
 
         assertEquals(1, visitMigration.checkConsistenciesTestOnly(oldDataStoreVisits));
@@ -102,7 +100,7 @@ public class VisitMigrationTest {
     @Order(3)
     public void testShadowReadWriteConsistencyChecker() {
 
-        oldDataStoreVisits.put(visit5.getId(), visit5);
+        oldDataStoreVisits.add(visit5);
 
 
         visitMigration.shadowWriteToNewDatastore(visit5);
