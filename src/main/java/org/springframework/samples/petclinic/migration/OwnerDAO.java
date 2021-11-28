@@ -96,7 +96,6 @@ public class OwnerDAO implements IDAO<Owner> {
                                                 .parse(resultSet1.getString("visit_date"))),
                                 resultSet1.getString("description")));
                     }
-                    System.out.println("YOOOOO: " + visits);
                     pet.setVisits(visits);
 
                     Statement statement2 = SQLite_CONNECTION.createStatement();

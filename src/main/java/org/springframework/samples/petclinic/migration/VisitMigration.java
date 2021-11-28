@@ -148,7 +148,7 @@ public class VisitMigration implements IMigration<Visit> {
     }
 
     public void shadowWriteToNewDatastore(Visit visit) {
-        if (MigrationToggles.isH2Enabled && MigrationToggles.isSQLiteEnabled) {
+        if (MigrationToggles.isH2Enabled && MigrationToggles.isSQLiteEnabled && MigrationToggles.isUnderTest) {
             this.visitDAO.migrate(visit);
         }
         else {

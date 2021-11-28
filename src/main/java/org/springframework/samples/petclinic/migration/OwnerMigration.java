@@ -20,11 +20,9 @@ public class OwnerMigration implements IMigration<Owner> {
     private static final Logger log = LoggerFactory.getLogger(OwnerMigration.class);
 
     private final OwnerDAO ownerDAO;
-    private final PetDAO petDAO;
 
     public OwnerMigration() {
         ownerDAO = new OwnerDAO();
-        petDAO = new PetDAO();
     }
 
     public int forklift() {
@@ -101,7 +99,7 @@ public class OwnerMigration implements IMigration<Owner> {
     }
 
     public void shadowWriteToNewDatastore(Owner owner) {
-        if (MigrationToggles.isH2Enabled && MigrationToggles.isSQLiteEnabled) {
+        if (MigrationToggles.isH2Enabled && MigrationToggles.isSQLiteEnabled && MigrationToggles.isUnderTest) {
             this.ownerDAO.migrate(owner);
         }
         else {
@@ -114,7 +112,7 @@ public class OwnerMigration implements IMigration<Owner> {
         Owner actual = this.ownerDAO.get(exp.getId(), Datastores.SQLITE);
 
         if (actual == null) {
-            this.ownerDAO.add(exp, Datastores.SQLITE);
+            this.shadowWriteToNewDatastore(exp);
             logInconsistency(exp, null);
             return false;
         }
