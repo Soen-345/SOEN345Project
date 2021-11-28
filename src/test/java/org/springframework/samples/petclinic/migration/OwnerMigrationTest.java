@@ -17,6 +17,7 @@ import static org.mockito.Mockito.when;
 public class OwnerMigrationTest {
 
     private static OwnerMigration ownerMigration;
+    private static PetMigration petMigration;
     private static List<Owner> oldDataStoreOwners;
 
     static Owner owner1;
@@ -29,6 +30,8 @@ public class OwnerMigrationTest {
         MigrationToggles.isUnderTest = true;
 
         ownerMigration = new OwnerMigration();
+        petMigration = new PetMigration();
+        petMigration.forklift();
 
         owner1 = Mockito.mock(Owner.class);
         owner2 = Mockito.mock(Owner.class);
