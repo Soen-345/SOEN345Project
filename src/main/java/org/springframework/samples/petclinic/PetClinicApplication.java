@@ -41,7 +41,8 @@ public class PetClinicApplication {
 
 		MigrationToggles.isUnderTest = false;
 		MigrationToggles.isSQLiteEnabled = true;
-		MigrationToggles.isH2Enabled = true;
+		MigrationToggles.isH2Enabled = false;
+		MigrationToggles.isShadowReadEnabled = true;
 
 		SpringApplication.run(PetClinicApplication.class, args);
 

@@ -77,7 +77,7 @@ class VisitController {
 		if (MigrationToggles.isH2Enabled) {
 			pet = this.pets.findById(petId);
 		}
-		if (MigrationToggles.isSQLiteEnabled) {
+		if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
 			pet = this.petMigration.shadowRead(petId);
 		//	this.petMigration.shadowReadWriteConsistencyChecker(this.petMigration.shadowRead(petId));
 		}

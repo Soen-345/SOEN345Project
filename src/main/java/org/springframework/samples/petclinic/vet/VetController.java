@@ -52,7 +52,7 @@ class VetController {
 			vets.getVetList().addAll(this.vets.findAll());
 		}
 
-		if (MigrationToggles.isSQLiteEnabled) {
+		if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
 			vets.getVetList().addAll(this.vetMigration.findAll());
 		}
 
@@ -70,7 +70,7 @@ class VetController {
 			vets.getVetList().addAll(this.vets.findAll());
 		}
 
-		if (MigrationToggles.isSQLiteEnabled) {
+		if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
 			vets.getVetList().addAll(this.vetMigration.findAll());
 		}
 

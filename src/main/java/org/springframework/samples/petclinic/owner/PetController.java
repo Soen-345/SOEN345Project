@@ -107,7 +107,7 @@ class PetController {
             pet = this.pets.findById(petId);
         }
         assert pet != null;
-        if (MigrationToggles.isSQLiteEnabled) {
+        if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
             pet = this.petMigration.shadowRead(petId);
           //  this.petMigration.shadowReadWriteConsistencyChecker(pet);
         }

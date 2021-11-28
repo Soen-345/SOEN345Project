@@ -118,7 +118,7 @@ class OwnerController {
                 results = this.owners.findByLastName(owner.getLastName());
             }
 
-            if (MigrationToggles.isSQLiteEnabled) {
+            if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
                 results = ownerMigration.shadowReadByLastName(owner.getLastName());
               //  this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
             }
@@ -133,7 +133,7 @@ class OwnerController {
                 // find owners by first name
                 results = this.owners.findByFirstName(owner.getFirstName());
             }
-            if (MigrationToggles.isSQLiteEnabled) {
+            if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
                 results = this.ownerMigration.shadowReadByFirstName(owner.getFirstName());
               //  this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
             }
@@ -167,7 +167,7 @@ class OwnerController {
             if (MigrationToggles.isH2Enabled) {
                 owner = this.owners.findById(ownerId);
             }
-            if (MigrationToggles.isSQLiteEnabled) {
+            if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
                 owner = this.ownerMigration.shadowRead(ownerId);
              //   this.ownerMigration.shadowReadWriteConsistencyChecker(this.ownerMigration.shadowRead(ownerId));
             }
@@ -191,9 +191,8 @@ class OwnerController {
                     this.owners.save(owner);
                 }
                 if (MigrationToggles.isSQLiteEnabled) {
-                    // shadow writing to new database but updating
                     this.ownerMigration.shadowWriteToNewDatastore(owner);
-                 //   this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
+                    //   this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
                 }
                 return "redirect:/owners/{ownerId}";
             }
@@ -214,7 +213,7 @@ class OwnerController {
         if (MigrationToggles.isH2Enabled) {
             owner = this.owners.findById(ownerId);
         }
-        if (MigrationToggles.isSQLiteEnabled) {
+        if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
             owner = this.ownerMigration.shadowRead(ownerId);
          //   this.ownerMigration.shadowReadWriteConsistencyChecker(this.ownerMigration.shadowRead(ownerId));
         }
