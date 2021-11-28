@@ -101,6 +101,7 @@ public class OwnerMigration implements IMigration<Owner> {
     }
 
     public void shadowWriteToNewDatastore(Owner owner) {
+        System.out.println("HHH: " + owner.getId());
         this.ownerDAO.add(owner, Datastores.SQLITE);
 
     }
