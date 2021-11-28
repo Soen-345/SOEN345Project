@@ -24,6 +24,7 @@ public class PetMigrationTest {
     private static List<Pet> oldDataStorePets;
     private static PetMigration petMigration;
     private static TypeMigration typeMigration;
+    private static VisitMigration visitMigration;
 
     static Pet pet1;
     static Pet pet2;
@@ -40,6 +41,8 @@ public class PetMigrationTest {
         MigrationToggles.isUnderTest = true;
         petMigration = new PetMigration();
         typeMigration = new TypeMigration();
+        visitMigration = new VisitMigration();
+        visitMigration.forklift();
         typeMigration.forklift();
 
         Date date = new Date();
