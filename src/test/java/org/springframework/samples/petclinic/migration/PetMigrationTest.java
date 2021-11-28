@@ -22,8 +22,9 @@ import static org.mockito.Mockito.when;
 public class PetMigrationTest {
 
     private static List<Pet> oldDataStorePets;
-
     private static PetMigration petMigration;
+    private static TypeMigration typeMigration;
+
     static Pet pet1;
     static Pet pet2;
     static Pet pet3;
@@ -38,6 +39,8 @@ public class PetMigrationTest {
 
         MigrationToggles.isUnderTest = true;
         petMigration = new PetMigration();
+        typeMigration = new TypeMigration();
+        typeMigration.forklift();
 
         Date date = new Date();
         pet1 = Mockito.mock(Pet.class);
