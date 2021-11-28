@@ -82,7 +82,7 @@ class OwnerController {
                 }
                 if (MigrationToggles.isSQLiteEnabled) {
                     this.ownerMigration.shadowWriteToNewDatastore(owner);
-                    this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
+                 //   this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
                 }
 
                 return "redirect:/owners/" + owner.getId();
@@ -119,8 +119,8 @@ class OwnerController {
             }
 
             if (MigrationToggles.isSQLiteEnabled) {
-                //  results = ownerMigration.shadowReadByLastName(owner.getLastName());
-                this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
+                results = ownerMigration.shadowReadByLastName(owner.getLastName());
+              //  this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
             }
 
         }
@@ -134,8 +134,8 @@ class OwnerController {
                 results = this.owners.findByFirstName(owner.getFirstName());
             }
             if (MigrationToggles.isSQLiteEnabled) {
-                //  results = this.ownerMigration.shadowReadByFirstName(owner.getFirstName());
-                this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
+                results = this.ownerMigration.shadowReadByFirstName(owner.getFirstName());
+              //  this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
             }
         }
         if (OwnerToggles.isSearchFirstNameEnabled || OwnerToggles.isSearchLastNameEnabled) {
@@ -168,7 +168,8 @@ class OwnerController {
                 owner = this.owners.findById(ownerId);
             }
             if (MigrationToggles.isSQLiteEnabled) {
-                this.ownerMigration.shadowReadWriteConsistencyChecker(this.ownerMigration.shadowRead(ownerId));
+                owner = this.ownerMigration.shadowRead(ownerId);
+             //   this.ownerMigration.shadowReadWriteConsistencyChecker(this.ownerMigration.shadowRead(ownerId));
             }
             assert owner != null;
             model.addAttribute(owner);
@@ -192,7 +193,7 @@ class OwnerController {
                 if (MigrationToggles.isSQLiteEnabled) {
                     // shadow writing to new database but updating
                     this.ownerMigration.shadowWriteToNewDatastore(owner);
-                    this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
+                 //   this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
                 }
                 return "redirect:/owners/{ownerId}";
             }
@@ -214,7 +215,8 @@ class OwnerController {
             owner = this.owners.findById(ownerId);
         }
         if (MigrationToggles.isSQLiteEnabled) {
-            this.ownerMigration.shadowReadWriteConsistencyChecker(this.ownerMigration.shadowRead(ownerId));
+            owner = this.ownerMigration.shadowRead(ownerId);
+         //   this.ownerMigration.shadowReadWriteConsistencyChecker(this.ownerMigration.shadowRead(ownerId));
         }
         if (owner != null) {
             for (Pet pet : owner.getPets()) {

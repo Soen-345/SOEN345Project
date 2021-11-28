@@ -53,8 +53,7 @@ class VetController {
 		}
 
 		if (MigrationToggles.isSQLiteEnabled) {
-			// enable when read only from sqlite
-			// vets.getVetList().addAll(this.vetMigration.findAll());
+			vets.getVetList().addAll(this.vetMigration.findAll());
 		}
 
 		model.put("vets", vets);
@@ -72,8 +71,7 @@ class VetController {
 		}
 
 		if (MigrationToggles.isSQLiteEnabled) {
-			// enable when read only from sqlite
-			// vets.getVetList().addAll(this.vetMigration.findAll());
+			vets.getVetList().addAll(this.vetMigration.findAll());
 		}
 
 		return vets;

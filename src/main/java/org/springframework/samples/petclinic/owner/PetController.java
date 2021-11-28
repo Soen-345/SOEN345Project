@@ -94,7 +94,7 @@ class PetController {
             }
             if (MigrationToggles.isSQLiteEnabled) {
                 this.petMigration.shadowWriteToNewDatastore(pet, owner);
-                this.petMigration.shadowReadWriteConsistencyChecker(pet);
+             //   this.petMigration.shadowReadWriteConsistencyChecker(pet);
             }
             return "redirect:/owners/{ownerId}";
         }
@@ -108,7 +108,8 @@ class PetController {
         }
         assert pet != null;
         if (MigrationToggles.isSQLiteEnabled) {
-            this.petMigration.shadowReadWriteConsistencyChecker(pet);
+            pet = this.petMigration.shadowRead(petId);
+          //  this.petMigration.shadowReadWriteConsistencyChecker(pet);
         }
 
         model.put("pet", pet);
@@ -128,7 +129,7 @@ class PetController {
             }
             if (MigrationToggles.isSQLiteEnabled) {
                 this.petMigration.shadowWriteToNewDatastore(pet, owner);
-                this.petMigration.shadowReadWriteConsistencyChecker(pet);
+          //      this.petMigration.shadowReadWriteConsistencyChecker(pet);
             }
             return "redirect:/owners/{ownerId}";
         }
