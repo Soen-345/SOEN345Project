@@ -78,7 +78,7 @@ class OwnerController {
                 if (MigrationToggles.isH2Enabled ) {
                     this.owners.save(owner);
                 }
-                if (MigrationToggles.isSQLiteEnabled) {
+                if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
                     id = this.ownerMigration.shadowWriteToNewDatastore(owner);
                     owner.setId(id);
                 //    this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
