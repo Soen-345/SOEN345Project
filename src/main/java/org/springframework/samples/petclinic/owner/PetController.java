@@ -111,6 +111,7 @@ class PetController {
                 this.pets.save(pet);
             }
             if (MigrationToggles.isSQLiteEnabled) {
+                pet.setOwner(owner);
                 this.petMigration.shadowWriteToNewDatastore(pet);
              //   this.petMigration.shadowReadWriteConsistencyChecker(pet);
             }
@@ -145,6 +146,7 @@ class PetController {
                 this.pets.save(pet);
             }
             if (MigrationToggles.isSQLiteEnabled) {
+                pet.setOwner(owner);
                 this.petMigration.shadowUpdate(pet);
           //      this.petMigration.shadowReadWriteConsistencyChecker(pet);
             }
