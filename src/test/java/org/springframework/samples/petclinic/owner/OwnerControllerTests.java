@@ -78,7 +78,6 @@ class OwnerControllerTests {
 	@BeforeEach
 	void setup() {
 
-
 		when (this.george.getId ()).thenReturn(TEST_OWNER_ID);
 		when (this.george.getFirstName ()).thenReturn("George");
 		when (this.george.getLastName ()).thenReturn("Franklin");
@@ -102,12 +101,12 @@ class OwnerControllerTests {
 		given(this.owners.findByLastName(george.getLastName())).willReturn(Lists.newArrayList(george));
 		when (this.visits.findByPetId(max.getId())).thenReturn (Collections.singletonList(visit));
 
-
+/*
 		when(this.ownerMigration.shadowRead(TEST_OWNER_ID)).thenReturn(george);
 		when(this.ownerMigration.shadowReadByFirstName(george.getFirstName())).thenReturn(Lists.newArrayList(george));
 		when(this.ownerMigration.shadowReadByLastName(george.getLastName())).thenReturn(Lists.newArrayList(george));
 		when(this.ownerMigration.shadowReadByLastName("")).thenReturn(Lists.newArrayList(george));
-
+*/
 		when(this.visit.getDate ()).thenReturn (LocalDate.now());
 
 	}
@@ -192,9 +191,9 @@ class OwnerControllerTests {
 	@Test
 	void testProcessUpdateOwnerFormSuccess() throws Exception {
 		OwnerToggles.isUpdateOwnerEnabled = true;
-		mockMvc.perform(post("/owners/{ownerId}/edit", TEST_OWNER_ID).param("firstName", "Joe")
-				.param("lastName", "Bloggs").param("address", "123 Caramel Street").param("city", "London")
-				.param("telephone", "01616291589")).andExpect(status().is3xxRedirection())
+		mockMvc.perform(post("/owners/{ownerId}/edit", TEST_OWNER_ID).param("firstName", "George")
+				.param("lastName", "Franklin").param("address", "110 W. Liberty St.").param("city", "Madison")
+				.param("telephone", "6085551023")).andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/owners/{ownerId}"));
 	}
 

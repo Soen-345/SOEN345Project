@@ -80,7 +80,6 @@ class OwnerController {
                 }
                 if (MigrationToggles.isSQLiteEnabled) {
                     id = this.ownerMigration.shadowWriteToNewDatastore(owner);
-                    System.out.println("HELLOO: " + id);
                     owner.setId(id);
                     this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
                 }
@@ -120,6 +119,7 @@ class OwnerController {
 
             if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
                 results = ownerMigration.shadowReadByLastName(owner.getLastName());
+                System.out.println("HI Last: " + owner.getLastName() + result);
               //  this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
             }
 
@@ -135,7 +135,7 @@ class OwnerController {
             }
             if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
                 results = this.ownerMigration.shadowReadByFirstName(owner.getFirstName());
-                System.out.println("HI: " + result);
+                System.out.println("HI first: " + owner.getFirstName() + result);
               //  this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
             }
         }
