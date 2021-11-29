@@ -1,36 +1,51 @@
 package org.springframework.samples.petclinic.migration;
 
 import org.junit.jupiter.api.*;
-import org.mockito.Mock;
+
 import org.mockito.Mockito;
 import org.springframework.samples.petclinic.owner.Owner;
-import org.mockito.MockitoAnnotations;
-import org.springframework.samples.petclinic.vet.Vet;
+import org.springframework.samples.petclinic.owner.Pet;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
+
+
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class OwnerMigrationTest {
+
     private static OwnerMigration ownerMigration;
-    private static Map<Integer,Owner> oldDataStoreOwners;
+    private static List<Owner> oldDataStoreOwners;
 
     static Owner owner1;
     static Owner owner2;
     static Owner owner3;
     static Owner owner4;
 
-    @BeforeEach
-    public void setup(){
+    @BeforeAll
+    static void setup(){
         MigrationToggles.isUnderTest = true;
+
         ownerMigration = new OwnerMigration();
+        PetMigration petMigration = new PetMigration();
+
+        Date date = new Date();
+        Pet pet1 = Mockito.mock(Pet.class);
+        when(pet1.getId()).thenReturn(1);
+        when(pet1.getName()).thenReturn("Max");
+        when(pet1.getBirthDate()).thenReturn(PetMigration.convertToLocalDate(date));
+        when(pet1.getTypeId()).thenReturn(1);
+        when(pet1.getOwnerId()).thenReturn(1);
+        List<Pet> oldDataStorePets = new ArrayList<>();
+        oldDataStorePets.add(pet1);
+
+        petMigration.forkliftTestOnly(oldDataStorePets);
+
         owner1 = Mockito.mock(Owner.class);
         owner2 = Mockito.mock(Owner.class);
         owner3 = Mockito.mock(Owner.class);
@@ -65,24 +80,24 @@ public class OwnerMigrationTest {
         when(owner4.getCity()).thenReturn("Windsor");
         when(owner4.getTelephone()).thenReturn("6085553198");
 
-        oldDataStoreOwners = new HashMap<>();
+        oldDataStoreOwners = new ArrayList<>();
 
-        oldDataStoreOwners.put(owner1.getId(),owner1);
-        oldDataStoreOwners.put(owner2.getId(),owner2);
+        oldDataStoreOwners.add(owner1);
+        oldDataStoreOwners.add(owner2);
     }
 
 
 
     @Test
     @Order(1)
-    public void testforklift() throws SQLException {
+    public void testForklift()  {
       assertEquals(2,ownerMigration.forkliftTestOnly(oldDataStoreOwners));
     }
 
     @Test
     @Order(2)
     public void testCheckConsistency(){
-        oldDataStoreOwners.put(owner3.getId(),owner3);
+        oldDataStoreOwners.add(owner3);
 
         assertEquals(1,ownerMigration.checkConsistenciesTestOnly(oldDataStoreOwners));
     }
@@ -90,9 +105,9 @@ public class OwnerMigrationTest {
     @Test
     @Order(3)
     public void testShadowReadWriteConsistencyChecker(){
-        oldDataStoreOwners.put(owner4.getId(),owner4);
+        oldDataStoreOwners.add(owner4);
 
-        ownerMigration.shadowReadWriteConsistencyChecker(owner4);
+        ownerMigration.shadowWriteToNewDatastore(owner4);
 
         assertTrue(ownerMigration.shadowReadWriteConsistencyChecker(owner4));
 

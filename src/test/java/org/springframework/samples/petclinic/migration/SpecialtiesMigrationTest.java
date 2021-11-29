@@ -5,17 +5,18 @@ import org.mockito.Mockito;
 import org.springframework.samples.petclinic.vet.Specialty;
 
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
+
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class SpecialtiesMigrationTest {
-    private static SpecialtiesMigration specialtiesMigration;
 
-    private static Map<Integer, Specialty> oldDataStoreVets;
+    private static SpecialtiesMigration specialtiesMigration;
+    private static List<Specialty> oldDataStoreVets;
 
     static Specialty specialty1;
     static Specialty specialty2;
@@ -54,11 +55,11 @@ public class SpecialtiesMigrationTest {
 
 
 
-        oldDataStoreVets = new HashMap<>();
+        oldDataStoreVets = new ArrayList<>();
 
-        oldDataStoreVets.put(specialty1.getId(), specialty1);
-        oldDataStoreVets.put(specialty2.getId(), specialty2);
-        oldDataStoreVets.put(specialty3.getId(), specialty3);
+        oldDataStoreVets.add(specialty1);
+        oldDataStoreVets.add(specialty2);
+        oldDataStoreVets.add(specialty3);
 
     }
 
@@ -74,7 +75,7 @@ public class SpecialtiesMigrationTest {
     @Order(2)
     public void testCheckConsistency() {
 
-        oldDataStoreVets.put(specialty4.getId(), specialty4);
+        oldDataStoreVets.add(specialty4);
 
 
         assertEquals(1, specialtiesMigration.checkConsistenciesTestOnly(oldDataStoreVets));
@@ -84,7 +85,7 @@ public class SpecialtiesMigrationTest {
     @Order(3)
     public void testShadowReadConsistencyChecker() {
 
-        oldDataStoreVets.put(specialty5.getId(), specialty5);
+        oldDataStoreVets.add(specialty5);
 
 
         specialtiesMigration.shadowWrite(specialty5);

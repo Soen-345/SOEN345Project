@@ -5,8 +5,8 @@ import org.mockito.Mockito;
 import org.springframework.samples.petclinic.owner.PetType;
 
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -14,9 +14,9 @@ import static org.mockito.Mockito.when;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TypeMigrationTest {
-    private static TypeMigration typeMigration;
 
-    private static Map<Integer, PetType> oldDataStoreTypes;
+    private static TypeMigration typeMigration;
+    private static List<PetType> oldDataStoreTypes;
 
     static PetType type1;
     static PetType type2;
@@ -52,14 +52,11 @@ public class TypeMigrationTest {
         when(type5.getId()).thenReturn(5);
         when(type5.getName()).thenReturn("bird");
 
+        oldDataStoreTypes = new ArrayList<>();
 
-
-
-        oldDataStoreTypes = new HashMap<>();
-
-        oldDataStoreTypes.put(type1.getId(), type1);
-        oldDataStoreTypes.put(type2.getId(), type2);
-        oldDataStoreTypes.put(type3.getId(), type3);
+        oldDataStoreTypes.add(type1);
+        oldDataStoreTypes.add(type2);
+        oldDataStoreTypes.add(type3);
 
     }
 
@@ -75,7 +72,7 @@ public class TypeMigrationTest {
     @Order(2)
     public void testCheckConsistency() {
 
-        oldDataStoreTypes.put(type4.getId(), type4);
+        oldDataStoreTypes.add(type4);
 
 
         assertEquals(1, typeMigration.checkConsistenciesTestOnly(oldDataStoreTypes));
@@ -85,7 +82,7 @@ public class TypeMigrationTest {
     @Order(3)
     public void testShadowReadConsistencyChecker() {
 
-        oldDataStoreTypes.put(type5.getId(), type5);
+        oldDataStoreTypes.add(type5);
 
 
         typeMigration.shadowWrite(type5);

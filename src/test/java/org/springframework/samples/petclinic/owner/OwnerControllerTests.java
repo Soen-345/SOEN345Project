@@ -26,6 +26,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.samples.petclinic.migration.OwnerMigration;
 import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.test.web.servlet.MockMvc;
@@ -60,6 +61,9 @@ class OwnerControllerTests {
 	private VisitRepository visits;
 
 	@Mock
+	private OwnerMigration ownerMigration;
+
+	@Mock
 	private Owner george;
 
 	@Mock
@@ -90,11 +94,20 @@ class OwnerControllerTests {
 		when (this.max.getBirthDate ()).thenReturn (LocalDate.now());
 		when (this.max.getVisits()).thenReturn(Lists.newArrayList(visit));
 		when (this.george.getPetsInternal ()).thenReturn (Collections.singleton(max));
-		when (this.owners.findById(TEST_OWNER_ID)).thenReturn (george);
 
+		when (this.owners.findById(TEST_OWNER_ID)).thenReturn (george);
+		given(this.owners.findByFirstName(george.getFirstName())).willReturn(Lists.newArrayList(george));
+		given(this.owners.findByLastName("")).willReturn(Lists.newArrayList(george));
+		given(this.owners.findByLastName(george.getLastName())).willReturn(Lists.newArrayList(george));
+		when (this.visits.findByPetId(max.getId())).thenReturn (Collections.singletonList(visit));
+
+		when(this.ownerMigration.shadowRead(TEST_OWNER_ID)).thenReturn(george);
+		when(this.ownerMigration.shadowReadByFirstName(george.getFirstName())).thenReturn(Lists.newArrayList(george));
+		when(this.ownerMigration.shadowReadByLastName(george.getLastName())).thenReturn(Lists.newArrayList(george));
+		when(this.ownerMigration.shadowReadByLastName("")).thenReturn(Lists.newArrayList(george));
 
 		when(this.visit.getDate ()).thenReturn (LocalDate.now());
-		when (this.visits.findByPetId(max.getId())).thenReturn (Collections.singletonList(visit));
+
 	}
 
 	@Test
@@ -133,7 +146,6 @@ class OwnerControllerTests {
 	void testProcessFindFormSuccess() throws Exception {
 		OwnerToggles.isSearchFirstNameEnabled=false;
 		OwnerToggles.isSearchLastNameEnabled=true;
-		given(this.owners.findByLastName("")).willReturn(Lists.newArrayList(george, new Owner()));
 		mockMvc.perform(get("/owners")).andExpect(status().isOk()).andExpect(view().name("owners/ownersList"));
 	}
 
@@ -141,7 +153,6 @@ class OwnerControllerTests {
 	void testProcessFindFormByLastName() throws Exception {
 		OwnerToggles.isSearchFirstNameEnabled=false;
 		OwnerToggles.isSearchLastNameEnabled=true;
-		given(this.owners.findByLastName(george.getLastName())).willReturn(Lists.newArrayList(george));
 		mockMvc.perform(get("/owners").param("lastName", "Franklin")).andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
 	}
@@ -150,7 +161,7 @@ class OwnerControllerTests {
 	void testProcessFindFormByFirstName() throws Exception {
 		OwnerToggles.isSearchFirstNameEnabled=true;
 		OwnerToggles.isSearchLastNameEnabled=false;
-		given(this.owners.findByFirstName(george.getFirstName())).willReturn(Lists.newArrayList(george));
+
 		mockMvc.perform(get("/owners").param("firstName", "George")).andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
 	}

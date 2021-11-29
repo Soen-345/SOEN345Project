@@ -36,8 +36,14 @@ import java.util.HashMap;
 public class PetClinicApplication {
 
 	public static void main(String[] args) {
+
 		MigrationToggles.isUnderTest = false;
+		MigrationToggles.isSQLiteEnabled = true;
+		MigrationToggles.isH2Enabled = true;
+		MigrationToggles.isShadowReadEnabled = false;
+
 		SpringApplication.run(PetClinicApplication.class, args);
+
 	}
 
 }

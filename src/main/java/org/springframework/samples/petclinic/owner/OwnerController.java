@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import org.springframework.samples.petclinic.migration.MigrationToggles;
 import org.springframework.samples.petclinic.migration.OwnerMigration;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
@@ -45,13 +46,9 @@ class OwnerController {
     private final OwnerRepository owners;
     private final OwnerMigration ownerMigration;
 
-    private VisitRepository visits;
-
-
 
     public OwnerController(OwnerRepository clinicService, VisitRepository visits) {
         this.owners = clinicService;
-        this.visits = visits;
         this.ownerMigration = new OwnerMigration();
     }
 
@@ -77,10 +74,16 @@ class OwnerController {
             if (result.hasErrors()) {
                 return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
             } else {
-                this.owners.save(owner);
-                // shadow writing to new database
-                this.ownerMigration.shadowWriteToNewDatastore(owner);
-                this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
+                int id = -1;
+                if (MigrationToggles.isH2Enabled) {
+                    this.owners.save(owner);
+                }
+                if (MigrationToggles.isSQLiteEnabled) {
+                    id = this.ownerMigration.shadowWriteToNewDatastore(owner);
+                    owner.setId(id);
+                    this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
+                }
+
                 return "redirect:/owners/" + owner.getId();
             }
         }
@@ -90,11 +93,12 @@ class OwnerController {
     @GetMapping("/owners/find")
     public String initFindForm(Map<String, Object> model) {
         model.put("owner", new Owner());
-        if(OwnerToggles.isSearchLastNameEnabled)
-            model.put("nameType","Last");
-        if(OwnerToggles.isSearchFirstNameEnabled)
-            model.put("nameType","First");
-
+        if (OwnerToggles.isSearchLastNameEnabled) {
+            model.put("nameType", "Last");
+        }
+        if (OwnerToggles.isSearchFirstNameEnabled) {
+            model.put("nameType", "First");
+        }
 
         return "owners/findOwners";
     }
@@ -102,15 +106,21 @@ class OwnerController {
     @GetMapping("/owners")
     public String processFindForm(Owner owner, BindingResult result, Map<String, Object> model) {
 
-        Collection<Owner> results=null;
-        if(OwnerToggles.isSearchLastNameEnabled){
+        Collection<Owner> results = null;
+        if (OwnerToggles.isSearchLastNameEnabled) {
             // allow parameterless GET request for /owners to return all records
             if (owner.getLastName() == null) {
                 owner.setLastName(""); // empty string signifies broadest possible search
             }
+            if (MigrationToggles.isH2Enabled) {
+                // find owners by last name
+                results = this.owners.findByLastName(owner.getLastName());
+            }
 
-            // find owners by last name
-            results = this.owners.findByLastName(owner.getLastName());
+            if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+                results = ownerMigration.shadowReadByLastName(owner.getLastName());
+              //  this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
+            }
 
         }
         if (OwnerToggles.isSearchFirstNameEnabled) {
@@ -118,12 +128,16 @@ class OwnerController {
             if (owner.getFirstName() == null) {
                 owner.setFirstName(""); // empty string signifies broadest possible search
             }
-
-            // find owners by first name
-            results = this.owners.findByFirstName(owner.getFirstName());
-
+            if (MigrationToggles.isH2Enabled) {
+                // find owners by first name
+                results = this.owners.findByFirstName(owner.getFirstName());
+            }
+            if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+                results = this.ownerMigration.shadowReadByFirstName(owner.getFirstName());
+              //  this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
+            }
         }
-        if(OwnerToggles.isSearchFirstNameEnabled||OwnerToggles.isSearchLastNameEnabled){
+        if (OwnerToggles.isSearchFirstNameEnabled || OwnerToggles.isSearchLastNameEnabled) {
             if (results.isEmpty()) {
                 // no owners found
                 result.rejectValue("lastName", "notFound", "not found");
@@ -131,9 +145,11 @@ class OwnerController {
             } else if (results.size() == 1) {
                 // 1 owner found
                 owner = results.iterator().next();
+
                 return "redirect:/owners/" + owner.getId();
             } else {
                 // multiple owners found
+
                 model.put("selections", results);
                 return "owners/ownersList";
             }
@@ -146,7 +162,15 @@ class OwnerController {
     @GetMapping("/owners/{ownerId}/edit")
     public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
         if (OwnerToggles.isUpdateOwnerEnabled) {
-            Owner owner = this.owners.findById(ownerId);
+            Owner owner = null;
+            if (MigrationToggles.isH2Enabled) {
+                owner = this.owners.findById(ownerId);
+            }
+            if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+                owner = this.ownerMigration.shadowRead(ownerId);
+             //   this.ownerMigration.shadowReadWriteConsistencyChecker(this.ownerMigration.shadowRead(ownerId));
+            }
+            assert owner != null;
             model.addAttribute(owner);
             return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
         }
@@ -162,13 +186,15 @@ class OwnerController {
                 return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
             } else {
                 owner.setId(ownerId);
-                this.owners.save(owner);
-                // shadow writing to new database but updating
-                this.ownerMigration.shadowWriteToNewDatastore(owner);
-                this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
+                if (MigrationToggles.isH2Enabled) {
+                    this.owners.save(owner);
+                }
+                if (MigrationToggles.isSQLiteEnabled) {
+                    this.ownerMigration.shadowUpdate(owner);
+                    //   this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
+                }
                 return "redirect:/owners/{ownerId}";
             }
-
         }
         return "Update owner feature not enabled";
     }
@@ -182,11 +208,17 @@ class OwnerController {
     @GetMapping("/owners/{ownerId}")
     public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
         ModelAndView mav = new ModelAndView("owners/ownerDetails");
-        Owner owner = this.owners.findById(ownerId);
-        for (Pet pet : owner.getPets()) {
-            pet.setVisitsInternal(visits.findByPetId(pet.getId()));
+        Owner owner = null;
+        if (MigrationToggles.isH2Enabled) {
+            owner = this.owners.findById(ownerId);
         }
-        mav.addObject(owner);
+        if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+            owner = this.ownerMigration.shadowRead(ownerId);
+         //   this.ownerMigration.shadowReadWriteConsistencyChecker(this.ownerMigration.shadowRead(ownerId));
+        }
+        if (owner != null) {
+            mav.addObject(owner);
+        }
         return mav;
     }
 

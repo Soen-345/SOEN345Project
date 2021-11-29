@@ -1,13 +1,13 @@
 package org.springframework.samples.petclinic.vet;
 
-public class VetSpecialties {
+public class VetSpecialty {
     private int vet_id;
     private int specialty_id;
 
-    public VetSpecialties() {
+    public VetSpecialty() {
     }
 
-    public VetSpecialties(int vet_id, int specialty_id) {
+    public VetSpecialty(int vet_id, int specialty_id) {
         this.vet_id = vet_id;
         this.specialty_id = specialty_id;
     }

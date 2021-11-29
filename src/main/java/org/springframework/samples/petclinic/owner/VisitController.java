@@ -19,6 +19,8 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.springframework.samples.petclinic.migration.MigrationToggles;
+import org.springframework.samples.petclinic.migration.PetMigration;
 import org.springframework.samples.petclinic.migration.VisitMigration;
 import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
@@ -47,10 +49,13 @@ class VisitController {
 
 	private final VisitMigration visitMigration;
 
+	private final PetMigration petMigration;
+
 	public VisitController(VisitRepository visits, PetRepository pets) {
 		this.visits = visits;
 		this.pets = pets;
 		this.visitMigration = new VisitMigration();
+		this.petMigration = new PetMigration();
 	}
 
 	@InitBinder
@@ -67,13 +72,21 @@ class VisitController {
 	 */
 	@ModelAttribute("visit")
 	public Visit loadPetWithVisit(@PathVariable("petId") int petId, Map<String, Object> model) {
-		Pet pet = this.pets.findById(petId);
+
+		Pet pet = null;
+		if (MigrationToggles.isH2Enabled) {
+			pet = this.pets.findById(petId);
+		}
+		if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+			pet = this.petMigration.shadowRead(petId);
+		//	this.petMigration.shadowReadWriteConsistencyChecker(this.petMigration.shadowRead(petId));
+		}
+
+		assert pet != null;
 		pet.setVisitsInternal(this.visits.findByPetId(petId));
 		model.put("pet", pet);
 		Visit visit = new Visit();
 		pet.addVisit(visit);
-
-		// TODO - shadow read
 
 		return visit;
 	}
@@ -91,11 +104,13 @@ class VisitController {
 			return "pets/createOrUpdateVisitForm";
 		}
 		else {
-			this.visits.save(visit);
-
-			this.visitMigration.shadowWriteToNewDatastore(visit);
-			this.visitMigration.shadowReadWriteConsistencyChecker(visit);
-
+			if (MigrationToggles.isH2Enabled) {
+				this.visits.save(visit);
+			}
+			if (MigrationToggles.isSQLiteEnabled) {
+				this.visitMigration.shadowWriteToNewDatastore(visit);
+			//	this.visitMigration.shadowReadWriteConsistencyChecker(visit);
+			}
 			return "redirect:/owners/{ownerId}";
 		}
 	}
