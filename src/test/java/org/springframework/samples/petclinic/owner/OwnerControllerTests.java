@@ -61,7 +61,7 @@ class OwnerControllerTests {
     @MockBean
     private VisitRepository visits;
 
-    @Mock
+    @MockBean
     private OwnerMigration ownerMigration;
 
     @Mock

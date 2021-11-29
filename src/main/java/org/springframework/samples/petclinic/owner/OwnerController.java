@@ -112,12 +112,12 @@ class OwnerController {
             if (owner.getLastName() == null) {
                 owner.setLastName(""); // empty string signifies broadest possible search
             }
-            if (MigrationToggles.isH2Enabled && !MigrationToggles.isUnderTest) {
+            if (MigrationToggles.isH2Enabled) {
                 // find owners by last name
                 results = this.owners.findByLastName(owner.getLastName());
             }
 
-            if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+            if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled && !MigrationToggles.isUnderTest) {
                 results = ownerMigration.shadowReadByLastName(owner.getLastName());
               //  this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
             }
@@ -128,11 +128,11 @@ class OwnerController {
             if (owner.getFirstName() == null) {
                 owner.setFirstName(""); // empty string signifies broadest possible search
             }
-            if (MigrationToggles.isH2Enabled && !MigrationToggles.isUnderTest) {
+            if (MigrationToggles.isH2Enabled) {
                 // find owners by first name
                 results = this.owners.findByFirstName(owner.getFirstName());
             }
-            if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+            if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled && !MigrationToggles.isUnderTest) {
                 results = this.ownerMigration.shadowReadByFirstName(owner.getFirstName());
               //  this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
             }
@@ -163,10 +163,10 @@ class OwnerController {
     public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
         if (OwnerToggles.isUpdateOwnerEnabled) {
             Owner owner = null;
-            if (MigrationToggles.isH2Enabled && !MigrationToggles.isUnderTest) {
+            if (MigrationToggles.isH2Enabled) {
                 owner = this.owners.findById(ownerId);
             }
-            if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+            if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled && !MigrationToggles.isUnderTest) {
                 owner = this.ownerMigration.shadowRead(ownerId);
              //   this.ownerMigration.shadowReadWriteConsistencyChecker(this.ownerMigration.shadowRead(ownerId));
             }
@@ -209,10 +209,10 @@ class OwnerController {
     public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
         ModelAndView mav = new ModelAndView("owners/ownerDetails");
         Owner owner = null;
-        if (MigrationToggles.isH2Enabled && !MigrationToggles.isUnderTest) {
+        if (MigrationToggles.isH2Enabled ) {
             owner = this.owners.findById(ownerId);
         }
-        if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+        if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled && !MigrationToggles.isUnderTest) {
             owner = this.ownerMigration.shadowRead(ownerId);
          //   this.ownerMigration.shadowReadWriteConsistencyChecker(this.ownerMigration.shadowRead(ownerId));
         }

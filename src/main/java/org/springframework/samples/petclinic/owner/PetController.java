@@ -59,10 +59,10 @@ class PetController {
 
     @ModelAttribute("types")
     public Collection<PetType> populatePetTypes() {
-        if (MigrationToggles.isH2Enabled && !MigrationToggles.isUnderTest) {
+        if (MigrationToggles.isH2Enabled) {
             return this.pets.findPetTypes();
         }
-        if (MigrationToggles.isSQLiteEnabled) {
+        if (MigrationToggles.isSQLiteEnabled  && !MigrationToggles.isUnderTest) {
             return this.typeMigration.findTypes();
         }
         return null;
@@ -70,10 +70,10 @@ class PetController {
 
     @ModelAttribute("owner")
     public Owner findOwner(@PathVariable("ownerId") int ownerId) {
-        if (MigrationToggles.isH2Enabled && !MigrationToggles.isUnderTest) {
+        if (MigrationToggles.isH2Enabled) {
             return this.owners.findById(ownerId);
         }
-        if (MigrationToggles.isSQLiteEnabled) {
+        if (MigrationToggles.isSQLiteEnabled  && !MigrationToggles.isUnderTest) {
             return this.ownerMigration.shadowRead(ownerId);
         }
         return null;
@@ -122,10 +122,10 @@ class PetController {
     @GetMapping("/pets/{petId}/edit")
     public String initUpdateForm(@PathVariable("petId") int petId, ModelMap model) {
         Pet pet = null;
-        if (MigrationToggles.isH2Enabled && !MigrationToggles.isUnderTest) {
+        if (MigrationToggles.isH2Enabled) {
             pet = this.pets.findById(petId);
         }
-        if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+        if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled && !MigrationToggles.isUnderTest) {
             pet = this.petMigration.shadowRead(petId);
           //  this.petMigration.shadowReadWriteConsistencyChecker(pet);
         }
