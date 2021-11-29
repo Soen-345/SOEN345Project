@@ -107,7 +107,7 @@ class VisitController {
 			if (MigrationToggles.isH2Enabled) {
 				this.visits.save(visit);
 			}
-			if (MigrationToggles.isSQLiteEnabled) {
+			if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
 				this.visitMigration.shadowWriteToNewDatastore(visit);
 			//	this.visitMigration.shadowReadWriteConsistencyChecker(visit);
 			}

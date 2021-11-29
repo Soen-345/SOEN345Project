@@ -72,7 +72,7 @@ public class ScheduledCheck {
 
             log.info("**** CONSISTENCY CHECKING DONE ****");
 
-            if (this.numRuns > 10 && totalInconsistencies < 3) {
+            if (this.numRuns > 5 && totalInconsistencies < 3) {
                 MigrationToggles.isH2Enabled = false;
                 MigrationToggles.isShadowReadEnabled = true;
 
