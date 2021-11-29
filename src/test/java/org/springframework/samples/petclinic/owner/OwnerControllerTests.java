@@ -237,7 +237,7 @@ class OwnerControllerTests {
 
 	@Test
 	// tests the logger and rollback
-	public void loggerTest () throws Exception {
+	public void rollBackWithLoggerTest () throws Exception {
 		//feature is dark --> no one can access the feature
 		OwnerToggles.isSearchFirstNameEnabled=false;
 		OwnerToggles.isSearchLastNameEnabled=true;
