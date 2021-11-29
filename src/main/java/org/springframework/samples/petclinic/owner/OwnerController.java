@@ -72,7 +72,6 @@ class OwnerController {
 
         if (OwnerToggles.isAddOwnerButtonEnabled) {
             if (result.hasErrors()) {
-                System.out.println("ERRORR");
                 return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
             } else {
                 int id = -1;

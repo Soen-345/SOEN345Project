@@ -78,6 +78,7 @@ class OwnerControllerTests {
 	@BeforeEach
 	void setup() {
 
+
 		when (this.george.getId ()).thenReturn(TEST_OWNER_ID);
 		when (this.george.getFirstName ()).thenReturn("George");
 		when (this.george.getLastName ()).thenReturn("Franklin");
