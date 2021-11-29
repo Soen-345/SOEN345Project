@@ -23,7 +23,7 @@
         </RollingFile>
     </Appenders>
     <Loggers>
-        <Logger name="Analytics" level="info" additivity="false">
+        <Logger name="analytics" level="info" additivity="false">
             <AppenderRef ref="ConsoleAppender" />
         </Logger>
 
