@@ -115,7 +115,7 @@ public class PetDAO implements IDAO<Pet> {
                                             .parse(resultSet3.getString("visit_date"))),
                             resultSet3.getString("description")));
                 }
-                owner.addPet(pet);
+                owner.addPetNew(pet);
                 pet.setOwner(owner);
                 pet.setVisits(visits);
 
@@ -163,7 +163,7 @@ public class PetDAO implements IDAO<Pet> {
                                             .parse(resultSet3.getString("visit_date"))),
                             resultSet3.getString("description")));
                 }
-                owner.addPet(pet);
+                owner.addPetNew(pet);
                 pet.setOwner(owner);
                 pet.setVisits(visits);
 
@@ -220,7 +220,7 @@ public class PetDAO implements IDAO<Pet> {
                                                 .parse(resultSet3.getString("visit_date"))),
                                 resultSet3.getString("description")));
                     }
-                    owner.addPet(pet);
+                    owner.addPetNew(pet);
                     pet.setOwner(owner);
                     pet.setVisits(visits);
 
@@ -251,7 +251,7 @@ public class PetDAO implements IDAO<Pet> {
                                 resultSet1.getString("address"),
                                 resultSet1.getString("city"),
                                 resultSet1.getString("telephone"));
-                        owner.addPet(pet);
+                        owner.addPetNew(pet);
                         pet.setOwner(owner);
                     }
                     Statement statement2 = H2_CONNECTION.createStatement();

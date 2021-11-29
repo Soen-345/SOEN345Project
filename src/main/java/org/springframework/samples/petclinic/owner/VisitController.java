@@ -77,7 +77,7 @@ class VisitController {
 		if (MigrationToggles.isH2Enabled) {
 			pet = this.pets.findById(petId);
 		}
-		if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+		if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled  && !MigrationToggles.isUnderTest) {
 			pet = this.petMigration.shadowRead(petId);
 		//	this.petMigration.shadowReadWriteConsistencyChecker(this.petMigration.shadowRead(petId));
 		}
@@ -107,7 +107,7 @@ class VisitController {
 			if (MigrationToggles.isH2Enabled) {
 				this.visits.save(visit);
 			}
-			if (MigrationToggles.isSQLiteEnabled) {
+			if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
 				this.visitMigration.shadowWriteToNewDatastore(visit);
 			//	this.visitMigration.shadowReadWriteConsistencyChecker(visit);
 			}

@@ -100,7 +100,7 @@ public class OwnerMigration implements IMigration<Owner> {
 
     public int shadowWriteToNewDatastore(Owner owner) {
         int id = -1;
-        if (MigrationToggles.isH2Enabled && MigrationToggles.isSQLiteEnabled && MigrationToggles.isUnderTest) {
+        if (MigrationToggles.isH2Enabled && MigrationToggles.isSQLiteEnabled && owner.getId() != null) {
             this.ownerDAO.migrate(owner);
         }
         else {

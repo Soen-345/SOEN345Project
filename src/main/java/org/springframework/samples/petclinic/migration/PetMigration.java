@@ -58,8 +58,6 @@ public class PetMigration implements IMigration<Pet> {
 
         List<Pet> expected = this.petDAO.getAll(Datastores.H2);
 
-        List<Pet> actual = this.petDAO.getAll(Datastores.SQLITE);
-
         for (int i= 0; i < expected.size(); i++) {
             Pet exp = expected.get(i);
             Pet act = this.petDAO.get(exp.getId(), Datastores.SQLITE);
@@ -149,7 +147,7 @@ public class PetMigration implements IMigration<Pet> {
     }
 
     public void shadowWriteToNewDatastore(Pet pet) {
-        if (MigrationToggles.isH2Enabled && MigrationToggles.isSQLiteEnabled && MigrationToggles.isUnderTest) {
+        if (MigrationToggles.isH2Enabled && MigrationToggles.isSQLiteEnabled && pet.getId() != null) {
             this.petDAO.migrate(pet);
         }
         else {
