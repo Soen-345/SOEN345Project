@@ -43,7 +43,7 @@ public class VetDAO implements IDAO<Vet>{
     private void createVetTable() {
         String createQuery =
                 "CREATE TABLE IF NOT EXISTS vets (\n" +
-                "                      id         INTEGER IDENTITY PRIMARY KEY,\n" +
+                "                      id         INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                 "                      first_name VARCHAR(30),\n" +
                 "                      last_name  VARCHAR(30)\n" +
                 ");";

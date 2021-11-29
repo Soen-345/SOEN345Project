@@ -98,15 +98,20 @@ public class OwnerMigration implements IMigration<Owner> {
         return inconsistencies;
     }
 
-    public void shadowWriteToNewDatastore(Owner owner) {
+    public int shadowWriteToNewDatastore(Owner owner) {
+        int id = -1;
         if (MigrationToggles.isH2Enabled && MigrationToggles.isSQLiteEnabled && MigrationToggles.isUnderTest) {
             this.ownerDAO.migrate(owner);
         }
         else {
-            this.ownerDAO.add(owner, Datastores.SQLITE);
+            id = this.ownerDAO.add(owner, Datastores.SQLITE);
         }
+        return id;
     }
 
+    public void shadowUpdate(Owner owner) {
+        this.ownerDAO.update(owner, Datastores.SQLITE);
+    }
 
     public boolean shadowReadWriteConsistencyChecker(Owner exp) {
         Owner actual = this.ownerDAO.get(exp.getId(), Datastores.SQLITE);

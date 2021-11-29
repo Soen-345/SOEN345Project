@@ -46,12 +46,9 @@ class OwnerController {
     private final OwnerRepository owners;
     private final OwnerMigration ownerMigration;
 
-    private VisitRepository visits;
-
 
     public OwnerController(OwnerRepository clinicService, VisitRepository visits) {
         this.owners = clinicService;
-        this.visits = visits;
         this.ownerMigration = new OwnerMigration();
     }
 
@@ -77,12 +74,14 @@ class OwnerController {
             if (result.hasErrors()) {
                 return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
             } else {
+                int id = -1;
                 if (MigrationToggles.isH2Enabled) {
                     this.owners.save(owner);
                 }
                 if (MigrationToggles.isSQLiteEnabled) {
-                    this.ownerMigration.shadowWriteToNewDatastore(owner);
-                 //   this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
+                    id = this.ownerMigration.shadowWriteToNewDatastore(owner);
+                    owner.setId(id);
+                    this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
                 }
 
                 return "redirect:/owners/" + owner.getId();
@@ -191,7 +190,7 @@ class OwnerController {
                     this.owners.save(owner);
                 }
                 if (MigrationToggles.isSQLiteEnabled) {
-                    this.ownerMigration.shadowWriteToNewDatastore(owner);
+                    this.ownerMigration.shadowUpdate(owner);
                     //   this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
                 }
                 return "redirect:/owners/{ownerId}";

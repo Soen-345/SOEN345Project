@@ -41,7 +41,7 @@ public class VisitDAO implements IDAO<Visit>{
     private void createVisitTable() {
         String createQuery =
                 "CREATE TABLE IF NOT EXISTS visits (\n" +
-                        "                        id          INTEGER IDENTITY PRIMARY KEY,\n" +
+                        "                        id          INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                         "                        pet_id      INTEGER NOT NULL,\n" +
                         "                        visit_date  DATE,\n" +
                         "                        description VARCHAR(255), \n" +

@@ -131,6 +131,10 @@ public class PetMigration implements IMigration<Pet> {
         return true;
     }
 
+    public void shadowUpdate(Pet pet) {
+        this.petDAO.update(pet, Datastores.SQLITE);
+    }
+
     public void logInconsistency(Pet expected, Pet actual) {
 
         if (actual == null) {

@@ -11,8 +11,6 @@ public interface IDAO<T> {
 
     boolean migrate(T t);
 
-    void add(T t, Datastores datastore);
-
     void update(T t, Datastores datastore);
 
     T get(Integer id, Datastores datastore);

@@ -47,7 +47,7 @@ public class OwnerDAO implements IDAO<Owner> {
     private void createOwnerTable(){
         String createQuery =
                 "CREATE TABLE IF NOT EXISTS owners (\n" +
-                "                      id         INTEGER IDENTITY PRIMARY KEY,\n" +
+                "                      id         INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                 "                      first_name VARCHAR(30),\n" +
                 "                      last_name VARCHAR(30),\n" +
                 "                      address VARCHAR(255),\n" +
@@ -209,7 +209,8 @@ public class OwnerDAO implements IDAO<Owner> {
         return true;
     }
 
-    public void add(Owner owner, Datastores datastore){
+    public int add(Owner owner, Datastores datastore){
+        int id = -1;
         String insertQuery = "INSERT INTO owners (id, first_name, last_name, address, city, telephone) VALUES (NULL" + ",'"
                 + owner.getFirstName() + "','" + owner.getLastName() + "','" + owner.getAddress() + "','" + owner.getCity() +
                 "','" + owner.getTelephone() + "');";
@@ -217,6 +218,7 @@ public class OwnerDAO implements IDAO<Owner> {
             try{
                 Statement statement = SQLite_CONNECTION.createStatement();
                 statement.execute(insertQuery);
+                return statement.getGeneratedKeys().getInt(1);
             }catch (SQLException e){
                 log.error(e.getMessage());
             }
@@ -225,10 +227,12 @@ public class OwnerDAO implements IDAO<Owner> {
             try{
                 Statement statement = H2_CONNECTION.createStatement();
                 statement.execute(insertQuery);
+                return statement.getGeneratedKeys().getInt(1);
             }catch (SQLException e){
                 log.error(e.getMessage());
             }
         }
+        return id;
     }
 
     public void update(Owner owner, Datastores datastore){
