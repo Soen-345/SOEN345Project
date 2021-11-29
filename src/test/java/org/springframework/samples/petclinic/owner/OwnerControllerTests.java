@@ -101,6 +101,7 @@ class OwnerControllerTests {
 		given(this.owners.findByLastName(george.getLastName())).willReturn(Lists.newArrayList(george));
 		when (this.visits.findByPetId(max.getId())).thenReturn (Collections.singletonList(visit));
 
+
 		when(this.ownerMigration.shadowRead(TEST_OWNER_ID)).thenReturn(george);
 		when(this.ownerMigration.shadowReadByFirstName(george.getFirstName())).thenReturn(Lists.newArrayList(george));
 		when(this.ownerMigration.shadowReadByLastName(george.getLastName())).thenReturn(Lists.newArrayList(george));

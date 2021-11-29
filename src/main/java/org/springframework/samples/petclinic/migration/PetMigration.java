@@ -147,7 +147,7 @@ public class PetMigration implements IMigration<Pet> {
     }
 
     public void shadowWriteToNewDatastore(Pet pet) {
-        if (MigrationToggles.isH2Enabled && MigrationToggles.isSQLiteEnabled && MigrationToggles.isUnderTest) {
+        if (MigrationToggles.isH2Enabled && MigrationToggles.isSQLiteEnabled && pet.getId() != null) {
             this.petDAO.migrate(pet);
         }
         else {
