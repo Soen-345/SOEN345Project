@@ -112,7 +112,7 @@ class OwnerController {
             if (owner.getLastName() == null) {
                 owner.setLastName(""); // empty string signifies broadest possible search
             }
-            if (MigrationToggles.isH2Enabled) {
+            if (MigrationToggles.isH2Enabled && !MigrationToggles.isUnderTest) {
                 // find owners by last name
                 results = this.owners.findByLastName(owner.getLastName());
             }
@@ -128,7 +128,7 @@ class OwnerController {
             if (owner.getFirstName() == null) {
                 owner.setFirstName(""); // empty string signifies broadest possible search
             }
-            if (MigrationToggles.isH2Enabled) {
+            if (MigrationToggles.isH2Enabled && !MigrationToggles.isUnderTest) {
                 // find owners by first name
                 results = this.owners.findByFirstName(owner.getFirstName());
             }
@@ -163,7 +163,7 @@ class OwnerController {
     public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
         if (OwnerToggles.isUpdateOwnerEnabled) {
             Owner owner = null;
-            if (MigrationToggles.isH2Enabled) {
+            if (MigrationToggles.isH2Enabled && !MigrationToggles.isUnderTest) {
                 owner = this.owners.findById(ownerId);
             }
             if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
@@ -209,7 +209,7 @@ class OwnerController {
     public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
         ModelAndView mav = new ModelAndView("owners/ownerDetails");
         Owner owner = null;
-        if (MigrationToggles.isH2Enabled) {
+        if (MigrationToggles.isH2Enabled && !MigrationToggles.isUnderTest) {
             owner = this.owners.findById(ownerId);
         }
         if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {

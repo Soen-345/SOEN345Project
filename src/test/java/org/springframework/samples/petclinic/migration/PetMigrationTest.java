@@ -56,7 +56,7 @@ public class PetMigrationTest {
         PetType type1 = Mockito.mock(PetType.class);
 
         when(type1.getId()).thenReturn(1);
-        when(type1.getName()).thenReturn("cat");
+        when(type1.getName()).thenReturn("hamster");
 
         List<PetType> oldDataStoreTypes = new ArrayList<>();
         oldDataStoreTypes.add(type1);

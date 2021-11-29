@@ -59,7 +59,7 @@ class PetController {
 
     @ModelAttribute("types")
     public Collection<PetType> populatePetTypes() {
-        if (MigrationToggles.isH2Enabled) {
+        if (MigrationToggles.isH2Enabled && !MigrationToggles.isUnderTest) {
             return this.pets.findPetTypes();
         }
         if (MigrationToggles.isSQLiteEnabled) {
@@ -70,7 +70,7 @@ class PetController {
 
     @ModelAttribute("owner")
     public Owner findOwner(@PathVariable("ownerId") int ownerId) {
-        if (MigrationToggles.isH2Enabled) {
+        if (MigrationToggles.isH2Enabled && !MigrationToggles.isUnderTest) {
             return this.owners.findById(ownerId);
         }
         if (MigrationToggles.isSQLiteEnabled) {
@@ -122,7 +122,7 @@ class PetController {
     @GetMapping("/pets/{petId}/edit")
     public String initUpdateForm(@PathVariable("petId") int petId, ModelMap model) {
         Pet pet = null;
-        if (MigrationToggles.isH2Enabled) {
+        if (MigrationToggles.isH2Enabled && !MigrationToggles.isUnderTest) {
             pet = this.pets.findById(petId);
         }
         if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {

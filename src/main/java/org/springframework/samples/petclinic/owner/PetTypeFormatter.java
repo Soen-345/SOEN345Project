@@ -17,10 +17,13 @@ package org.springframework.samples.petclinic.owner;
 
 import java.text.ParseException;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.Formatter;
+import org.springframework.samples.petclinic.migration.MigrationToggles;
+import org.springframework.samples.petclinic.migration.TypeMigration;
 import org.springframework.stereotype.Component;
 
 /**
@@ -38,9 +41,12 @@ public class PetTypeFormatter implements Formatter<PetType> {
 
 	private final PetRepository pets;
 
+	private final TypeMigration typeMigration;
+
 	@Autowired
 	public PetTypeFormatter(PetRepository pets) {
 		this.pets = pets;
+		this.typeMigration = new TypeMigration();
 	}
 
 	@Override
@@ -50,7 +56,14 @@ public class PetTypeFormatter implements Formatter<PetType> {
 
 	@Override
 	public PetType parse(String text, Locale locale) throws ParseException {
-		Collection<PetType> findPetTypes = this.pets.findPetTypes();
+		Collection<PetType> findPetTypes = new HashSet<>();
+		if (MigrationToggles.isH2Enabled && !MigrationToggles.isUnderTest) {
+			findPetTypes = this.pets.findPetTypes();
+		}
+		if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+			findPetTypes = this.typeMigration.findTypes();
+		}
+
 		for (PetType type : findPetTypes) {
 			if (type.getName().equals(text)) {
 				return type;
