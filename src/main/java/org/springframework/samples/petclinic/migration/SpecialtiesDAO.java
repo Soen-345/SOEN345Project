@@ -36,7 +36,7 @@ public class SpecialtiesDAO implements IDAO<Specialty> {
     private void createSpecialtyTable() {
         String createQuery =
                 "CREATE TABLE IF NOT EXISTS specialties (\n" +
-                        "                      id         INTEGER IDENTITY PRIMARY KEY,\n" +
+                        "                      id         INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                         "                      name  VARCHAR(80)\n" +
                         ");";
         String indexQuery = "CREATE INDEX specialties_name ON specialties (name);";

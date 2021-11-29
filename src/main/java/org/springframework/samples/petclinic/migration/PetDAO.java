@@ -48,7 +48,7 @@ public class PetDAO implements IDAO<Pet> {
     private void createPetTable() {
         String createQuery =
                 "CREATE TABLE IF NOT EXISTS pets (\n" +
-                        "                      id         INTEGER IDENTITY PRIMARY KEY,\n" +
+                        "                      id         INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                         "                      name VARCHAR(30),\n" +
                         "                      birth_date  DATE,\n" +
                         "               type_id INTEGER NOT NULL,\n" +

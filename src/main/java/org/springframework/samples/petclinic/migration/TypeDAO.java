@@ -39,7 +39,7 @@ public class TypeDAO implements IDAO<PetType>{
     private void createTypeTable() {
         String createQuery =
                 "CREATE TABLE IF NOT EXISTS types (\n" +
-                        "                      id         INTEGER IDENTITY PRIMARY KEY,\n" +
+                        "                      id         INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                         "                      name  VARCHAR(80)\n" +
                         ");";
         String indexQuery = "CREATE INDEX types_name ON types (name);";

@@ -36,6 +36,9 @@ public class ScheduledCheck {
             petMigration.forklift();
 
             log.info("FORKLIFT COMPLETED");
+
+            MigrationToggles.isH2Enabled = false;
+            MigrationToggles.isShadowReadEnabled = true;
         }
     }
 
@@ -44,7 +47,7 @@ public class ScheduledCheck {
     @Scheduled(fixedDelay = 30000)
     public void consistencyCheck() {
 
-        if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isH2Enabled) {
+        if (MigrationToggles.isSQLiteEnabled) {
 
             log.info("**** CONSISTENCY CHECKING STARTING ****");
 

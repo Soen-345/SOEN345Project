@@ -16,7 +16,9 @@
 package org.springframework.samples.petclinic.owner;
 
 import org.springframework.samples.petclinic.migration.MigrationToggles;
+import org.springframework.samples.petclinic.migration.OwnerMigration;
 import org.springframework.samples.petclinic.migration.PetMigration;
+import org.springframework.samples.petclinic.migration.TypeMigration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -41,6 +43,8 @@ class PetController {
 
     private final PetRepository pets;
     private final PetMigration petMigration;
+    private final TypeMigration typeMigration;
+    private final OwnerMigration ownerMigration;
 
 
     private final OwnerRepository owners;
@@ -49,16 +53,30 @@ class PetController {
         this.pets = pets;
         this.owners = owners;
         this.petMigration = new PetMigration();
+        this.typeMigration = new TypeMigration();
+        this.ownerMigration = new OwnerMigration();
     }
 
     @ModelAttribute("types")
     public Collection<PetType> populatePetTypes() {
-        return this.pets.findPetTypes();
+        if (MigrationToggles.isH2Enabled) {
+            return this.pets.findPetTypes();
+        }
+        if (MigrationToggles.isSQLiteEnabled) {
+            return this.typeMigration.findTypes();
+        }
+        return null;
     }
 
     @ModelAttribute("owner")
     public Owner findOwner(@PathVariable("ownerId") int ownerId) {
-        return this.owners.findById(ownerId);
+        if (MigrationToggles.isH2Enabled) {
+            return this.owners.findById(ownerId);
+        }
+        if (MigrationToggles.isSQLiteEnabled) {
+            return this.ownerMigration.shadowRead(ownerId);
+        }
+        return null;
     }
 
     @InitBinder("owner")
@@ -129,7 +147,7 @@ class PetController {
             }
             if (MigrationToggles.isSQLiteEnabled) {
                 pet.setOwner(owner);
-                this.petMigration.shadowWriteToNewDatastore(pet);
+                this.petMigration.shadowUpdate(pet);
           //      this.petMigration.shadowReadWriteConsistencyChecker(pet);
             }
             return "redirect:/owners/{ownerId}";
