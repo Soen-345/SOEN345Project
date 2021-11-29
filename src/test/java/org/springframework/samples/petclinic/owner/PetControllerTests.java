@@ -82,7 +82,7 @@ class PetControllerTests {
 
 	@BeforeEach
 	void setup() {
-		when(max.getId()).thenReturn(3);
+		when(max.getId()).thenReturn(1);
 		when(max.getName()).thenReturn("max");
 		when(max.getOwner()).thenReturn(betty);
 		when(max.getType()).thenReturn(hamster);
