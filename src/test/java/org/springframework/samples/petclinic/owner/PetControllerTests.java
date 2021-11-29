@@ -87,6 +87,7 @@ class PetControllerTests {
 		when(max.getOwner()).thenReturn(betty);
 		when(max.getType()).thenReturn(hamster);
 		when(max.getBirthDate()).thenReturn(LocalDate.now());
+		when(hamster.getId()).thenReturn(1);
 		when(hamster.getName()).thenReturn("hamster");
 		when(betty.getPet("max")).thenReturn(max);
 		given(this.pets.findPetTypes()).willReturn(Lists.newArrayList(hamster));
@@ -96,6 +97,7 @@ class PetControllerTests {
 		given(this.typeMigration.findTypes()).willReturn(Lists.newArrayList(hamster));
 		given(this.ownerMigration.shadowRead(TEST_OWNER_ID)).willReturn(betty);
 		given(this.petMigration.shadowRead(TEST_PET_ID)).willReturn(max);
+
 	}
 
 	@Test
