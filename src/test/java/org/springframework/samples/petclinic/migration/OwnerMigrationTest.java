@@ -4,8 +4,11 @@ import org.junit.jupiter.api.*;
 
 import org.mockito.Mockito;
 import org.springframework.samples.petclinic.owner.Owner;
+import org.springframework.samples.petclinic.owner.Pet;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,7 +20,6 @@ import static org.mockito.Mockito.when;
 public class OwnerMigrationTest {
 
     private static OwnerMigration ownerMigration;
-    private static PetMigration petMigration;
     private static List<Owner> oldDataStoreOwners;
 
     static Owner owner1;
@@ -30,8 +32,19 @@ public class OwnerMigrationTest {
         MigrationToggles.isUnderTest = true;
 
         ownerMigration = new OwnerMigration();
-        petMigration = new PetMigration();
-        petMigration.forklift();
+        PetMigration petMigration = new PetMigration();
+
+        Date date = new Date();
+        Pet pet1 = Mockito.mock(Pet.class);
+        when(pet1.getId()).thenReturn(1);
+        when(pet1.getName()).thenReturn("Max");
+        when(pet1.getBirthDate()).thenReturn(PetMigration.convertToLocalDate(date));
+        when(pet1.getTypeId()).thenReturn(1);
+        when(pet1.getOwnerId()).thenReturn(1);
+        List<Pet> oldDataStorePets = new ArrayList<>();
+        oldDataStorePets.add(pet1);
+
+        petMigration.forkliftTestOnly(oldDataStorePets);
 
         owner1 = Mockito.mock(Owner.class);
         owner2 = Mockito.mock(Owner.class);

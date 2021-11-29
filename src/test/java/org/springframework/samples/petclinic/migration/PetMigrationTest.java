@@ -6,6 +6,8 @@ import org.mockito.Mockito;
 
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.Pet;
+import org.springframework.samples.petclinic.owner.PetType;
+import org.springframework.samples.petclinic.visit.Visit;
 
 
 import java.sql.SQLException;
@@ -23,8 +25,6 @@ public class PetMigrationTest {
 
     private static List<Pet> oldDataStorePets;
     private static PetMigration petMigration;
-    private static TypeMigration typeMigration;
-    private static VisitMigration visitMigration;
 
     static Pet pet1;
     static Pet pet2;
@@ -37,15 +37,34 @@ public class PetMigrationTest {
 
     @BeforeAll
     public static void setup() {
-
+        Date date = new Date();
         MigrationToggles.isUnderTest = true;
         petMigration = new PetMigration();
-        typeMigration = new TypeMigration();
-        visitMigration = new VisitMigration();
-        visitMigration.forklift();
-        typeMigration.forklift();
+        TypeMigration typeMigration = new TypeMigration();
+        VisitMigration visitMigration = new VisitMigration();
 
-        Date date = new Date();
+        Visit visit1 =  Mockito.mock(Visit.class);
+
+        when(visit1.getId()).thenReturn(125);
+        when(visit1.getPetId()).thenReturn(1);
+        when(visit1.getDate()).thenReturn(VisitMigration.convertToLocalDateViaInstant(date));
+        when(visit1.getDescription()).thenReturn("General check");
+
+        List<Visit> oldDataStoreVisit = new ArrayList<>();
+        oldDataStoreVisit.add(visit1);
+
+        PetType type1 = Mockito.mock(PetType.class);
+
+        when(type1.getId()).thenReturn(1);
+        when(type1.getName()).thenReturn("cat");
+
+        List<PetType> oldDataStoreTypes = new ArrayList<>();
+        oldDataStoreTypes.add(type1);
+
+        visitMigration.forkliftTestOnly(oldDataStoreVisit);
+        typeMigration.forkliftTestOnly(oldDataStoreTypes);
+
+
         pet1 = Mockito.mock(Pet.class);
         pet2 = Mockito.mock(Pet.class);
         pet3 = Mockito.mock(Pet.class);
@@ -71,26 +90,26 @@ public class PetMigrationTest {
         when(pet2.getId()).thenReturn(2);
         when(pet2.getName()).thenReturn("Coco");
         when(pet2.getBirthDate()).thenReturn(PetMigration.convertToLocalDate(date));
-        when(pet2.getTypeId()).thenReturn(2);
+        when(pet2.getTypeId()).thenReturn(1);
         when(pet2.getOwnerId()).thenReturn(2);
 
 
         when(pet3.getId()).thenReturn(3);
         when(pet3.getName()).thenReturn("Mr. turtle");
         when(pet3.getBirthDate()).thenReturn(PetMigration.convertToLocalDate(date));
-        when(pet3.getTypeId()).thenReturn(3);
+        when(pet3.getTypeId()).thenReturn(1);
         when(pet3.getOwnerId()).thenReturn(3);
 
         when(pet4.getId()).thenReturn(4);
         when(pet4.getName()).thenReturn("Latte");
         when(pet4.getBirthDate()).thenReturn(PetMigration.convertToLocalDate(date));
-        when(pet4.getTypeId()).thenReturn(4);
+        when(pet4.getTypeId()).thenReturn(1);
         when(pet4.getOwnerId()).thenReturn(4);
 
         when(pet5.getId()).thenReturn(5);
         when(pet5.getName()).thenReturn("Pumpkin");
         when(pet5.getBirthDate()).thenReturn(PetMigration.convertToLocalDate(date));
-        when(pet5.getTypeId()).thenReturn(5);
+        when(pet5.getTypeId()).thenReturn(1);
         when(pet5.getOwnerId()).thenReturn(1);
 
 

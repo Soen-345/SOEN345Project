@@ -111,7 +111,7 @@ public class PetMigration implements IMigration<Pet> {
         Pet act = this.petDAO.get(exp.getId(), Datastores.SQLITE);
 
         if (act == null) {
-            this.petDAO.add(exp, Datastores.SQLITE);
+            this.shadowWriteToNewDatastore(exp);
 
             logInconsistency(exp, null);
 

@@ -98,8 +98,9 @@ public class PetDAO implements IDAO<Pet> {
                         resultSet.getInt("type_id") + ";");
 
                 while(resultSet2.next()) {
-                    pet.setType(new PetType(resultSet2.getInt("id"),
-                            resultSet2.getString("name")));
+                    PetType type = new PetType(resultSet2.getInt("id"),
+                            resultSet2.getString("name"));
+                    pet.setType(type);
                 }
                 Statement statement3 = SQLite_CONNECTION.createStatement();
                 ResultSet resultSet3 = statement3.executeQuery("SELECT * FROM visits WHERE pet_id = " +
