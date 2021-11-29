@@ -40,6 +40,8 @@ import java.lang.*;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -234,6 +236,7 @@ class OwnerControllerTests {
 	}
 
 	@Test
+	// tests the logger and rollback
 	public void loggerTest () throws Exception {
 		//feature is dark --> no one can access the feature
 		OwnerToggles.isSearchFirstNameEnabled=false;
@@ -256,6 +259,16 @@ class OwnerControllerTests {
 
 		given(this.owners.findByFirstName(george.getFirstName())).willReturn(Lists.newArrayList(george));
 		mockMvc.perform(get("/owners").param("firstName", "George")).andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
+
+		//for when the feature is off --> rollback
+		OwnerToggles.isSearchFirstNameEnabled=false;
+		OwnerToggles.isSearchLastNameEnabled=true;
+		given(this.owners.findByLastName("")).willReturn(Lists.newArrayList(george, new Owner()));
+		mockMvc.perform(get("/owners")).andExpect(status().isOk()).andExpect(view().name("owners/ownersList"));
+
+		given(this.owners.findByLastName(george.getLastName())).willReturn(Lists.newArrayList(george));
+		mockMvc.perform(get("/owners").param("lastName", "Franklin")).andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
 
 	}
