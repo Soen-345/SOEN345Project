@@ -213,7 +213,9 @@ public class OwnerDAO implements IDAO<Owner> {
         int id = -1;
         String insertQuery = "INSERT INTO owners (id, first_name, last_name, address, city, telephone) VALUES (NULL" + ",'"
                 + owner.getFirstName() + "','" + owner.getLastName() + "','" + owner.getAddress() + "','" + owner.getCity() +
-                "','" + owner.getTelephone() + "');";
+                "','" + owner.getTelephone() + "') WHERE NOT EXISTS (SELECT first_name, last_name, address, city, telephone " +
+                "WHERE first_name = '" + owner.getFirstName() + "', last_name = '" + owner.getLastName() + "', address = '" +
+                owner.getAddress() + "', city = '" + owner.getCity() + "', telephone = '" + owner.getTelephone() + "');";
         if (datastore == Datastores.SQLITE) {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
@@ -265,8 +267,7 @@ public class OwnerDAO implements IDAO<Owner> {
             query = "SELECT * FROM owners;";
         } else {
             found = true;
-            query = "SELECT DISTINCT first_name, last_name, address, city, telephone " +
-                    "FROM owners o LEFT JOIN pets p ON o.id = p.owner_id WHERE o.last_name = '" + lastName + "';";
+            query = "SELECT * FROM owners o LEFT JOIN pets p ON o.id = p.owner_id WHERE o.last_name = '" + lastName + "';";
         }
         Collection<Owner> owners = new HashSet<>();
         if (datastore == Datastores.SQLITE) {
@@ -326,8 +327,7 @@ public class OwnerDAO implements IDAO<Owner> {
             query = "SELECT * FROM owners;";
         } else {
             found = true;
-            query = "SELECT DISTINCT first_name, last_name, address, city, telephone " +
-                    "FROM owners o LEFT JOIN pets p ON o.id = p.owner_id WHERE o.first_name = '" + firstName + "';";
+            query = "SELECT * FROM owners o LEFT JOIN pets p ON o.id = p.owner_id WHERE o.first_name = '" + firstName + "';";
         }
         Collection<Owner> owners = new HashSet<>();
         if (datastore == Datastores.SQLITE) {
