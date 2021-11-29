@@ -30,9 +30,6 @@ import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.test.web.servlet.MockMvc;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.time.LocalDate;
 import java.util.*;
 import java.lang.*;
@@ -54,7 +51,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class OwnerControllerTests {
 
 	private static final int TEST_OWNER_ID = 1;
-	private static Logger logger = LogManager.getLogger();
 
 	@Autowired
 	private MockMvc mockMvc;

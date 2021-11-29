@@ -18,6 +18,9 @@ package org.springframework.samples.petclinic.owner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+
+
+
 import org.springframework.samples.petclinic.migration.OwnerMigration;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
@@ -33,7 +36,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.Map;
-
 /**
  * @author Juergen Hoeller
  * @author Ken Krebs
@@ -50,8 +52,9 @@ class OwnerController {
 
     private VisitRepository visits;
 
-    //private static Logger analytics = LogManager.getLogger("Analytics");
-    private static Logger analytics = LogManager.getLogger("Analytics");
+    private static Logger analytics = LogManager.getLogger("Anayltics");
+
+
 
 
     public OwnerController(OwnerRepository clinicService, VisitRepository visits) {
@@ -100,6 +103,7 @@ class OwnerController {
         if(OwnerToggles.isSearchFirstNameEnabled) {
             model.put("nameType", "First");
             analytics.info("Name processing...");
+
         }
         return "owners/findOwners";
     }
@@ -195,5 +199,7 @@ class OwnerController {
         mav.addObject(owner);
         return mav;
     }
+
+
 
 }
