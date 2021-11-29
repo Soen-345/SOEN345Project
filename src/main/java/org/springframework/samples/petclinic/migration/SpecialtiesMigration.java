@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.vet.Specialty;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -23,10 +24,10 @@ public class SpecialtiesMigration implements IMigration<Specialty> {
         this.specialtiesDAO.initTable();
         int numInsert = 0;
 
-        Map<Integer, Specialty> specialities = this.specialtiesDAO.getAll(Datastores.H2);
+        List<Specialty> specialities = this.specialtiesDAO.getAll(Datastores.H2);
 
-        for (Specialty specialty : specialities.values()) {
-            boolean success = this.specialtiesDAO.add(specialty, Datastores.SQLITE);
+        for (Specialty specialty : specialities) {
+            boolean success = this.specialtiesDAO.migrate(specialty);
             if (success) {
                 numInsert++;
             }
@@ -34,13 +35,13 @@ public class SpecialtiesMigration implements IMigration<Specialty> {
         return numInsert;
     }
 
-    public int forkliftTestOnly(Map<Integer, Specialty> specialities) {
+    public int forkliftTestOnly(List<Specialty> specialities) {
 
         this.specialtiesDAO.initTable();
         int numInsert = 0;
 
-        for (Specialty specialty : specialities.values()) {
-            boolean success = this.specialtiesDAO.add(specialty, Datastores.SQLITE);
+        for (Specialty specialty : specialities) {
+            boolean success = this.specialtiesDAO.migrate(specialty);
             if (success) {
                 numInsert++;
             }
@@ -54,13 +55,10 @@ public class SpecialtiesMigration implements IMigration<Specialty> {
         int inconsistencies = 0;
 
 
-        Map<Integer, Specialty> expected = this.specialtiesDAO.getAll(Datastores.H2);
+        List<Specialty> expected = this.specialtiesDAO.getAll(Datastores.H2);
 
-        Map<Integer, Specialty> actual = this.specialtiesDAO.getAll(Datastores.SQLITE);
-
-        for (Integer key : expected.keySet()) {
-            Specialty exp = expected.get(key);
-            Specialty act = actual.get(key);
+        for (Specialty exp : expected) {
+            Specialty act = this.specialtiesDAO.get(exp.getId(), Datastores.SQLITE);
             if (act == null) {
                 inconsistencies++;
                 logInconsistency(exp, null);
@@ -78,15 +76,12 @@ public class SpecialtiesMigration implements IMigration<Specialty> {
         return inconsistencies;
     }
 
-    public int checkConsistenciesTestOnly(Map<Integer, Specialty> expected) {
+    public int checkConsistenciesTestOnly(List<Specialty> expected) {
 
         int inconsistencies = 0;
 
-        Map<Integer, Specialty> actual = this.specialtiesDAO.getAll(Datastores.SQLITE);
-
-        for (Integer key : expected.keySet()) {
-            Specialty exp = expected.get(key);
-            Specialty act = actual.get(key);
+        for (Specialty exp : expected) {
+            Specialty act = this.specialtiesDAO.get(exp.getId(), Datastores.SQLITE);
             if (act == null) {
                 inconsistencies++;
                 logInconsistency(exp, null);

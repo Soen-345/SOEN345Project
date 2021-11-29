@@ -35,13 +35,12 @@ import java.util.HashMap;
 @SpringBootApplication(proxyBeanMethods = false)
 public class PetClinicApplication {
 
-
-
 	public static void main(String[] args) {
 
 		MigrationToggles.isUnderTest = false;
 		MigrationToggles.isSQLiteEnabled = true;
 		MigrationToggles.isH2Enabled = true;
+		MigrationToggles.isShadowReadEnabled = false;
 
 		SpringApplication.run(PetClinicApplication.class, args);
 

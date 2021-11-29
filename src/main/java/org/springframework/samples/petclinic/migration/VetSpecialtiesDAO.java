@@ -11,10 +11,12 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class VetSpecialtiesDAO implements IDAO<VetSpecialty>{
+public class VetSpecialtiesDAO {
 
     private static final Logger log = LoggerFactory.getLogger(VetSpecialtiesDAO.class);
 
@@ -39,7 +41,7 @@ public class VetSpecialtiesDAO implements IDAO<VetSpecialty>{
 
     private void createVetSpecialities(){
         String createQuery = "CREATE TABLE IF NOT EXISTS vet_specialties (\n" +
-                "            vet_id  INTEGER,\n " +
+                "            vet_id  INTEGER NOT NULL,\n " +
                 "            specialty_id INTEGER NOT NULL" + ");";
         try{
             Statement statement = SQLite_CONNECTION.createStatement();
@@ -49,15 +51,16 @@ public class VetSpecialtiesDAO implements IDAO<VetSpecialty>{
         }
     }
 
-    public Map<Integer, VetSpecialty> getAll(Datastores datastore){
+    public List<VetSpecialty> getAll(Datastores datastore){
+        List<VetSpecialty> vetSpecialties = new ArrayList<>();
         String query = "SELECT * FROM vet_specialties;";
-        Map<Integer, VetSpecialty> vetSpecialties = new HashMap<>();
+
         if(datastore == Datastores.SQLITE){
             try{
                 Statement statement = SQLite_CONNECTION.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while(resultSet.next()){
-                    vetSpecialties.put(resultSet.getInt("vet_id"), new VetSpecialty(resultSet.getInt("vet_id"),
+                    vetSpecialties.add(new VetSpecialty(resultSet.getInt("vet_id"),
                             resultSet.getInt("specialty_id")));
                 }
             }catch (SQLException e){
@@ -69,7 +72,7 @@ public class VetSpecialtiesDAO implements IDAO<VetSpecialty>{
                 Statement statement = H2_CONNECTION.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while(resultSet.next()){
-                    vetSpecialties.put(resultSet.getInt("vet_id"), new VetSpecialty(resultSet.getInt("vet_id"),
+                    vetSpecialties.add(new VetSpecialty(resultSet.getInt("vet_id"),
                             resultSet.getInt("specialty_id")));
                 }
 
@@ -81,16 +84,28 @@ public class VetSpecialtiesDAO implements IDAO<VetSpecialty>{
 
     }
 
-    public boolean add(VetSpecialty vetSpecialtie, Datastores datastore){
-        String insertQuery = "INSERT INTO vet_specialties (vet_id, specialty_id) VALUES (" + vetSpecialtie.getVet_id()
-                + ",'" + vetSpecialtie.getSpecialty_id() + "');";
-        if(datastore == Datastores.SQLITE){
+    public boolean migrate(VetSpecialty vetSpecialty) {
+        String insertQuery = "INSERT INTO vet_specialties (vet_id, specialty_id) VALUES (" + vetSpecialty.getVet_id()
+                + "," + vetSpecialty.getSpecialty_id() + ");";
             try{
                 Statement statement = SQLite_CONNECTION.createStatement();
                 statement.execute(insertQuery);
             }catch (SQLException e){
                 log.warn(e.getMessage());
                 return false;
+            }
+        return true;
+    }
+
+    public void add(VetSpecialty vetSpecialty, Datastores datastore) {
+        String insertQuery = "INSERT INTO vet_specialties (vet_id, specialty_id) VALUES (" + vetSpecialty.getVet_id()
+                + "," + vetSpecialty.getSpecialty_id() + ");";
+        if(datastore == Datastores.SQLITE){
+            try{
+                Statement statement = SQLite_CONNECTION.createStatement();
+                statement.execute(insertQuery);
+            }catch (SQLException e){
+                log.warn(e.getMessage());
             }
         }
         if (datastore == Datastores.H2){
@@ -99,15 +114,14 @@ public class VetSpecialtiesDAO implements IDAO<VetSpecialty>{
                 statement.execute(insertQuery);
             }catch (SQLException e){
                 log.warn(e.getMessage());
-                return false;
             }
         }
-        return true;
     }
 
-    public VetSpecialty get(Integer vetId, Datastores datastore) {
+    public VetSpecialty get(VetSpecialty oldVetSpecialty, Datastores datastore) {
         VetSpecialty vetSpecialty = null;
-        String query = "SELECT vet_id, specialty_id FROM vet_specialties WHERE vet_id = " + vetId + ";";
+        String query = "SELECT vet_id, specialty_id FROM vet_specialties WHERE vet_id = " + oldVetSpecialty.getVet_id() +
+                " AND specialty_id = " + oldVetSpecialty.getSpecialty_id() + ";";
         if (datastore == Datastores.SQLITE) {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
@@ -129,30 +143,6 @@ public class VetSpecialtiesDAO implements IDAO<VetSpecialty>{
             }
         }
         return vetSpecialty;
-    }
-
-
-    public void update(VetSpecialty vetSpecialtie, Datastores datastore) {
-        String query = "UPDATE vet_specialties SET specialty_id = '" +
-                vetSpecialtie.getSpecialty_id() + "'WHERE vet_id = "
-                + vetSpecialtie.getVet_id() + ";";
-
-        if(datastore == Datastores.SQLITE){
-            try{
-                Statement statement = SQLite_CONNECTION.createStatement();
-                statement.execute(query);
-            }catch (SQLException e){
-                log.warn(e.getMessage());
-            }
-        }
-        if (datastore == Datastores.H2){
-            try{
-                Statement statement = H2_CONNECTION.createStatement();
-                statement.execute(query);
-            }catch (SQLException e){
-                log.warn(e.getMessage());
-            }
-        }
     }
 
     public void closeConnections() throws SQLException {

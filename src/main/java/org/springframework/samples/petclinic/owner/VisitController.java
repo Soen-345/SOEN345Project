@@ -77,8 +77,9 @@ class VisitController {
 		if (MigrationToggles.isH2Enabled) {
 			pet = this.pets.findById(petId);
 		}
-		if (MigrationToggles.isSQLiteEnabled) {
-			this.petMigration.shadowReadWriteConsistencyChecker(this.petMigration.shadowRead(petId));
+		if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+			pet = this.petMigration.shadowRead(petId);
+		//	this.petMigration.shadowReadWriteConsistencyChecker(this.petMigration.shadowRead(petId));
 		}
 
 		assert pet != null;
@@ -108,7 +109,7 @@ class VisitController {
 			}
 			if (MigrationToggles.isSQLiteEnabled) {
 				this.visitMigration.shadowWriteToNewDatastore(visit);
-				this.visitMigration.shadowReadWriteConsistencyChecker(visit);
+			//	this.visitMigration.shadowReadWriteConsistencyChecker(visit);
 			}
 			return "redirect:/owners/{ownerId}";
 		}

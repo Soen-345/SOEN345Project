@@ -52,9 +52,8 @@ class VetController {
 			vets.getVetList().addAll(this.vets.findAll());
 		}
 
-		if (MigrationToggles.isSQLiteEnabled) {
-			// enable when read only from sqlite
-			// vets.getVetList().addAll(this.vetMigration.findAll());
+		if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+			vets.getVetList().addAll(this.vetMigration.findAll());
 		}
 
 		model.put("vets", vets);
@@ -71,9 +70,8 @@ class VetController {
 			vets.getVetList().addAll(this.vets.findAll());
 		}
 
-		if (MigrationToggles.isSQLiteEnabled) {
-			// enable when read only from sqlite
-			// vets.getVetList().addAll(this.vetMigration.findAll());
+		if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+			vets.getVetList().addAll(this.vetMigration.findAll());
 		}
 
 		return vets;

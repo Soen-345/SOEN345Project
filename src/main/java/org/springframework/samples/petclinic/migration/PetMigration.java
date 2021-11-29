@@ -7,6 +7,7 @@ import org.springframework.samples.petclinic.owner.Pet;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.List;
 import java.util.Map;
 import java.sql.SQLException;
 import java.util.Objects;
@@ -26,10 +27,10 @@ public class PetMigration implements IMigration<Pet> {
         this.petDAO.initTable();
         int numInsert = 0;
 
-        Map<Integer, Pet> pets = this.petDAO.getAll(Datastores.H2);
+        List<Pet> pets = this.petDAO.getAll(Datastores.H2);
 
-        for (Pet pet : pets.values()) {
-            boolean success = this.petDAO.add(pet, Datastores.SQLITE);
+        for (Pet pet : pets) {
+            boolean success = this.petDAO.migrate(pet);
             if (success) {
                 numInsert++;
             }
@@ -37,12 +38,12 @@ public class PetMigration implements IMigration<Pet> {
         return numInsert;
     }
 
-    public int forkliftTestOnly(Map<Integer, Pet> pets) {
+    public int forkliftTestOnly(List<Pet> pets) {
         this.petDAO.initTable();
         int numInsert = 0;
 
-        for (Pet pet : pets.values()) {
-            boolean success = this.petDAO.add(pet, Datastores.SQLITE);
+        for (Pet pet : pets) {
+            boolean success = this.petDAO.migrate(pet);
             if (success) {
                 numInsert++;
             }
@@ -55,13 +56,14 @@ public class PetMigration implements IMigration<Pet> {
 
         int inconsistencies = 0;
 
-        Map<Integer, Pet> expected = this.petDAO.getAll(Datastores.H2);
+        List<Pet> expected = this.petDAO.getAll(Datastores.H2);
 
-        Map<Integer, Pet> actual = this.petDAO.getAll(Datastores.SQLITE);
+        List<Pet> actual = this.petDAO.getAll(Datastores.SQLITE);
 
-        for (Integer key : expected.keySet()) {
-            Pet exp = expected.get(key);
-            Pet act = actual.get(key);
+        for (int i= 0; i < expected.size(); i++) {
+            Pet exp = expected.get(i);
+            Pet act = this.petDAO.get(exp.getId(), Datastores.SQLITE);
+
             if (act == null) {
                 inconsistencies++;
                 logInconsistency(exp, null);
@@ -80,19 +82,16 @@ public class PetMigration implements IMigration<Pet> {
         return inconsistencies;
     }
 
-    public int checkConsistenciesTestOnly(Map<Integer, Pet> expected) {
+    public int checkConsistenciesTestOnly(List<Pet> expected) {
 
         int inconsistencies = 0;
 
-        Map<Integer, Pet> actual = this.petDAO.getAll(Datastores.SQLITE);
-
-        for (Integer key : expected.keySet()) {
-            Pet exp = expected.get(key);
-            Pet act = actual.get(key);
+        for (Pet exp : expected) {
+            Pet act = this.petDAO.get(exp.getId(), Datastores.SQLITE);
             if (act == null) {
                 inconsistencies++;
                 logInconsistency(exp, null);
-                this.petDAO.add(exp, Datastores.SQLITE);
+                this.shadowWriteToNewDatastore(exp);
             }
             if (act != null && (!Objects.equals(exp.getId(), act.getId()) || !exp.getName().equals(act.getName()) ||
                     !exp.getBirthDate().equals(act.getBirthDate()) || !exp.getTypeId().equals(act.getTypeId()) || !exp.getOwnerId().equals(act.getOwnerId()))) {
@@ -112,7 +111,7 @@ public class PetMigration implements IMigration<Pet> {
         Pet act = this.petDAO.get(exp.getId(), Datastores.SQLITE);
 
         if (act == null) {
-            this.petDAO.add(exp, Datastores.SQLITE);
+            this.shadowWriteToNewDatastore(exp);
 
             logInconsistency(exp, null);
 
@@ -145,10 +144,13 @@ public class PetMigration implements IMigration<Pet> {
         }
     }
 
-    public void shadowWriteToNewDatastore(Pet pet, Owner owner) {
-        pet.setOwner(owner);
-        owner.addPet(pet);
-        this.petDAO.add(pet, Datastores.SQLITE);
+    public void shadowWriteToNewDatastore(Pet pet) {
+        if (MigrationToggles.isH2Enabled && MigrationToggles.isSQLiteEnabled && MigrationToggles.isUnderTest) {
+            this.petDAO.migrate(pet);
+        }
+        else {
+            this.petDAO.add(pet, Datastores.SQLITE);
+        }
     }
 
     public Pet shadowRead(Integer petId) {

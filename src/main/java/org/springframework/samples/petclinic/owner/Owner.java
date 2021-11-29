@@ -126,6 +126,11 @@ public class Owner extends Person {
 		return Collections.unmodifiableList(sortedPets);
 	}
 
+	public void addPetNew(Pet pet) {
+		getPetsInternal().add(pet);
+		pet.setOwner(this);
+	}
+
 	public void addPet(Pet pet) {
 		if (pet.isNew()) {
 			getPetsInternal().add(pet);
