@@ -191,9 +191,9 @@ class OwnerControllerTests {
 	@Test
 	void testProcessUpdateOwnerFormSuccess() throws Exception {
 		OwnerToggles.isUpdateOwnerEnabled = true;
-		mockMvc.perform(post("/owners/{ownerId}/edit", TEST_OWNER_ID).param("firstName", "George")
-				.param("lastName", "Franklin").param("address", "110 W. Liberty St.").param("city", "Madison")
-				.param("telephone", "6085551023")).andExpect(status().is3xxRedirection())
+		mockMvc.perform(post("/owners/{ownerId}/edit", TEST_OWNER_ID).param("firstName", "Joe")
+						.param("lastName", "Bloggs").param("address", "123 Caramel Street").param("city", "London")
+						.param("telephone", "01616291589")).andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/owners/{ownerId}"));
 	}
 
