@@ -13,6 +13,7 @@ public class LoggerController {
 
        Logger logger = LogManager.getLogger(LoggerController.class);
 
+
         @RequestMapping("/")
         public String index() {
 

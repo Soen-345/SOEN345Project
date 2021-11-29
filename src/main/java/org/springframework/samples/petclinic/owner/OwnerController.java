@@ -52,7 +52,7 @@ class OwnerController {
 
     private VisitRepository visits;
 
-    private static Logger analytics = LogManager.getLogger("Anayltics");
+    private static Logger analytics = LogManager.getLogger("Analytics");
 
 
 
