@@ -135,6 +135,7 @@ class OwnerController {
             }
             if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
                 results = this.ownerMigration.shadowReadByFirstName(owner.getFirstName());
+                System.out.println("HI: " + result);
               //  this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
             }
         }
