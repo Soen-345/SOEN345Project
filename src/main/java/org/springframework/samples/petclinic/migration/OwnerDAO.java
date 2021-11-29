@@ -265,7 +265,8 @@ public class OwnerDAO implements IDAO<Owner> {
             query = "SELECT * FROM owners;";
         } else {
             found = true;
-            query = "SELECT DISTINCT * FROM owners o LEFT JOIN pets p ON o.id = p.owner_id WHERE o.last_name = '" + lastName + "';";
+            query = "SELECT DISTINCT first_name, last_name, address, city, telephone " +
+                    "FROM owners o LEFT JOIN pets p ON o.id = p.owner_id WHERE o.last_name = '" + lastName + "';";
         }
         Collection<Owner> owners = new HashSet<>();
         if (datastore == Datastores.SQLITE) {
@@ -325,7 +326,8 @@ public class OwnerDAO implements IDAO<Owner> {
             query = "SELECT * FROM owners;";
         } else {
             found = true;
-            query = "SELECT DISTINCT * FROM owners o LEFT JOIN pets p ON o.id = p.owner_id WHERE o.first_name = '" + firstName + "';";
+            query = "SELECT DISTINCT first_name, last_name, address, city, telephone " +
+                    "FROM owners o LEFT JOIN pets p ON o.id = p.owner_id WHERE o.first_name = '" + firstName + "';";
         }
         Collection<Owner> owners = new HashSet<>();
         if (datastore == Datastores.SQLITE) {
