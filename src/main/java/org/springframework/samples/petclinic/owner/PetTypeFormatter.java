@@ -57,10 +57,10 @@ public class PetTypeFormatter implements Formatter<PetType> {
 	@Override
 	public PetType parse(String text, Locale locale) throws ParseException {
 		Collection<PetType> findPetTypes = new HashSet<>();
-		if (MigrationToggles.isH2Enabled && !MigrationToggles.isUnderTest) {
+		if (MigrationToggles.isH2Enabled) {
 			findPetTypes = this.pets.findPetTypes();
 		}
-		if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+		if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled && !MigrationToggles.isUnderTest) {
 			findPetTypes = this.typeMigration.findTypes();
 		}
 
