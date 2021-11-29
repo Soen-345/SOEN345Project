@@ -81,7 +81,7 @@ class OwnerController {
                 if (MigrationToggles.isSQLiteEnabled) {
                     id = this.ownerMigration.shadowWriteToNewDatastore(owner);
                     owner.setId(id);
-                    this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
+                //    this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
                 }
 
                 return "redirect:/owners/" + owner.getId();

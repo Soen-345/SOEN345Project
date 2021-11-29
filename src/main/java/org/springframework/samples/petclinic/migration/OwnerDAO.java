@@ -213,9 +213,7 @@ public class OwnerDAO implements IDAO<Owner> {
         int id = -1;
         String insertQuery = "INSERT INTO owners (id, first_name, last_name, address, city, telephone) VALUES (NULL" + ",'"
                 + owner.getFirstName() + "','" + owner.getLastName() + "','" + owner.getAddress() + "','" + owner.getCity() +
-                "','" + owner.getTelephone() + "') WHERE NOT EXISTS (SELECT first_name, last_name, address, city, telephone " +
-                "WHERE first_name = '" + owner.getFirstName() + "', last_name = '" + owner.getLastName() + "', address = '" +
-                owner.getAddress() + "', city = '" + owner.getCity() + "', telephone = '" + owner.getTelephone() + "');";
+                "','" + owner.getTelephone() + "');";
         if (datastore == Datastores.SQLITE) {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
