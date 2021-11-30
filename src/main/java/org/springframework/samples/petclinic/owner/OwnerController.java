@@ -61,6 +61,8 @@ class OwnerController {
         this.owners = clinicService;
         this.visits = visits;
         this.ownerMigration = new OwnerMigration();
+
+        OwnerToggles.assignSearchNameFeature(30);
     }
 
     @InitBinder

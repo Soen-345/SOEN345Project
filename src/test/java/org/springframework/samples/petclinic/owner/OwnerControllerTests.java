@@ -33,6 +33,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import java.util.*;
 import java.lang.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.BDDMockito.given;
@@ -269,5 +270,49 @@ class OwnerControllerTests {
 
 	}
 
+	@Test
+	void testRandomFeature() throws Exception{
+		int interations = 100;
+		given(this.owners.findByLastName("")).willReturn(Lists.newArrayList(george, new Owner()));
+		given(this.owners.findByLastName(george.getLastName())).willReturn(Lists.newArrayList(george));
+		given(this.owners.findByFirstName("")).willReturn(Lists.newArrayList(george, new Owner()));
+		given(this.owners.findByFirstName(george.getFirstName())).willReturn(Lists.newArrayList(george));
 
+		given(this.owners.findByLastName("NA")).willReturn(Lists.newArrayList());
+		given(this.owners.findByFirstName("NA")).willReturn(Lists.newArrayList());
+
+		for (int i = 0; i < interations; i++) {
+			OwnerToggles.assignSearchNameFeature(30);
+			// hypothesis: user find correct owner easier with first name
+			// if search by last name user enter correct name in 1-5 search
+			// if search by first name user enter correct name in 1-2 search
+			if (OwnerToggles.isSearchLastNameEnabled) {
+				for (int j = 0; j < ThreadLocalRandom.current().nextDouble(0,5);j++){
+
+					mockMvc.perform(get("/owners").param("lastName", "NA")).andExpect(status().isOk())
+							.andExpect(model().attributeHasFieldErrors("owner", "lastName"))
+							.andExpect(model().attributeHasFieldErrorCode("owner", "lastName", "notFound"))
+							.andExpect(view().name("owners/findOwners"));
+
+				}
+				mockMvc.perform(get("/owners").param("lastName", "Franklin")).andExpect(status().is3xxRedirection())
+						.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
+			}
+			if (OwnerToggles.isSearchFirstNameEnabled){
+				for (int j = 0; j < ThreadLocalRandom.current().nextDouble(0,2);j++){
+
+					mockMvc.perform(get("/owners").param("firstName", "NA")).andExpect(status().isOk())
+							.andExpect(model().attributeHasFieldErrors("owner", "lastName"))
+							.andExpect(model().attributeHasFieldErrorCode("owner", "lastName", "notFound"))
+							.andExpect(view().name("owners/findOwners"));
+
+				}
+				mockMvc.perform(get("/owners").param("firstName", "George")).andExpect(status().is3xxRedirection())
+						.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
+
+			}
+
+		}
+
+	}
 }
