@@ -20,7 +20,7 @@ public class LoggerController {
             logger.info("info processing....");
 
 
-            return "Howdy! Check out the Logs to see the output...";
+            return "Check out the Logs to see the output...";
         }
 
 }
