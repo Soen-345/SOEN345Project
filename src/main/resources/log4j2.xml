@@ -4,6 +4,8 @@
         <Property name="LOG_PATTERN">
             %d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${hostName} --- [%15.15t] %-40.40c{1.} : %m%n%ex
         </Property>
+        <Property name="csvLog.fileName">ABTestingLog</Property>
+        <Property name="file-header">Time-Nanos, Time-Millis, Level, Thread ID, Thread Name, Thread Priority, Message, Logger-FQCN, Logger-Name, Marker, Thrown-Proxy, Source, Context-Map, Context-Stack</Property>
     </Properties>
     <Appenders>
         <Console name="ConsoleAppender" target="SYSTEM_OUT" follow="true">
@@ -21,6 +23,17 @@
             </Policies>
             <DefaultRolloverStrategy max="10"/>
         </RollingFile>
+
+        <RollingFile name="csvFile"
+                     fileName="logs/${csvLog.fileName}.csv"
+                     filePattern="${csvLog.filename}-%d{MM-dd-yyyy}-%i.csv" >
+            <CsvLogEventLayout delimiter="," header="${file-header}\n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="200" />
+        </RollingFile>
     </Appenders>
     <Loggers>
         <Logger name="analytics" level="info" additivity="false">
@@ -30,6 +43,7 @@
         <Root level="info">
             <AppenderRef ref="ConsoleAppender" />
             <AppenderRef ref="FileAppender"/>
+            <AppenderRef ref="csvFile" level="info"/>
         </Root>
     </Loggers>
 </Configuration>
