@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.samples.petclinic.migration.OwnerMigration;
+import org.springframework.samples.petclinic.migration.VisitMigration;
 import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.test.web.servlet.MockMvc;
@@ -49,6 +50,9 @@ class OwnerControllerTests {
 
     @MockBean
     private OwnerMigration ownerMigration;
+
+    @MockBean
+    private VisitMigration visitMigration;
 
     @Mock
     private Owner george;
@@ -105,6 +109,7 @@ class OwnerControllerTests {
         when(this.ownerMigration.shadowReadByFirstName("George")).thenReturn(Lists.newArrayList(george));
         when(this.ownerMigration.shadowReadByLastName(george.getLastName())).thenReturn(Lists.newArrayList(george));
         when(this.ownerMigration.shadowReadByLastName("")).thenReturn(Lists.newArrayList(george, owner2));
+        when(this.visitMigration.shadowReadByPetId(max.getId())).thenReturn(Collections.singletonList(visit));
 
     }
 

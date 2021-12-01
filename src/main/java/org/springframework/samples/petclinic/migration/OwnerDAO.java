@@ -70,14 +70,15 @@ public class OwnerDAO implements IDAO<Owner> {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
-                while (resultSet.next()) {
+                if (resultSet != null) {
                     owner = new Owner(resultSet.getInt("id"),
                             resultSet.getString("first_name"),
                             resultSet.getString("last_name"),
                             resultSet.getString("address"),
                             resultSet.getString("city"),
                             resultSet.getString("telephone"));
-
+                }
+                while (resultSet != null && resultSet.next()) {
                     if (resultSet.getString("name") != null) {
                         Pet pet = new Pet(resultSet.getInt(7), resultSet.getString("name")
                                 , PetMigration.convertToLocalDate(new SimpleDateFormat("yyyy-MM-dd")
@@ -86,25 +87,25 @@ public class OwnerDAO implements IDAO<Owner> {
                         Statement statement1 = SQLite_CONNECTION.createStatement();
                         ResultSet resultSet1 = statement1.executeQuery("SELECT * FROM visits WHERE pet_id = "
                                 + pet.getId() + ";");
-                        List<Visit> visits = new ArrayList<>();
+
                         while (resultSet1.next()) {
-                            visits.add(new Visit(resultSet1.getInt("id"),
+                            Visit visit = new Visit(resultSet1.getInt("id"),
                                     resultSet1.getInt("pet_id"),
                                     VisitMigration.convertToLocalDateViaInstant
                                             (new SimpleDateFormat("yyyy-MM-dd")
                                                     .parse(resultSet1.getString("visit_date"))),
-                                    resultSet1.getString("description")));
+                                    resultSet1.getString("description"));
+                            pet.addVisit(visit);
                         }
-                        pet.setVisits(visits);
 
                         Statement statement2 = SQLite_CONNECTION.createStatement();
                         ResultSet resultSet2 = statement2.executeQuery("SELECT * FROM types WHERE id = "
                                 + resultSet.getInt("type_id") + ";");
-                        while (resultSet2.next()) {
+                        if (resultSet2 != null) {
                             pet.setType(new PetType(resultSet2.getInt("id"),
                                     resultSet2.getString("name")));
                         }
-                        owner.addPetNew(pet);
+                        owner.addPet(pet);
                         pet.setOwner(owner);
                     }
                 }
@@ -118,41 +119,44 @@ public class OwnerDAO implements IDAO<Owner> {
             try {
                 Statement statement = H2_CONNECTION.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
-                owner = new Owner(resultSet.getInt("id"),
-                        resultSet.getString("first_name"),
-                        resultSet.getString("last_name"),
-                        resultSet.getString("address"),
-                        resultSet.getString("city"),
-                        resultSet.getString("telephone"));
-                if (resultSet.getString("name") != null) {
-                    Pet pet = new Pet(resultSet.getInt(7),
-                            resultSet.getString("name"),
-                            PetMigration.convertToLocalDate(new SimpleDateFormat("yyyy-MM-dd")
-                                    .parse(resultSet.getString("birth_date"))));
+                if (resultSet != null) {
+                    owner = new Owner(resultSet.getInt("id"),
+                            resultSet.getString("first_name"),
+                            resultSet.getString("last_name"),
+                            resultSet.getString("address"),
+                            resultSet.getString("city"),
+                            resultSet.getString("telephone"));
+                }
+                while (resultSet != null && resultSet.next()) {
+                    if (resultSet.getString("name") != null) {
+                        Pet pet = new Pet(resultSet.getInt(7), resultSet.getString("name")
+                                , PetMigration.convertToLocalDate(new SimpleDateFormat("yyyy-MM-dd")
+                                .parse(resultSet.getString("birth_date"))));
 
-                    Statement statement1 = H2_CONNECTION.createStatement();
-                    ResultSet resultSet1 = statement1.executeQuery("SELECT * FROM visits WHERE pet_id = "
-                            + pet.getId() + ";");
-                    List<Visit> visits = new ArrayList<>();
-                    while (resultSet1.next()) {
-                        visits.add(new Visit(resultSet1.getInt("id"),
-                                resultSet1.getInt("pet_id"),
-                                VisitMigration.convertToLocalDateViaInstant
-                                        (new SimpleDateFormat("yyyy-MM-dd")
-                                                .parse(resultSet1.getString("visit_date"))),
-                                resultSet1.getString("description")));
-                    }
-                    pet.setVisits(visits);
+                        Statement statement1 = H2_CONNECTION.createStatement();
+                        ResultSet resultSet1 = statement1.executeQuery("SELECT * FROM visits WHERE pet_id = "
+                                + pet.getId() + ";");
 
-                    Statement statement2 = H2_CONNECTION.createStatement();
-                    ResultSet resultSet2 = statement2.executeQuery("SELECT * FROM types WHERE id = "
-                            + resultSet.getInt("type_id") + ";");
-                    while (resultSet2.next()) {
-                        pet.setType(new PetType(resultSet2.getInt("id"),
-                                resultSet2.getString("name")));
+                        while (resultSet1.next()) {
+                            Visit visit = new Visit(resultSet1.getInt("id"),
+                                    resultSet1.getInt("pet_id"),
+                                    VisitMigration.convertToLocalDateViaInstant
+                                            (new SimpleDateFormat("yyyy-MM-dd")
+                                                    .parse(resultSet1.getString("visit_date"))),
+                                    resultSet1.getString("description"));
+                            pet.addVisit(visit);
+                        }
+
+                        Statement statement2 = H2_CONNECTION.createStatement();
+                        ResultSet resultSet2 = statement2.executeQuery("SELECT * FROM types WHERE id = "
+                                + resultSet.getInt("type_id") + ";");
+                        if (resultSet2 != null) {
+                            pet.setType(new PetType(resultSet2.getInt("id"),
+                                    resultSet2.getString("name")));
+                        }
+                        owner.addPet(pet);
+                        pet.setOwner(owner);
                     }
-                    owner.addPetNew(pet);
-                    pet.setOwner(owner);
                 }
             } catch (SQLException | ParseException e) {
                 log.error(e.getMessage());
@@ -205,7 +209,7 @@ public class OwnerDAO implements IDAO<Owner> {
                 "','" + owner.getTelephone() + "');";
         try {
             Statement statement = SQLite_CONNECTION.createStatement();
-            statement.execute(insertQuery);
+            statement.executeUpdate(insertQuery);
         } catch (SQLException e) {
             log.error(e.getMessage());
             return false;
@@ -221,7 +225,7 @@ public class OwnerDAO implements IDAO<Owner> {
         if (datastore == Datastores.SQLITE) {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
-                statement.execute(insertQuery);
+                statement.executeUpdate(insertQuery);
                 return statement.getGeneratedKeys().getInt(1);
             } catch (SQLException e) {
                 log.error(e.getMessage());
@@ -230,7 +234,7 @@ public class OwnerDAO implements IDAO<Owner> {
         if (datastore == Datastores.H2) {
             try {
                 Statement statement = H2_CONNECTION.createStatement();
-                statement.execute(insertQuery);
+                statement.executeUpdate(insertQuery);
                 return statement.getGeneratedKeys().getInt(1);
             } catch (SQLException e) {
                 log.error(e.getMessage());
@@ -246,7 +250,7 @@ public class OwnerDAO implements IDAO<Owner> {
         if (datastore == Datastores.SQLITE) {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
-                statement.execute(query);
+                statement.executeUpdate(query);
             } catch (SQLException e) {
                 log.error(e.getMessage());
             }
@@ -254,7 +258,7 @@ public class OwnerDAO implements IDAO<Owner> {
         if (datastore == Datastores.H2) {
             try {
                 Statement statement = H2_CONNECTION.createStatement();
-                statement.execute(query);
+                statement.executeUpdate(query);
             } catch (SQLException e) {
                 log.error(e.getMessage());
             }

@@ -290,7 +290,7 @@ public class PetDAO implements IDAO<Pet> {
                 + ",'" + pet.getName() + "','" + Date.valueOf(pet.getBirthDate()) + "'," + pet.getTypeId() + "," + pet.getOwnerId() + ");";
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
-                statement.execute(insertQuery);
+                statement.executeUpdate(insertQuery);
             } catch (SQLException e) {
                 log.error(e.getMessage());
                 return false;
@@ -304,7 +304,7 @@ public class PetDAO implements IDAO<Pet> {
         if (datastore == Datastores.SQLITE) {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
-                statement.execute(insertQuery);
+                statement.executeUpdate(insertQuery);
             } catch (SQLException e) {
                 log.error(e.getMessage());
             }
@@ -326,7 +326,7 @@ public class PetDAO implements IDAO<Pet> {
         if (datastore == Datastores.SQLITE) {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
-                statement.execute(query);
+                statement.executeUpdate(query);
             } catch (SQLException e) {
                 log.error(e.getMessage());
             }
@@ -334,7 +334,7 @@ public class PetDAO implements IDAO<Pet> {
         if (datastore == Datastores.H2) {
             try {
                 Statement statement = H2_CONNECTION.createStatement();
-                statement.execute(query);
+                statement.executeUpdate(query);
             } catch (SQLException e) {
                 log.error(e.getMessage());
             }

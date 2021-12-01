@@ -18,6 +18,7 @@ package org.springframework.samples.petclinic.owner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.migration.MigrationToggles;
 import org.springframework.samples.petclinic.migration.OwnerMigration;
+import org.springframework.samples.petclinic.migration.VisitMigration;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,12 +46,17 @@ class OwnerController {
     private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
     private final OwnerRepository owners;
+    private final VisitRepository visits;
+
     private final OwnerMigration ownerMigration;
+    private final VisitMigration visitMigration;
 
-
-    public OwnerController(OwnerRepository clinicService, OwnerMigration ownerMigration) {
+    public OwnerController(OwnerRepository clinicService, OwnerMigration ownerMigration,
+                           VisitRepository visits, VisitMigration visitMigration) {
         this.owners = clinicService;
         this.ownerMigration = ownerMigration;
+        this.visits = visits;
+        this.visitMigration = visitMigration;
     }
 
     @InitBinder
@@ -81,9 +87,9 @@ class OwnerController {
                 }
                 if (MigrationToggles.isSQLiteEnabled) {
                     id = this.ownerMigration.shadowWriteToNewDatastore(owner);
-                    this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
                 }
                 if (MigrationToggles.isShadowReadEnabled) {
+                    this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
                     owner.setId(id);
                 }
 
@@ -196,7 +202,7 @@ class OwnerController {
                 }
                 if (MigrationToggles.isSQLiteEnabled) {
                     this.ownerMigration.shadowUpdate(owner);
-                    this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
+               //     this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
                 }
                 return "redirect:/owners/{ownerId}";
             }
@@ -223,6 +229,17 @@ class OwnerController {
                 owner = this.ownerMigration.shadowRead(ownerId);
             }
         }
+
+        assert owner != null;
+        for (Pet pet : owner.getPets()) {
+            if (MigrationToggles.isH2Enabled) {
+                pet.setVisitsInternal(visits.findByPetId(pet.getId()));
+            }
+            if (MigrationToggles.isSQLiteEnabled) {
+                pet.setVisitsInternal(visitMigration.shadowReadByPetId(pet.getId()));
+            }
+        }
+
         mav.addObject(owner);
         return mav;
     }

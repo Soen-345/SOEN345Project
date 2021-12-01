@@ -27,11 +27,7 @@ import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Juergen Hoeller
@@ -84,10 +80,10 @@ class VisitController {
 				pet = this.petMigration.shadowRead(petId);
 			}
 		}
-		pet.setVisitsInternal(this.visits.findByPetId(petId));
-		model.put("pet", pet);
+		assert pet != null;
 		Visit visit = new Visit();
 		pet.addVisit(visit);
+		model.put("pet", pet);
 
 		return visit;
 	}
@@ -95,6 +91,14 @@ class VisitController {
 	// Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is called
 	@GetMapping("/owners/*/pets/{petId}/visits/new")
 	public String initNewVisitForm(@PathVariable("petId") int petId, Map<String, Object> model) {
+		Pet pet = null;
+		if (MigrationToggles.isH2Enabled) {
+			pet = this.pets.findById(petId);
+		}
+		if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+			pet = this.petMigration.shadowRead(petId);
+		}
+		model.put("pet", pet);
 		return "pets/createOrUpdateVisitForm";
 	}
 
@@ -108,9 +112,9 @@ class VisitController {
 			if (MigrationToggles.isH2Enabled) {
 				this.visits.save(visit);
 			}
-			if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+			if (MigrationToggles.isSQLiteEnabled) {
 				this.visitMigration.shadowWriteToNewDatastore(visit);
-				this.visitMigration.shadowReadWriteConsistencyChecker(visit);
+			//	this.visitMigration.shadowReadWriteConsistencyChecker(visit);
 			}
 			return "redirect:/owners/{ownerId}";
 		}
