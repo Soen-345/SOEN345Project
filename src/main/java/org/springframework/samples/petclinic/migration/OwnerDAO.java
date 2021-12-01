@@ -268,14 +268,12 @@ public class OwnerDAO implements IDAO<Owner> {
 
     public Collection<Owner> getByLastName(String lastName, Datastores datastore) {
         String query;
-        boolean found = false;
+        Collection<Owner> owners = new HashSet<>();
         if (lastName.equals("")) {
-            query = "SELECT * FROM owners;";
+            query = "SELECT * FROM owners o LEFT JOIN pets p ON o.id = p.owner_id;";
         } else {
-            found = true;
             query = "SELECT * FROM owners o LEFT JOIN pets p ON o.id = p.owner_id WHERE o.last_name = '" + lastName + "';";
         }
-        Collection<Owner> owners = new HashSet<>();
         if (datastore == Datastores.SQLITE) {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
@@ -287,7 +285,7 @@ public class OwnerDAO implements IDAO<Owner> {
                             resultSet.getString("address"),
                             resultSet.getString("city"),
                             resultSet.getString("telephone"));
-                    if (found) {
+                    if (resultSet.getString("name") != null)  {
                         Pet pet = new Pet(resultSet.getInt(7),
                                 resultSet.getString("name"),
                                 PetMigration.convertToLocalDate(new SimpleDateFormat("yyyy-MM-dd")
@@ -312,7 +310,7 @@ public class OwnerDAO implements IDAO<Owner> {
                         Statement statement2 = SQLite_CONNECTION.createStatement();
                         ResultSet resultSet2 = statement2.executeQuery("SELECT * FROM types WHERE id = "
                                 + resultSet.getInt("type_id") + ";");
-                        while (resultSet2.next()) {
+                        if (resultSet2 != null) {
                             pet.setType(new PetType(resultSet2.getInt("id"),
                                     resultSet2.getString("name")));
                         }
@@ -328,11 +326,9 @@ public class OwnerDAO implements IDAO<Owner> {
 
     public Collection<Owner> getByFirstName(String firstName, Datastores datastore) {
         String query;
-        boolean found = false;
         if (firstName.equals("")) {
-            query = "SELECT * FROM owners;";
+            query = "SELECT * FROM owners o LEFT JOIN pets p ON o.id = p.owner_id;";
         } else {
-            found = true;
             query = "SELECT * FROM owners o LEFT JOIN pets p ON o.id = p.owner_id WHERE o.first_name = '" + firstName + "';";
         }
         Collection<Owner> owners = new HashSet<>();
@@ -347,7 +343,7 @@ public class OwnerDAO implements IDAO<Owner> {
                             resultSet.getString("address"),
                             resultSet.getString("city"),
                             resultSet.getString("telephone"));
-                    if (found) {
+                    if (resultSet.getString("name") != null)  {
                         Pet pet = new Pet(resultSet.getInt(7),
                                 resultSet.getString("name"),
                                 PetMigration.convertToLocalDate(new SimpleDateFormat("yyyy-MM-dd")
@@ -372,7 +368,7 @@ public class OwnerDAO implements IDAO<Owner> {
                         Statement statement2 = SQLite_CONNECTION.createStatement();
                         ResultSet resultSet2 = statement2.executeQuery("SELECT * FROM types WHERE id = "
                                 + resultSet.getInt("type_id") + ";");
-                        while (resultSet2.next()) {
+                        if (resultSet2 != null) {
                             pet.setType(new PetType(resultSet2.getInt("id"),
                                     resultSet2.getString("name")));
                         }
