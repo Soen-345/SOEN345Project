@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -28,90 +29,93 @@ public class OwnerDAO implements IDAO<Owner> {
     private Connection H2_CONNECTION;
 
 
-    public OwnerDAO(){
+    public OwnerDAO() {
         SQLite_CONNECTION = DatastoreConnection.connectSqlite();
         H2_CONNECTION = DatastoreConnection.connectH2();
     }
 
-    public void initTable(){
+    public void initTable() {
         String query = "DROP TABLE IF EXISTS owners;";
-        try{
+        try {
             Statement statement = SQLite_CONNECTION.createStatement();
             statement.execute(query);
-        } catch (SQLException e){
+        } catch (SQLException e) {
             log.error(e.getMessage());
         }
         this.createOwnerTable();
     }
 
-    private void createOwnerTable(){
+    private void createOwnerTable() {
         String createQuery =
                 "CREATE TABLE IF NOT EXISTS owners (\n" +
-                "                      id         INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
-                "                      first_name VARCHAR(30),\n" +
-                "                      last_name VARCHAR(30),\n" +
-                "                      address VARCHAR(255),\n" +
-                "                      city VARCHAR(80),\n" +
-                "                      telephone VARCHAR(20)\n" +
-                ");";
-        try{
+                        "                      id         INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                        "                      first_name VARCHAR(30),\n" +
+                        "                      last_name VARCHAR(30),\n" +
+                        "                      address VARCHAR(255),\n" +
+                        "                      city VARCHAR(80),\n" +
+                        "                      telephone VARCHAR(20)\n" +
+                        ");";
+        try {
             Statement statement = SQLite_CONNECTION.createStatement();
             statement.execute(createQuery);
-        } catch (SQLException e){
+        } catch (SQLException e) {
             log.error(e.getMessage());
         }
     }
 
-    public Owner get(Integer ownerId, Datastores datastore){
+    public Owner get(Integer ownerId, Datastores datastore) {
         Owner owner = null;
         String query = "SELECT * FROM owners o LEFT JOIN pets p ON o.id = p.owner_id WHERE o.id = " + ownerId + ";";
-        if(datastore == Datastores.SQLITE) {
-            try{
+        if (datastore == Datastores.SQLITE) {
+            try {
                 Statement statement = SQLite_CONNECTION.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
-                owner = new Owner(resultSet.getInt("id"),
-                        resultSet.getString("first_name"),
-                        resultSet.getString("last_name"),
-                        resultSet.getString("address"),
-                        resultSet.getString("city"),
-                        resultSet.getString("telephone"));
+                while (resultSet.next()) {
+                    owner = new Owner(resultSet.getInt("id"),
+                            resultSet.getString("first_name"),
+                            resultSet.getString("last_name"),
+                            resultSet.getString("address"),
+                            resultSet.getString("city"),
+                            resultSet.getString("telephone"));
 
-                if (resultSet.getString("name") != null) {
-                    Pet pet = new Pet(resultSet.getInt(7),
-                            resultSet.getString("name"),
-                            PetMigration.convertToLocalDate(new SimpleDateFormat("yyyy-MM-dd")
-                                    .parse(resultSet.getString("birth_date"))));
-                    owner.addPetNew(pet);
-                    pet.setOwner(owner);
+                    if (resultSet.getString("name") != null) {
+                        Pet pet = new Pet(resultSet.getInt(7), resultSet.getString("name")
+                                , PetMigration.convertToLocalDate(new SimpleDateFormat("yyyy-MM-dd")
+                                .parse(resultSet.getString("birth_date"))));
 
-                    Statement statement1 = SQLite_CONNECTION.createStatement();
-                    ResultSet resultSet1 = statement1.executeQuery("SELECT * FROM visits WHERE pet_id = "
-                    + pet.getId() + ";");
-                    List<Visit> visits = new ArrayList<>();
-                    while (resultSet1.next()) {
-                        visits.add(new Visit(resultSet1.getInt("id"),
-                                resultSet1.getInt("pet_id"),
-                                VisitMigration.convertToLocalDateViaInstant
-                                        (new SimpleDateFormat("yyyy-MM-dd")
-                                                .parse(resultSet1.getString("visit_date"))),
-                                resultSet1.getString("description")));
-                    }
-                    pet.setVisits(visits);
+                        Statement statement1 = SQLite_CONNECTION.createStatement();
+                        ResultSet resultSet1 = statement1.executeQuery("SELECT * FROM visits WHERE pet_id = "
+                                + pet.getId() + ";");
+                        List<Visit> visits = new ArrayList<>();
+                        while (resultSet1.next()) {
+                            visits.add(new Visit(resultSet1.getInt("id"),
+                                    resultSet1.getInt("pet_id"),
+                                    VisitMigration.convertToLocalDateViaInstant
+                                            (new SimpleDateFormat("yyyy-MM-dd")
+                                                    .parse(resultSet1.getString("visit_date"))),
+                                    resultSet1.getString("description")));
+                        }
+                        pet.setVisits(visits);
 
-                    Statement statement2 = SQLite_CONNECTION.createStatement();
-                    ResultSet resultSet2 = statement2.executeQuery("SELECT * FROM types WHERE id = "
-                    + resultSet.getInt("type_id") + ";");
-                    while (resultSet2.next()) {
-                        pet.setType(new PetType(resultSet.getInt("id"),
-                                resultSet.getString("name")));
+                        Statement statement2 = SQLite_CONNECTION.createStatement();
+                        ResultSet resultSet2 = statement2.executeQuery("SELECT * FROM types WHERE id = "
+                                + resultSet.getInt("type_id") + ";");
+                        while (resultSet2.next()) {
+                            pet.setType(new PetType(resultSet2.getInt("id"),
+                                    resultSet2.getString("name")));
+                        }
+                        owner.addPetNew(pet);
+                        pet.setOwner(owner);
                     }
                 }
-            } catch (SQLException | ParseException e){
+
+
+            } catch (SQLException | ParseException e) {
                 log.error(e.getMessage());
             }
         }
-        if (datastore == Datastores.H2){
-            try{
+        if (datastore == Datastores.H2) {
+            try {
                 Statement statement = H2_CONNECTION.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 owner = new Owner(resultSet.getInt("id"),
@@ -125,8 +129,6 @@ public class OwnerDAO implements IDAO<Owner> {
                             resultSet.getString("name"),
                             PetMigration.convertToLocalDate(new SimpleDateFormat("yyyy-MM-dd")
                                     .parse(resultSet.getString("birth_date"))));
-                    owner.addPetNew(pet);
-                    pet.setOwner(new Owner(resultSet.getInt("owner_id")));
 
                     Statement statement1 = H2_CONNECTION.createStatement();
                     ResultSet resultSet1 = statement1.executeQuery("SELECT * FROM visits WHERE pet_id = "
@@ -146,96 +148,98 @@ public class OwnerDAO implements IDAO<Owner> {
                     ResultSet resultSet2 = statement2.executeQuery("SELECT * FROM types WHERE id = "
                             + resultSet.getInt("type_id") + ";");
                     while (resultSet2.next()) {
-                        pet.setType(new PetType(resultSet.getInt("id"),
-                                resultSet.getString("name")));
+                        pet.setType(new PetType(resultSet2.getInt("id"),
+                                resultSet2.getString("name")));
                     }
+                    owner.addPetNew(pet);
+                    pet.setOwner(owner);
                 }
-            }catch (SQLException | ParseException e){
+            } catch (SQLException | ParseException e) {
                 log.error(e.getMessage());
             }
         }
         return owner;
     }
 
-    public List<Owner> getAll(Datastores datastore){
+    public List<Owner> getAll(Datastores datastore) {
         List<Owner> owners = new ArrayList<>();
         String query = "SELECT * FROM owners;";
-        if(datastore == Datastores.SQLITE) {
+        if (datastore == Datastores.SQLITE) {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
                     owners.add(new Owner(resultSet.getInt("id"),
-                                    resultSet.getString("first_name"),
-                                    resultSet.getString("last_name"),
-                                    resultSet.getString("address"),
-                                    resultSet.getString("city"),
-                                    resultSet.getString("telephone")));
+                            resultSet.getString("first_name"),
+                            resultSet.getString("last_name"),
+                            resultSet.getString("address"),
+                            resultSet.getString("city"),
+                            resultSet.getString("telephone")));
                 }
             } catch (SQLException e) {
                 log.error(e.getMessage());
             }
         }
-        if(datastore == Datastores.H2) {
+        if (datastore == Datastores.H2) {
             try {
                 Statement statement = H2_CONNECTION.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
                     owners.add(new Owner(resultSet.getInt("id"),
-                                    resultSet.getString("first_name"),
-                                    resultSet.getString("last_name"),
-                                    resultSet.getString("address"),
-                                    resultSet.getString("city"),
-                                    resultSet.getString("telephone")));
+                            resultSet.getString("first_name"),
+                            resultSet.getString("last_name"),
+                            resultSet.getString("address"),
+                            resultSet.getString("city"),
+                            resultSet.getString("telephone")));
                 }
             } catch (SQLException e) {
                 log.error(e.getMessage());
             }
         }
-     return owners;
+        return owners;
     }
 
-    public boolean migrate(Owner owner){
-        String insertQuery = "INSERT INTO owners (id, first_name, last_name, address, city, telephone) VALUES ("+ owner.getId() + ",'"
+    public boolean migrate(Owner owner) {
+        String insertQuery = "INSERT INTO owners (id, first_name, last_name, address, city, telephone) VALUES (" + owner.getId() + ",'"
                 + owner.getFirstName() + "','" + owner.getLastName() + "','" + owner.getAddress() + "','" + owner.getCity() +
                 "','" + owner.getTelephone() + "');";
-            try{
-                Statement statement = SQLite_CONNECTION.createStatement();
-                statement.execute(insertQuery);
-            }catch (SQLException e){
-                log.error(e.getMessage());
-                return false;
-            }
+        try {
+            Statement statement = SQLite_CONNECTION.createStatement();
+            statement.execute(insertQuery);
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            return false;
+        }
         return true;
     }
 
-    public int add(Owner owner, Datastores datastore){
+    public int add(Owner owner, Datastores datastore) {
         int id = -1;
         String insertQuery = "INSERT INTO owners (id, first_name, last_name, address, city, telephone) VALUES (NULL" + ",'"
                 + owner.getFirstName() + "','" + owner.getLastName() + "','" + owner.getAddress() + "','" + owner.getCity() +
                 "','" + owner.getTelephone() + "');";
-        if (datastore == Datastores.SQLITE){
-            try{
+        if (datastore == Datastores.SQLITE) {
+            try {
                 Statement statement = SQLite_CONNECTION.createStatement();
                 statement.execute(insertQuery);
                 return statement.getGeneratedKeys().getInt(1);
-            }catch (SQLException e){
+            } catch (SQLException e) {
                 log.error(e.getMessage());
             }
         }
-        if (datastore == Datastores.H2){
-            try{
+        if (datastore == Datastores.H2) {
+            try {
                 Statement statement = H2_CONNECTION.createStatement();
                 statement.execute(insertQuery);
                 return statement.getGeneratedKeys().getInt(1);
-            }catch (SQLException e){
+            } catch (SQLException e) {
                 log.error(e.getMessage());
             }
         }
         return id;
     }
 
-    public void update(Owner owner, Datastores datastore){
+    public void update(Owner owner, Datastores datastore) {
         String query = "UPDATE owners SET first_name = '" + owner.getFirstName() + "', last_name = '" + owner.getLastName() +
                 "', address = '" + owner.getAddress() + "', city = '" + owner.getCity() + "', telephone = '" + owner.getTelephone()
                 + "' WHERE id = " + owner.getId() + ";";
@@ -260,14 +264,15 @@ public class OwnerDAO implements IDAO<Owner> {
 
     public Collection<Owner> getByLastName(String lastName, Datastores datastore) {
         String query;
-        if (lastName == "") {
+        boolean found = false;
+        if (lastName.equals("")) {
             query = "SELECT * FROM owners;";
-        }
-        else {
-            query = "SELECT id, first_name, last_name, address, city, telephone FROM owners WHERE last_name = '" + lastName + "';";
+        } else {
+            found = true;
+            query = "SELECT * FROM owners o LEFT JOIN pets p ON o.id = p.owner_id WHERE o.last_name = '" + lastName + "';";
         }
         Collection<Owner> owners = new HashSet<>();
-        if(datastore == Datastores.SQLITE) {
+        if (datastore == Datastores.SQLITE) {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
@@ -278,9 +283,39 @@ public class OwnerDAO implements IDAO<Owner> {
                             resultSet.getString("address"),
                             resultSet.getString("city"),
                             resultSet.getString("telephone"));
+                    if (found) {
+                        Pet pet = new Pet(resultSet.getInt(7),
+                                resultSet.getString("name"),
+                                PetMigration.convertToLocalDate(new SimpleDateFormat("yyyy-MM-dd")
+                                        .parse(resultSet.getString("birth_date"))));
+                        owner.addPetNew(pet);
+                        pet.setOwner(new Owner(resultSet.getInt("owner_id")));
+
+                        Statement statement1 = SQLite_CONNECTION.createStatement();
+                        ResultSet resultSet1 = statement1.executeQuery("SELECT * FROM visits WHERE pet_id = "
+                                + pet.getId() + ";");
+                        List<Visit> visits = new ArrayList<>();
+                        while (resultSet1.next()) {
+                            visits.add(new Visit(resultSet1.getInt("id"),
+                                    resultSet1.getInt("pet_id"),
+                                    VisitMigration.convertToLocalDateViaInstant
+                                            (new SimpleDateFormat("yyyy-MM-dd")
+                                                    .parse(resultSet1.getString("visit_date"))),
+                                    resultSet1.getString("description")));
+                        }
+                        pet.setVisits(visits);
+
+                        Statement statement2 = SQLite_CONNECTION.createStatement();
+                        ResultSet resultSet2 = statement2.executeQuery("SELECT * FROM types WHERE id = "
+                                + resultSet.getInt("type_id") + ";");
+                        while (resultSet2.next()) {
+                            pet.setType(new PetType(resultSet2.getInt("id"),
+                                    resultSet2.getString("name")));
+                        }
+                    }
                     owners.add(owner);
                 }
-            } catch (SQLException e) {
+            } catch (SQLException | ParseException e) {
                 log.error(e.getMessage());
             }
         }
@@ -289,32 +324,63 @@ public class OwnerDAO implements IDAO<Owner> {
 
     public Collection<Owner> getByFirstName(String firstName, Datastores datastore) {
         String query;
-        if (firstName == "") {
+        boolean found = false;
+        if (firstName.equals("")) {
             query = "SELECT * FROM owners;";
-        }
-        else {
-            query = "SELECT id, first_name, last_name, address, city, telephone FROM owners WHERE first_name = '" + firstName + "';";
+        } else {
+            found = true;
+            query = "SELECT * FROM owners o LEFT JOIN pets p ON o.id = p.owner_id WHERE o.first_name = '" + firstName + "';";
         }
         Collection<Owner> owners = new HashSet<>();
-        if(datastore == Datastores.SQLITE) {
+        if (datastore == Datastores.SQLITE) {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
-                    owners.add(new Owner(resultSet.getInt("id"),
-                                    resultSet.getString("first_name"),
-                                    resultSet.getString("last_name"),
-                                    resultSet.getString("address"),
-                                    resultSet.getString("city"),
-                                    resultSet.getString("telephone")));
+                    Owner owner = new Owner(resultSet.getInt("id"),
+                            resultSet.getString("first_name"),
+                            resultSet.getString("last_name"),
+                            resultSet.getString("address"),
+                            resultSet.getString("city"),
+                            resultSet.getString("telephone"));
+                    if (found) {
+                        Pet pet = new Pet(resultSet.getInt(7),
+                                resultSet.getString("name"),
+                                PetMigration.convertToLocalDate(new SimpleDateFormat("yyyy-MM-dd")
+                                        .parse(resultSet.getString("birth_date"))));
+                        owner.addPetNew(pet);
+                        pet.setOwner(new Owner(resultSet.getInt("owner_id")));
+
+                        Statement statement1 = SQLite_CONNECTION.createStatement();
+                        ResultSet resultSet1 = statement1.executeQuery("SELECT * FROM visits WHERE pet_id = "
+                                + pet.getId() + ";");
+                        List<Visit> visits = new ArrayList<>();
+                        while (resultSet1.next()) {
+                            visits.add(new Visit(resultSet1.getInt("id"),
+                                    resultSet1.getInt("pet_id"),
+                                    VisitMigration.convertToLocalDateViaInstant
+                                            (new SimpleDateFormat("yyyy-MM-dd")
+                                                    .parse(resultSet1.getString("visit_date"))),
+                                    resultSet1.getString("description")));
+                        }
+                        pet.setVisits(visits);
+
+                        Statement statement2 = SQLite_CONNECTION.createStatement();
+                        ResultSet resultSet2 = statement2.executeQuery("SELECT * FROM types WHERE id = "
+                                + resultSet.getInt("type_id") + ";");
+                        while (resultSet2.next()) {
+                            pet.setType(new PetType(resultSet2.getInt("id"),
+                                    resultSet2.getString("name")));
+                        }
+                    }
+                    owners.add(owner);
                 }
-            } catch (SQLException e) {
+            } catch (SQLException | ParseException e) {
                 log.error(e.getMessage());
             }
         }
         return owners;
     }
-
 
 
     public void closeConnections() throws SQLException {

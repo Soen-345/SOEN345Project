@@ -4,17 +4,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.Pet;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
  * @author Alireza Ziarizi
  */
+
+@Service
 public class OwnerMigration implements IMigration<Owner> {
 
     private static final Logger log = LoggerFactory.getLogger(OwnerMigration.class);
@@ -100,7 +103,7 @@ public class OwnerMigration implements IMigration<Owner> {
 
     public int shadowWriteToNewDatastore(Owner owner) {
         int id = -1;
-        if (MigrationToggles.isH2Enabled && MigrationToggles.isSQLiteEnabled && MigrationToggles.isUnderTest) {
+        if (MigrationToggles.isH2Enabled && MigrationToggles.isSQLiteEnabled && owner.getId() != null) {
             this.ownerDAO.migrate(owner);
         }
         else {

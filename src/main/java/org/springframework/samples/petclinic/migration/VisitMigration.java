@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.migration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.visit.Visit;
+import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ import java.util.Map;
 /**
  * @author Sevag Eordkian
  */
+@Service
 public class VisitMigration implements IMigration<Visit> {
 
     private static final Logger log = LoggerFactory.getLogger(VisitMigration.class);
@@ -148,7 +150,7 @@ public class VisitMigration implements IMigration<Visit> {
     }
 
     public void shadowWriteToNewDatastore(Visit visit) {
-        if (MigrationToggles.isH2Enabled && MigrationToggles.isSQLiteEnabled && MigrationToggles.isUnderTest) {
+        if (MigrationToggles.isH2Enabled && MigrationToggles.isSQLiteEnabled && visit.getId() != null) {
             this.visitDAO.migrate(visit);
         }
         else {

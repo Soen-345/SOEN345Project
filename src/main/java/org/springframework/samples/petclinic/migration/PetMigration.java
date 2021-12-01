@@ -4,14 +4,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.Pet;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
-import java.util.Map;
 import java.sql.SQLException;
 import java.util.Objects;
 
+@Service
 public class PetMigration implements IMigration<Pet> {
 
     private static final Logger log = LoggerFactory.getLogger(PetMigration.class);
@@ -57,8 +58,6 @@ public class PetMigration implements IMigration<Pet> {
         int inconsistencies = 0;
 
         List<Pet> expected = this.petDAO.getAll(Datastores.H2);
-
-        List<Pet> actual = this.petDAO.getAll(Datastores.SQLITE);
 
         for (int i= 0; i < expected.size(); i++) {
             Pet exp = expected.get(i);
@@ -149,7 +148,7 @@ public class PetMigration implements IMigration<Pet> {
     }
 
     public void shadowWriteToNewDatastore(Pet pet) {
-        if (MigrationToggles.isH2Enabled && MigrationToggles.isSQLiteEnabled && MigrationToggles.isUnderTest) {
+        if (MigrationToggles.isH2Enabled && MigrationToggles.isSQLiteEnabled && pet.getId() != null) {
             this.petDAO.migrate(pet);
         }
         else {

@@ -20,6 +20,9 @@ public class ScheduledCheck {
     private final SpecialtiesMigration specialtiesMigration = new SpecialtiesMigration();
     private final TypeMigration typeMigration = new TypeMigration();
 
+    private int totalInconsistencies = 0;
+    private int numRuns = 0;
+
     @PostConstruct
     private void forklift() {
 
@@ -36,9 +39,6 @@ public class ScheduledCheck {
             petMigration.forklift();
 
             log.info("FORKLIFT COMPLETED");
-
-            MigrationToggles.isH2Enabled = false;
-            MigrationToggles.isShadowReadEnabled = true;
         }
     }
 
@@ -47,7 +47,8 @@ public class ScheduledCheck {
     @Scheduled(fixedDelay = 30000)
     public void consistencyCheck() {
 
-        if (MigrationToggles.isSQLiteEnabled) {
+        if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isH2Enabled) {
+            this.numRuns++;
 
             log.info("**** CONSISTENCY CHECKING STARTING ****");
 
@@ -59,6 +60,8 @@ public class ScheduledCheck {
             int typeCons = typeMigration.checkConsistencies();
             int petCons = petMigration.checkConsistencies();
 
+            this.totalInconsistencies = vetCons + visitCons + petCons + typeCons + vetSpecialtyCons + ownerCons + specialtyCons;
+
             log.info("OWNER TABLE: " + ownerCons);
             log.info("PET TABLE: " + petCons);
             log.info("VISIT TABLE: " + visitCons);
@@ -68,6 +71,13 @@ public class ScheduledCheck {
             log.info("PET TYPES TABLE: " + typeCons);
 
             log.info("**** CONSISTENCY CHECKING DONE ****");
+
+            if (this.numRuns > 5 && totalInconsistencies < 3) {
+                MigrationToggles.isH2Enabled = false;
+                MigrationToggles.isShadowReadEnabled = true;
+
+                log.info("**** CONGRATS! YOU'VE MIGRATED FROM H2 TO SQLITE SUCCESSFULLY ****");
+            }
         }
     }
 }

@@ -22,15 +22,18 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
+import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.samples.petclinic.migration.PetMigration;
+import org.springframework.samples.petclinic.migration.VisitMigration;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.mockito.ArgumentMatchers.any;
 
 /**
  * Test class for {@link VisitController}
@@ -51,12 +54,21 @@ class VisitControllerTests {
 	@MockBean
 	private PetRepository pets;
 
+	@MockBean
+	private PetMigration petMigration;
+
+	@MockBean
+	private VisitMigration visitMigration;
+
 	@Mock
 	private Pet pet;
 
 	@BeforeEach
 	void init() {
 		given(this.pets.findById(TEST_PET_ID)).willReturn(pet);
+
+		when(this.petMigration.shadowRead(TEST_PET_ID)).thenReturn(pet);
+		when(this.petMigration.shadowReadWriteConsistencyChecker(any(Pet.class))).thenReturn(true);
 	}
 
 	@Test
