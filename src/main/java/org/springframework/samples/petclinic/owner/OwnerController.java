@@ -138,11 +138,7 @@ class OwnerController {
                 results = this.owners.findByFirstName(owner.getFirstName());
             }
             if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
-                boolean success = this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
-                if (success) {
-                    results = this.ownerMigration.shadowReadByFirstName(owner.getFirstName());
-
-                }
+                results = this.ownerMigration.shadowReadByFirstName(owner.getFirstName());
             }
         }
         if (OwnerToggles.isSearchFirstNameEnabled || OwnerToggles.isSearchLastNameEnabled) {
