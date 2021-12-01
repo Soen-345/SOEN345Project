@@ -139,7 +139,6 @@ class OwnerController {
             }
             if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
                 boolean success = this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
-                System.out.println("HELLOOO " + success);
                 if (success) {
                     results = this.ownerMigration.shadowReadByFirstName(owner.getFirstName());
 
@@ -158,7 +157,6 @@ class OwnerController {
                 return "redirect:/owners/" + owner.getId();
             } else {
                 // multiple owners found
-                System.out.println(results + " ") ;
                 model.put("selections", results);
                 return "owners/ownersList";
             }

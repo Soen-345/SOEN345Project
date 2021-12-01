@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.migration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.samples.petclinic.vet.Specialty;
 import org.springframework.samples.petclinic.vet.Vet;
 
 import java.sql.Connection;
@@ -94,10 +95,26 @@ public class VetDAO implements IDAO<Vet>{
                 Statement statement = SQLite_CONNECTION.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
-                    vets.add(new Vet(resultSet.getInt("id"),
+                    Specialty specialty;
+                    int vet_id = resultSet.getInt("id");
+                    Vet vet = new Vet(vet_id,
                             resultSet.getString("first_name"),
-                            resultSet.getString("last_name")));
+                            resultSet.getString("last_name"));
+                    Statement statement1 = SQLite_CONNECTION.createStatement();
+                    ResultSet resultSet1 = statement1
+                            .executeQuery("SELECT specialty_id FROM vet_specialties WHERE vet_id=" + vet_id + ";");
+                    while (resultSet1.next()) {
+                        int specialty_id = resultSet1.getInt("specialty_id");
+                        Statement statement2 = SQLite_CONNECTION.createStatement();
+                        ResultSet resultSet2 = statement2.executeQuery("SELECT name FROM specialties WHERE id = " + specialty_id + ";");
+                        while (resultSet2.next()) {
+                            specialty = new Specialty(resultSet2.getString("name"), specialty_id);
+                            vet.addSpecialty(specialty);
+                        }
+                    }
+                    vets.add(vet);
                 }
+
             } catch (SQLException e) {
                 log.error(e.getMessage());
             }
@@ -107,9 +124,24 @@ public class VetDAO implements IDAO<Vet>{
                 Statement statement = H2_CONNECTION.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
-                    vets.add(new Vet(resultSet.getInt("id"),
+                    Specialty specialty;
+                    int vet_id = resultSet.getInt("id");
+                    Vet vet = new Vet(vet_id,
                             resultSet.getString("first_name"),
-                            resultSet.getString("last_name")));
+                            resultSet.getString("last_name"));
+                    Statement statement1 = H2_CONNECTION.createStatement();
+                    ResultSet resultSet1 = statement1
+                            .executeQuery("SELECT specialty_id FROM vet_specialties WHERE vet_id=" + vet_id + ";");
+                    while (resultSet1.next()) {
+                        int specialty_id = resultSet1.getInt("specialty_id");
+                        Statement statement2 = H2_CONNECTION.createStatement();
+                        ResultSet resultSet2 = statement2.executeQuery("SELECT name FROM specialties WHERE id = " + specialty_id + ";");
+                        while (resultSet2.next()) {
+                            specialty = new Specialty(resultSet2.getString("name"), specialty_id);
+                            vet.addSpecialty(specialty);
+                        }
+                    }
+                    vets.add(vet);
                 }
             } catch (SQLException e) {
                 log.error(e.getMessage());
