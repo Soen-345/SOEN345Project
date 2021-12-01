@@ -49,12 +49,13 @@ class PetController {
 
     private final OwnerRepository owners;
 
-    public PetController(PetRepository pets, OwnerRepository owners) {
+    public PetController(PetRepository pets, OwnerRepository owners, OwnerMigration ownerMigration,
+                         TypeMigration typeMigration, PetMigration petMigration) {
         this.pets = pets;
         this.owners = owners;
-        this.petMigration = new PetMigration();
-        this.typeMigration = new TypeMigration();
-        this.ownerMigration = new OwnerMigration();
+        this.petMigration = petMigration;
+        this.typeMigration = typeMigration;
+        this.ownerMigration = ownerMigration;
     }
 
     @ModelAttribute("types")
@@ -62,7 +63,7 @@ class PetController {
         if (MigrationToggles.isH2Enabled) {
             return this.pets.findPetTypes();
         }
-        if (MigrationToggles.isSQLiteEnabled  && !MigrationToggles.isUnderTest) {
+        if (MigrationToggles.isSQLiteEnabled) {
             return this.typeMigration.findTypes();
         }
         return null;
@@ -73,7 +74,7 @@ class PetController {
         if (MigrationToggles.isH2Enabled) {
             return this.owners.findById(ownerId);
         }
-        if (MigrationToggles.isSQLiteEnabled  && !MigrationToggles.isUnderTest) {
+        if (MigrationToggles.isSQLiteEnabled) {
             return this.ownerMigration.shadowRead(ownerId);
         }
         return null;
@@ -113,7 +114,7 @@ class PetController {
             if (MigrationToggles.isSQLiteEnabled) {
                 pet.setOwner(owner);
                 this.petMigration.shadowWriteToNewDatastore(pet);
-             //   this.petMigration.shadowReadWriteConsistencyChecker(pet);
+                this.petMigration.shadowReadWriteConsistencyChecker(pet);
             }
             return "redirect:/owners/{ownerId}";
         }
@@ -125,11 +126,12 @@ class PetController {
         if (MigrationToggles.isH2Enabled) {
             pet = this.pets.findById(petId);
         }
-        if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled && !MigrationToggles.isUnderTest) {
-            pet = this.petMigration.shadowRead(petId);
-          //  this.petMigration.shadowReadWriteConsistencyChecker(pet);
+        if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+            boolean success = this.petMigration.shadowReadWriteConsistencyChecker(this.petMigration.shadowRead(petId));
+            if (success) {
+                pet = this.petMigration.shadowRead(petId);
+            }
         }
-
         model.put("pet", pet);
         return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
     }
@@ -146,9 +148,9 @@ class PetController {
                 this.pets.save(pet);
             }
             if (MigrationToggles.isSQLiteEnabled) {
-                pet.setOwner(owner);
+           //     pet.setOwner(owner);
                 this.petMigration.shadowUpdate(pet);
-          //      this.petMigration.shadowReadWriteConsistencyChecker(pet);
+                this.petMigration.shadowReadWriteConsistencyChecker(pet);
             }
             return "redirect:/owners/{ownerId}";
         }

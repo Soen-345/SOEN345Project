@@ -16,7 +16,7 @@
 
 package org.springframework.samples.petclinic.owner;
 
-import static org.mockito.BDDMockito.given;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -39,6 +39,8 @@ import org.springframework.samples.petclinic.migration.TypeMigration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 
 /**
  * Test class for the {@link PetController}
@@ -82,21 +84,35 @@ class PetControllerTests {
 
 	@BeforeEach
 	void setup() {
-		when(max.getId()).thenReturn(1);
+
+		when(betty.getId()).thenReturn(TEST_OWNER_ID);
+		when(betty.getFirstName()).thenReturn("Betty");
+		when(betty.getLastName()).thenReturn("Davis");
+		when(betty.getAddress()).thenReturn("638 Cardinal Ave.");
+		when(betty.getCity()).thenReturn("Sun Prairie");
+		when(betty.getTelephone()).thenReturn("6085551749");
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		String date = "2015-02-12";
+		LocalDate localDate = LocalDate.parse(date, formatter);
+
+		when(max.getId()).thenReturn(TEST_PET_ID);
 		when(max.getName()).thenReturn("max");
 		when(max.getOwner()).thenReturn(betty);
 		when(max.getType()).thenReturn(hamster);
-		when(max.getBirthDate()).thenReturn(LocalDate.now());
+		when(max.getBirthDate()).thenReturn(localDate);
 		when(hamster.getId()).thenReturn(1);
 		when(hamster.getName()).thenReturn("hamster");
 		when(betty.getPet("max")).thenReturn(max);
+		/*
 		given(this.pets.findPetTypes()).willReturn(Lists.newArrayList(hamster));
 		given(this.owners.findById(TEST_OWNER_ID)).willReturn(betty);
 		given(this.pets.findById(TEST_PET_ID)).willReturn(max);
-
-		given(this.typeMigration.findTypes()).willReturn(Lists.newArrayList(hamster));
-		given(this.ownerMigration.shadowRead(TEST_OWNER_ID)).willReturn(betty);
-		given(this.petMigration.shadowRead(TEST_PET_ID)).willReturn(max);
+		*/
+		when(this.typeMigration.findTypes()).thenReturn(Lists.newArrayList(hamster));
+		when(this.ownerMigration.shadowRead(TEST_OWNER_ID)).thenReturn(betty);
+		when(this.petMigration.shadowRead(TEST_PET_ID)).thenReturn(max);
+		when(this.petMigration.shadowReadWriteConsistencyChecker(any(Pet.class))).thenReturn(true);
 
 	}
 

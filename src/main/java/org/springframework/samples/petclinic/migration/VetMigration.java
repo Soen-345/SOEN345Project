@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.migration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.vet.Vet;
+import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.Collection;
@@ -13,7 +14,7 @@ import java.util.Objects;
  * @author Sevag Eordkian
  * Shadow writes not applicable for Vets, the system doesn't let users create a vet.
  */
-
+@Service
 public class VetMigration implements IMigration<Vet>{
 
     private static final Logger log = LoggerFactory.getLogger(VetMigration.class);

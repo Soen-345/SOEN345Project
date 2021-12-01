@@ -44,9 +44,9 @@ public class PetTypeFormatter implements Formatter<PetType> {
 	private final TypeMigration typeMigration;
 
 	@Autowired
-	public PetTypeFormatter(PetRepository pets) {
+	public PetTypeFormatter(PetRepository pets, TypeMigration typeMigration) {
 		this.pets = pets;
-		this.typeMigration = new TypeMigration();
+		this.typeMigration = typeMigration;
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class PetTypeFormatter implements Formatter<PetType> {
 		if (MigrationToggles.isH2Enabled) {
 			findPetTypes = this.pets.findPetTypes();
 		}
-		if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled && !MigrationToggles.isUnderTest) {
+		if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
 			findPetTypes = this.typeMigration.findTypes();
 		}
 

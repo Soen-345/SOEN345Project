@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.migration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.owner.PetType;
+import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+@Service
 public class TypeMigration implements IMigration<PetType> {
 
     private static final Logger log = LoggerFactory.getLogger(TypeMigration.class);

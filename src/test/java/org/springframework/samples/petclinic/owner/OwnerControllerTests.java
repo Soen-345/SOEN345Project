@@ -20,9 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import java.util.*;
 import java.lang.*;
-
+import static org.mockito.ArgumentMatchers.any;
 import static org.hamcrest.Matchers.*;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -33,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author Colin But
  */
+
 @WebMvcTest(OwnerController.class)
 class OwnerControllerTests {
 
@@ -47,7 +47,7 @@ class OwnerControllerTests {
     @MockBean
     private VisitRepository visits;
 
-    @Mock
+    @MockBean
     private OwnerMigration ownerMigration;
 
     @Mock
@@ -84,6 +84,7 @@ class OwnerControllerTests {
         when(owner2.getTelephone()).thenReturn("6085551749");
 
 
+        when(this.visit.getDate()).thenReturn(LocalDate.now());
         when(this.dog.getName()).thenReturn("dog");
         when(this.max.getId()).thenReturn(1);
         when(this.max.getType()).thenReturn(dog);
@@ -91,19 +92,19 @@ class OwnerControllerTests {
         when(this.max.getBirthDate()).thenReturn(LocalDate.now());
         when(this.max.getVisits()).thenReturn(Lists.newArrayList(visit));
         when(this.george.getPetsInternal()).thenReturn(Collections.singleton(max));
-
+/*
         when(this.owners.findById(TEST_OWNER_ID)).thenReturn(george);
         given(this.owners.findByFirstName(george.getFirstName())).willReturn(Lists.newArrayList(george));
         given(this.owners.findByLastName(george.getLastName())).willReturn(Lists.newArrayList(george));
         when(this.owners.findByLastName("")).thenReturn(Lists.newArrayList(george, owner2));
         when(this.visits.findByPetId(max.getId())).thenReturn(Collections.singletonList(visit));
-/*
-        when(this.ownerMigration.shadowRead(TEST_OWNER_ID)).thenReturn(george);
-        when(this.ownerMigration.shadowReadByFirstName(george.getFirstName())).thenReturn(Lists.newArrayList(george));
-        when(this.ownerMigration.shadowReadByLastName(george.getLastName())).thenReturn(Lists.newArrayList(george));
-        when(this.ownerMigration.shadowReadByLastName("")).thenReturn(Lists.newArrayList(george));
 */
-        when(this.visit.getDate()).thenReturn(LocalDate.now());
+
+        when(this.ownerMigration.shadowRead(TEST_OWNER_ID)).thenReturn(george);
+        when(this.ownerMigration.shadowReadWriteConsistencyChecker(any(Owner.class))).thenReturn(true);
+        when(this.ownerMigration.shadowReadByFirstName("George")).thenReturn(Lists.newArrayList(george));
+        when(this.ownerMigration.shadowReadByLastName(george.getLastName())).thenReturn(Lists.newArrayList(george));
+        when(this.ownerMigration.shadowReadByLastName("")).thenReturn(Lists.newArrayList(george, owner2));
 
     }
 
@@ -227,6 +228,8 @@ class OwnerControllerTests {
                         description.appendText("Max did not have any visits");
                     }
                 }))).andExpect(view().name("owners/ownerDetails"));
+
+
     }
 
 

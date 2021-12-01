@@ -51,11 +51,12 @@ class VisitController {
 
 	private final PetMigration petMigration;
 
-	public VisitController(VisitRepository visits, PetRepository pets) {
+	public VisitController(VisitRepository visits, PetRepository pets,
+						   PetMigration petMigration, VisitMigration visitMigration) {
 		this.visits = visits;
 		this.pets = pets;
-		this.visitMigration = new VisitMigration();
-		this.petMigration = new PetMigration();
+		this.visitMigration = visitMigration;
+		this.petMigration = petMigration;
 	}
 
 	@InitBinder
@@ -77,12 +78,12 @@ class VisitController {
 		if (MigrationToggles.isH2Enabled) {
 			pet = this.pets.findById(petId);
 		}
-		if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled  && !MigrationToggles.isUnderTest) {
-			pet = this.petMigration.shadowRead(petId);
-		//	this.petMigration.shadowReadWriteConsistencyChecker(this.petMigration.shadowRead(petId));
+		if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+			boolean success = this.petMigration.shadowReadWriteConsistencyChecker(this.petMigration.shadowRead(petId));
+			if (success) {
+				pet = this.petMigration.shadowRead(petId);
+			}
 		}
-
-		assert pet != null;
 		pet.setVisitsInternal(this.visits.findByPetId(petId));
 		model.put("pet", pet);
 		Visit visit = new Visit();
@@ -109,7 +110,7 @@ class VisitController {
 			}
 			if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
 				this.visitMigration.shadowWriteToNewDatastore(visit);
-			//	this.visitMigration.shadowReadWriteConsistencyChecker(visit);
+				this.visitMigration.shadowReadWriteConsistencyChecker(visit);
 			}
 			return "redirect:/owners/{ownerId}";
 		}
