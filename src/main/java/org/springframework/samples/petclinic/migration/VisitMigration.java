@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.migration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.visit.Visit;
+import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ import java.util.Map;
 /**
  * @author Sevag Eordkian
  */
+@Service
 public class VisitMigration implements IMigration<Visit> {
 
     private static final Logger log = LoggerFactory.getLogger(VisitMigration.class);

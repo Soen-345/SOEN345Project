@@ -4,17 +4,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.Pet;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
  * @author Alireza Ziarizi
  */
+
+@Service
 public class OwnerMigration implements IMigration<Owner> {
 
     private static final Logger log = LoggerFactory.getLogger(OwnerMigration.class);
