@@ -85,7 +85,7 @@ public class ScheduledCheck {
 
     @Async
     @Scheduled(fixedDelay = 30000)
-    public void consistencyChecking(){
+    public void hashConsistencyChecking(){
         if (MigrationToggles.consistencyHashChecking){
             if (!ownerMigration.hashConsistencyChecker()){
                 log.warn("owner data corrupted");
