@@ -42,12 +42,12 @@ class PetController {
     private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
 
     private final PetRepository pets;
+    private final OwnerRepository owners;
+
     private final PetMigration petMigration;
     private final TypeMigration typeMigration;
     private final OwnerMigration ownerMigration;
 
-
-    private final OwnerRepository owners;
 
     public PetController(PetRepository pets, OwnerRepository owners, OwnerMigration ownerMigration,
                          TypeMigration typeMigration, PetMigration petMigration) {
@@ -112,9 +112,8 @@ class PetController {
                 this.pets.save(pet);
             }
             if (MigrationToggles.isSQLiteEnabled) {
-                pet.setOwner(owner);
                 this.petMigration.shadowWriteToNewDatastore(pet);
-                this.petMigration.shadowReadWriteConsistencyChecker(pet);
+             //   this.petMigration.shadowReadWriteConsistencyChecker(pet);
             }
             return "redirect:/owners/{ownerId}";
         }
@@ -148,9 +147,8 @@ class PetController {
                 this.pets.save(pet);
             }
             if (MigrationToggles.isSQLiteEnabled) {
-           //     pet.setOwner(owner);
                 this.petMigration.shadowUpdate(pet);
-                this.petMigration.shadowReadWriteConsistencyChecker(pet);
+            //    this.petMigration.shadowReadWriteConsistencyChecker(pet);
             }
             return "redirect:/owners/{ownerId}";
         }

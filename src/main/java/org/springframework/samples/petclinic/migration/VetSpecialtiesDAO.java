@@ -89,7 +89,7 @@ public class VetSpecialtiesDAO {
                 + "," + vetSpecialty.getSpecialty_id() + ");";
             try{
                 Statement statement = SQLite_CONNECTION.createStatement();
-                statement.execute(insertQuery);
+                statement.executeUpdate(insertQuery);
             }catch (SQLException e){
                 log.warn(e.getMessage());
                 return false;
@@ -103,7 +103,7 @@ public class VetSpecialtiesDAO {
         if(datastore == Datastores.SQLITE){
             try{
                 Statement statement = SQLite_CONNECTION.createStatement();
-                statement.execute(insertQuery);
+                statement.executeUpdate(insertQuery);
             }catch (SQLException e){
                 log.warn(e.getMessage());
             }
@@ -111,7 +111,7 @@ public class VetSpecialtiesDAO {
         if (datastore == Datastores.H2){
             try{
                 Statement statement = H2_CONNECTION.createStatement();
-                statement.execute(insertQuery);
+                statement.executeUpdate(insertQuery);
             }catch (SQLException e){
                 log.warn(e.getMessage());
             }

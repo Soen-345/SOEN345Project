@@ -112,7 +112,7 @@ public class SpecialtiesDAO implements IDAO<Specialty> {
                 + ",'" + specialty.getName() + "');";
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
-                statement.execute(insertQuery);
+                statement.executeUpdate(insertQuery);
             } catch (SQLException e) {
                 log.error(e.getMessage());
                 return false;
@@ -126,7 +126,7 @@ public class SpecialtiesDAO implements IDAO<Specialty> {
         if (datastore == Datastores.SQLITE) {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
-                statement.execute(insertQuery);
+                statement.executeUpdate(insertQuery);
             } catch (SQLException e) {
                 log.error(e.getMessage());
             }
@@ -134,7 +134,7 @@ public class SpecialtiesDAO implements IDAO<Specialty> {
         if (datastore == Datastores.H2) {
             try {
                 Statement statement = H2_CONNECTION.createStatement();
-                statement.execute(insertQuery);
+                statement.executeUpdate(insertQuery);
             } catch (SQLException e) {
                 log.error(e.getMessage());
             }
@@ -147,7 +147,7 @@ public class SpecialtiesDAO implements IDAO<Specialty> {
         if (datastore == Datastores.SQLITE) {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
-                statement.execute(query);
+                statement.executeUpdate(query);
             } catch (SQLException e) {
                 log.error(e.getMessage());
             }
@@ -155,7 +155,7 @@ public class SpecialtiesDAO implements IDAO<Specialty> {
         if (datastore == Datastores.H2) {
             try {
                 Statement statement = H2_CONNECTION.createStatement();
-                statement.execute(query);
+                statement.executeUpdate(query);
             } catch (SQLException e) {
                 log.error(e.getMessage());
             }

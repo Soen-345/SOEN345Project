@@ -44,6 +44,5 @@ public interface VisitRepository extends Repository<Visit, Integer> {
 	void save(Visit visit) throws DataAccessException;
 
 	List<Visit> findByPetId(Integer petId);
-	Collection<Visit> findAll() throws DataAccessException;
 
 }

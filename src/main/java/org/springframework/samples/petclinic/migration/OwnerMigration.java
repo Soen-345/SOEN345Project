@@ -137,11 +137,11 @@ public class OwnerMigration implements IMigration<Owner> {
     }
 
     public Collection<Owner> shadowReadByLastName(String lastName) {
-        return this.ownerDAO.getByLastName(lastName, Datastores.SQLITE);
+        return this.ownerDAO.getByLastName(lastName);
     }
 
     public Collection<Owner> shadowReadByFirstName(String firstName) {
-        return this.ownerDAO.getByFirstName(firstName, Datastores.SQLITE);
+        return this.ownerDAO.getByFirstName(firstName);
     }
 
 
