@@ -3,9 +3,8 @@ package org.springframework.samples.petclinic.migration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.owner.Owner;
-import org.springframework.samples.petclinic.owner.Pet;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.apache.commons.codec.digest.DigestUtils;
 
 
 import java.sql.SQLException;
@@ -23,6 +22,8 @@ public class OwnerMigration implements IMigration<Owner> {
     private static final Logger log = LoggerFactory.getLogger(OwnerMigration.class);
 
     private final OwnerDAO ownerDAO;
+    private String dataChecker = "92D30D38AEA9E74B192F86F1BB69735549A7E98E";
+
 
     public OwnerMigration() {
         ownerDAO = new OwnerDAO();
@@ -170,4 +171,34 @@ public class OwnerMigration implements IMigration<Owner> {
     public void closeConnections() throws SQLException {
         this.ownerDAO.closeConnections();
     }
+
+    public void updateData(){
+        dataChecker = hashable() ;
+    }
+
+    public String hashable(){
+        List<Owner> owner;
+        owner = this.ownerDAO.getAll(Datastores.SQLITE);
+        String hashStringexpected = "";
+        for(int i=0; i< 4; i++){
+            Owner oldowner= owner.get(i);
+            hashStringexpected = hashStringexpected + oldowner.getFirstName() +
+                    oldowner.getLastName() + oldowner.getAddress() + oldowner.getCity()+
+                    oldowner.getTelephone();
+
+        }
+        hashStringexpected = hashValue(hashStringexpected);
+        System.out.println(hashStringexpected);
+        return hashStringexpected;
+    }
+
+    public boolean hashConsistencyChecker(){
+            String actual = hashable();
+        return dataChecker.equals(actual);
+    }
+    private String hashValue(String value) {
+        return DigestUtils.sha1Hex(value).toUpperCase();
+    }
+
+
 }

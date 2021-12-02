@@ -113,8 +113,14 @@ public class OwnerMigrationTest {
 
     }
 
+    @Test
+    public void consistencyChecking(){
+        assertTrue(ownerMigration.hashConsistencyChecker());
+    }
     @AfterAll
     public static void closeConnection() throws SQLException {
         ownerMigration.closeConnections();
     }
+
+
 }
