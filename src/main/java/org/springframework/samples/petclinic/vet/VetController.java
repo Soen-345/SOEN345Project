@@ -36,10 +36,9 @@ class VetController {
 	private final VetRepository vets;
 	private final VetMigration vetMigration;
 
-
-	public VetController(VetRepository clinicService) {
+	public VetController(VetRepository clinicService, VetMigration vetMigration) {
 		this.vets = clinicService;
-		this.vetMigration = new VetMigration();
+		this.vetMigration = vetMigration;
 	}
 
 	@GetMapping("/vets.html")
@@ -47,26 +46,32 @@ class VetController {
 		// Here we are returning an object of type 'Vets' rather than a collection of Vet
 		// objects so it is simpler for Object-Xml mapping
 		Vets vets = new Vets();
-		vets.getVetList().addAll(this.vets.findAll());
-		model.put("vets", vets);
 
-		// Shadow Reads & Incremental Replication
-		for (Vet vet : this.vets.findAll()) {
-			boolean consistent = vetMigration.shadowReadWriteConsistencyChecker(vet);
-			if (!consistent) {
-				vetMigration.checkConsistencies();
-			}
+		if (MigrationToggles.isH2Enabled) {
+			vets.getVetList().addAll(this.vets.findAll());
 		}
+
+		if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+			vets.getVetList().addAll(this.vetMigration.findAll());
+		}
+
+		model.put("vets", vets);
 
 		return "vets/vetList";
 	}
 
 	@GetMapping({ "/vets" })
-	public @ResponseBody Vets showResourcesVetList() throws SQLException {
+	public @ResponseBody Vets showResourcesVetList() {
 		// Here we are returning an object of type 'Vets' rather than a collection of Vet
 		// objects so it is simpler for JSon/Object mapping
 		Vets vets = new Vets();
-		vets.getVetList().addAll(this.vets.findAll());
+		if (MigrationToggles.isH2Enabled) {
+			vets.getVetList().addAll(this.vets.findAll());
+		}
+
+		if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+			vets.getVetList().addAll(this.vetMigration.findAll());
+		}
 
 		return vets;
 	}

@@ -21,7 +21,10 @@ import org.apache.logging.log4j.Logger;
 
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.migration.MigrationToggles;
 import org.springframework.samples.petclinic.migration.OwnerMigration;
+import org.springframework.samples.petclinic.migration.VisitMigration;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,20 +51,24 @@ class OwnerController {
     private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
     private final OwnerRepository owners;
-    private final OwnerMigration ownerMigration;
+    private final VisitRepository visits;
 
-    private VisitRepository visits;
+    private final OwnerMigration ownerMigration;
+    private final VisitMigration visitMigration;
 
     public static Logger analytics = LogManager.getLogger("Analytics");
 
 
 
-    public OwnerController(OwnerRepository clinicService, VisitRepository visits) {
+    public OwnerController(OwnerRepository clinicService, OwnerMigration ownerMigration,
+                           VisitRepository visits, VisitMigration visitMigration) {
         this.owners = clinicService;
+        this.ownerMigration = ownerMigration;
         this.visits = visits;
         this.ownerMigration = new OwnerMigration();
 
         OwnerToggles.assignSearchNameFeature(30);
+        this.visitMigration = visitMigration;
     }
 
     @InitBinder
@@ -86,10 +93,17 @@ class OwnerController {
             if (result.hasErrors()) {
                 return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
             } else {
-                this.owners.save(owner);
-                // shadow writing to new database
-                this.ownerMigration.shadowWriteToNewDatastore(owner);
-                this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
+                int id = -1;
+                if (MigrationToggles.isH2Enabled ) {
+                    this.owners.save(owner);
+                }
+                if (MigrationToggles.isSQLiteEnabled) {
+                    id = this.ownerMigration.shadowWriteToNewDatastore(owner);
+                }
+                if (MigrationToggles.isShadowReadEnabled) {
+                    owner.setId(id);
+                }
+
                 return "redirect:/owners/" + owner.getId();
             }
         }
@@ -106,22 +120,36 @@ class OwnerController {
             analytics.info("Name processing...");
 
         }
+        if (OwnerToggles.isSearchLastNameEnabled) {
+            model.put("nameType", "Last");
+        }
+        if (OwnerToggles.isSearchFirstNameEnabled) {
+            model.put("nameType", "First");
+        }
+
         return "owners/findOwners";
     }
 
     @GetMapping("/owners")
     public String processFindForm(Owner owner, BindingResult result, Map<String, Object> model) {
 
-        Collection<Owner> results=null;
-        if(OwnerToggles.isSearchLastNameEnabled){
+        Collection<Owner> results = null;
+        if (OwnerToggles.isSearchLastNameEnabled) {
             // allow parameterless GET request for /owners to return all records
             if (owner.getLastName() == null) {
                 owner.setLastName(""); // empty string signifies broadest possible search
             }
+            if (MigrationToggles.isH2Enabled) {
+                // find owners by last name
+                results = this.owners.findByLastName(owner.getLastName());
+            }
 
-            // find owners by last name
-            results = this.owners.findByLastName(owner.getLastName());
-            //analytics.info("Feature Off: " + results);
+            if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+                boolean success = this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
+                if (success) {
+                    results = ownerMigration.shadowReadByLastName(owner.getLastName());
+                }
+            }
 
         }
         if (OwnerToggles.isSearchFirstNameEnabled) {
@@ -129,14 +157,16 @@ class OwnerController {
             if (owner.getFirstName() == null) {
                 owner.setFirstName(""); // empty string signifies broadest possible search
             }
-
-            // find owners by first name
-            results = this.owners.findByFirstName(owner.getFirstName());
-           // analytics.info("Feature On: " + results);
-
+            if (MigrationToggles.isH2Enabled) {
+                // find owners by first name
+                results = this.owners.findByFirstName(owner.getFirstName());
+            }
+            if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+                results = this.ownerMigration.shadowReadByFirstName(owner.getFirstName());
+            }
         }
-        if(OwnerToggles.isSearchFirstNameEnabled||OwnerToggles.isSearchLastNameEnabled){
-            if (results.isEmpty()) {
+        if (OwnerToggles.isSearchFirstNameEnabled || OwnerToggles.isSearchLastNameEnabled) {
+            if (results != null && results.isEmpty()) {
                 // no owners found
                 result.rejectValue("lastName", "notFound", "not found");
 
@@ -146,14 +176,9 @@ class OwnerController {
                     analytics.info("Feature off 1: not found" ) ;
 
                 return "owners/findOwners";
-            } else if (results.size() == 1) {
+            } else if (results != null && results.size() == 1) {
                 // 1 owner found
                 owner = results.iterator().next();
-
-                if (OwnerToggles.isSearchFirstNameEnabled)
-                    analytics.info("Feature on 2: " +  owner.getFirstName()  + " " + owner.getLastName());
-                else
-                    analytics.info("Feature off 2: " + owner.getLastName() + ", " + owner.getFirstName());
 
                 return "redirect:/owners/" + owner.getId();
             } else {
@@ -182,7 +207,17 @@ class OwnerController {
     @GetMapping("/owners/{ownerId}/edit")
     public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
         if (OwnerToggles.isUpdateOwnerEnabled) {
-            Owner owner = this.owners.findById(ownerId);
+            Owner owner = null;
+            if (MigrationToggles.isH2Enabled) {
+                owner = this.owners.findById(ownerId);
+            }
+            if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+                boolean success = this.ownerMigration.shadowReadWriteConsistencyChecker(this.ownerMigration.shadowRead(ownerId));
+                if (success) {
+                    owner = this.ownerMigration.shadowRead(ownerId);
+                }
+            }
+            assert owner != null;
             model.addAttribute(owner);
             return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
         }
@@ -198,10 +233,13 @@ class OwnerController {
                 return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
             } else {
                 owner.setId(ownerId);
-                this.owners.save(owner);
-                // shadow writing to new database but updating
-                this.ownerMigration.shadowWriteToNewDatastore(owner);
-                this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
+                if (MigrationToggles.isH2Enabled) {
+                    this.owners.save(owner);
+                }
+                if (MigrationToggles.isSQLiteEnabled) {
+                    this.ownerMigration.shadowUpdate(owner);
+               //     this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
+                }
                 return "redirect:/owners/{ownerId}";
             }
 
@@ -218,14 +256,29 @@ class OwnerController {
     @GetMapping("/owners/{ownerId}")
     public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
         ModelAndView mav = new ModelAndView("owners/ownerDetails");
-        Owner owner = this.owners.findById(ownerId);
-        for (Pet pet : owner.getPets()) {
-            pet.setVisitsInternal(visits.findByPetId(pet.getId()));
+        Owner owner = null;
+        if (MigrationToggles.isH2Enabled ) {
+            owner = this.owners.findById(ownerId);
         }
+        if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+            boolean success = this.ownerMigration.shadowReadWriteConsistencyChecker(this.ownerMigration.shadowRead(ownerId));
+            if (success) {
+                owner = this.ownerMigration.shadowRead(ownerId);
+            }
+        }
+
+        assert owner != null;
+        for (Pet pet : owner.getPets()) {
+            if (MigrationToggles.isH2Enabled) {
+                pet.setVisitsInternal(visits.findByPetId(pet.getId()));
+            }
+            if (MigrationToggles.isSQLiteEnabled) {
+                pet.setVisitsInternal(visitMigration.shadowReadByPetId(pet.getId()));
+            }
+        }
+
         mav.addObject(owner);
         return mav;
     }
-
-
 
 }

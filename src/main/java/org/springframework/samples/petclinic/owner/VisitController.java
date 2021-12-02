@@ -19,18 +19,15 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.springframework.samples.petclinic.migration.MigrationToggles;
+import org.springframework.samples.petclinic.migration.PetMigration;
 import org.springframework.samples.petclinic.migration.VisitMigration;
-import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Juergen Hoeller
@@ -48,10 +45,14 @@ class VisitController {
 
 	private final VisitMigration visitMigration;
 
-	public VisitController(VisitRepository visits, PetRepository pets) {
+	private final PetMigration petMigration;
+
+	public VisitController(VisitRepository visits, PetRepository pets,
+						   PetMigration petMigration, VisitMigration visitMigration) {
 		this.visits = visits;
 		this.pets = pets;
-		this.visitMigration = new VisitMigration();
+		this.visitMigration = visitMigration;
+		this.petMigration = petMigration;
 	}
 
 	@InitBinder
@@ -68,25 +69,36 @@ class VisitController {
 	 */
 	@ModelAttribute("visit")
 	public Visit loadPetWithVisit(@PathVariable("petId") int petId, Map<String, Object> model) {
-		Pet pet = this.pets.findById(petId);
-		pet.setVisitsInternal(this.visits.findByPetId(petId));
-		model.put("pet", pet);
-		Visit visit = new Visit();
-		pet.addVisit(visit);
 
-		// Shadow Reads & Incremental Replication
-		for (Visit visitPet : this.visits.findAll()) {
-			boolean consistent = visitMigration.shadowReadWriteConsistencyChecker(visitPet);
-			if (!consistent) {
-				visitMigration.checkConsistencies();
+		Pet pet = null;
+		if (MigrationToggles.isH2Enabled) {
+			pet = this.pets.findById(petId);
+		}
+		if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+			boolean success = this.petMigration.shadowReadWriteConsistencyChecker(this.petMigration.shadowRead(petId));
+			if (success) {
+				pet = this.petMigration.shadowRead(petId);
 			}
 		}
+		assert pet != null;
+		Visit visit = new Visit();
+		pet.addVisit(visit);
+		model.put("pet", pet);
+
 		return visit;
 	}
 
 	// Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is called
 	@GetMapping("/owners/*/pets/{petId}/visits/new")
 	public String initNewVisitForm(@PathVariable("petId") int petId, Map<String, Object> model) {
+		Pet pet = null;
+		if (MigrationToggles.isH2Enabled) {
+			pet = this.pets.findById(petId);
+		}
+		if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
+			pet = this.petMigration.shadowRead(petId);
+		}
+		model.put("pet", pet);
 		return "pets/createOrUpdateVisitForm";
 	}
 
@@ -97,11 +109,13 @@ class VisitController {
 			return "pets/createOrUpdateVisitForm";
 		}
 		else {
-			this.visits.save(visit);
-
-			this.visitMigration.shadowWriteToNewDatastore(visit);
-			this.visitMigration.shadowReadWriteConsistencyChecker(visit);
-
+			if (MigrationToggles.isH2Enabled) {
+				this.visits.save(visit);
+			}
+			if (MigrationToggles.isSQLiteEnabled) {
+				this.visitMigration.shadowWriteToNewDatastore(visit);
+			//	this.visitMigration.shadowReadWriteConsistencyChecker(visit);
+			}
 			return "redirect:/owners/{ownerId}";
 		}
 	}

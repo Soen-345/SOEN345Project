@@ -107,6 +107,11 @@ public class Pet extends NamedEntity {
 		this.visits = new LinkedHashSet<>(visits);
 	}
 
+	public void setVisits(List<Visit> visits) {
+		Set<Visit> visitSet = new HashSet<>(visits);
+		setVisitsInternal(visitSet);
+	}
+
 	public List<Visit> getVisits() {
 		List<Visit> sortedVisits = new ArrayList<>(getVisitsInternal());
 		PropertyComparator.sort(sortedVisits, new MutableSortDefinition("date", false, false));

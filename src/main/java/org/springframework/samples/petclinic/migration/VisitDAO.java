@@ -1,20 +1,26 @@
 package org.springframework.samples.petclinic.migration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.samples.petclinic.owner.Owner;
+import org.springframework.samples.petclinic.owner.Pet;
+import org.springframework.samples.petclinic.owner.PetType;
 import org.springframework.samples.petclinic.visit.Visit;
 
-import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * @author Sevag Eordkian
  */
-public class VisitDAO {
+public class VisitDAO implements IDAO<Visit>{
+
+    private static final Logger log = LoggerFactory.getLogger(VisitDAO.class);
 
     private Connection SQLite_CONNECTION;
     private Connection H2_CONNECTION;
@@ -24,22 +30,21 @@ public class VisitDAO {
         H2_CONNECTION = DatastoreConnection.connectH2();
     }
 
-    protected void initTable() {
+    public void initTable() {
         String query = "DROP TABLE IF EXISTS visits;";
         try {
             Statement statement = SQLite_CONNECTION.createStatement();
             statement.execute(query);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
         }
         this.createVisitTable();
     }
 
-    protected void createVisitTable() {
-
+    private void createVisitTable() {
         String createQuery =
                 "CREATE TABLE IF NOT EXISTS visits (\n" +
-                        "                        id          INTEGER IDENTITY PRIMARY KEY,\n" +
+                        "                        id          INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                         "                        pet_id      INTEGER NOT NULL,\n" +
                         "                        visit_date  DATE,\n" +
                         "                        description VARCHAR(255), \n" +
@@ -53,12 +58,12 @@ public class VisitDAO {
             statement2.execute(indexQuery);
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 
-    protected Map<Integer, Visit> getAllVisits(Datastores datastore) {
-        Map<Integer, Visit> visits = new HashMap<>();
+    public List<Visit> getAll(Datastores datastore) {
+        List<Visit> visits = new ArrayList<>();
         String query = "SELECT * FROM visits;";
 
         if (datastore == Datastores.SQLITE) {
@@ -66,16 +71,15 @@ public class VisitDAO {
                 Statement statement = SQLite_CONNECTION.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
-                    visits.put(resultSet.getInt("id"),
-                            new Visit(resultSet.getInt("id"),
-                                    resultSet.getInt("pet_id"),
-                                    VisitMigration.convertToLocalDateViaInstant
-                                            (new SimpleDateFormat("yyyy-MM-dd")
-                                                    .parse(resultSet.getString("visit_date"))),
-                                    resultSet.getString("description")));
+                    visits.add(new Visit(resultSet.getInt("id"),
+                            resultSet.getInt("pet_id"),
+                            VisitMigration.convertToLocalDateViaInstant
+                                    (new SimpleDateFormat("yyyy-MM-dd")
+                                            .parse(resultSet.getString("visit_date"))),
+                            resultSet.getString("description")));
                 }
             } catch (SQLException | ParseException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         if (datastore == Datastores.H2) {
@@ -83,71 +87,77 @@ public class VisitDAO {
                 Statement statement = H2_CONNECTION.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
-                    visits.put(resultSet.getInt("id"),
-                            new Visit(resultSet.getInt("id"),
-                                    resultSet.getInt("pet_id"),
-                                    VisitMigration.convertToLocalDateViaInstant
-                                            (new SimpleDateFormat("yyyy-MM-dd")
-                                                    .parse(resultSet.getString("visit_date"))),
-                                    resultSet.getString("description")));
+                    visits.add(new Visit(resultSet.getInt("id"),
+                            resultSet.getInt("pet_id"),
+                            VisitMigration.convertToLocalDateViaInstant
+                                    (new SimpleDateFormat("yyyy-MM-dd")
+                                            .parse(resultSet.getString("visit_date"))),
+                            resultSet.getString("description")));
                 }
             } catch (SQLException | ParseException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return visits;
     }
 
-    protected boolean addVisit(Visit visit, Datastores datastore) {
+    public boolean migrate(Visit visit) {
         String insertQuery = "INSERT INTO visits (id, pet_id, visit_date, description) " +
                 "VALUES (" + visit.getId() + "," + visit.getPetId() + ",'" +
                 java.sql.Date.valueOf(visit.getDate()) +
                 "', '" + visit.getDescription()  +  "');";
-        if (datastore == Datastores.SQLITE) {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
-                statement.execute(insertQuery);
+                statement.executeUpdate(insertQuery);
             }
             catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
                 return false;
             }
-        }
-        if (datastore == Datastores.H2) {
-            try {
-                Statement statement = H2_CONNECTION.createStatement();
-                statement.execute(insertQuery);
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-                return false;
-            }
-        }
         return true;
     }
 
-    protected void update(Visit visit, Datastores datastore) {
+    public void add(Visit visit, Datastores datastore) {
+        String insertQuery = "INSERT INTO visits (id, pet_id, visit_date, description) " +
+                "VALUES (NULL, " + visit.getPetId() + ",'" +
+                java.sql.Date.valueOf(visit.getDate()) +
+                "', '" + visit.getDescription() + "');";
+        if (datastore == Datastores.SQLITE) {
+            try {
+                Statement statement = SQLite_CONNECTION.createStatement();
+                statement.executeUpdate(insertQuery);
+
+
+            }
+            catch (SQLException e) {
+                log.error(e.getMessage());
+            }
+        }
+    }
+
+    public void update(Visit visit, Datastores datastore) {
         String query = "UPDATE visits SET pet_id = " + visit.getPetId()
                 + ", visit_date = " + Date.valueOf(visit.getDate())
                 +", description = '" + visit.getDescription() + "' WHERE id = " + visit.getId() + ";";
         if (datastore == Datastores.SQLITE) {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
-                statement.execute(query);
+                statement.executeUpdate(query);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         if (datastore == Datastores.H2) {
             try {
                 Statement statement = H2_CONNECTION.createStatement();
-                statement.execute(query);
+                statement.executeUpdate(query);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
     }
 
-    protected Visit getVisit(Integer visitId, Datastores datastore) {
+    public Visit get(Integer visitId, Datastores datastore) {
         Visit visit = null;
         String query = "SELECT id, pet_id, visit_date, description FROM visits WHERE id = " + visitId + ";";
         if (datastore == Datastores.SQLITE) {
@@ -161,7 +171,7 @@ public class VisitDAO {
                                         .parse(resultSet.getString("visit_date"))),
                         resultSet.getString("description"));
             } catch (SQLException | ParseException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         if (datastore == Datastores.H2) {
@@ -173,13 +183,33 @@ public class VisitDAO {
                         VisitMigration.convertToLocalDateViaInstant(resultSet.getDate("visit_date")),
                         resultSet.getString("description"));
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return visit;
     }
 
-    protected void closeConnections() throws SQLException {
+    public List<Visit> getByPetId(Integer petId, Datastores datastore) {
+        List<Visit> visits = new ArrayList<>();
+        String query = "SELECT id, visit_date, description FROM visits WHERE pet_id = " + petId + ";";
+        if (datastore == Datastores.SQLITE) {
+            try {
+                Statement statement = SQLite_CONNECTION.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                visits.add(new Visit(resultSet.getInt("id"),
+                        petId,
+                        VisitMigration.convertToLocalDateViaInstant
+                                (new SimpleDateFormat("yyyy-MM-dd")
+                                        .parse(resultSet.getString("visit_date"))),
+                        resultSet.getString("description")));
+            } catch (SQLException | ParseException e) {
+                log.error(e.getMessage());
+            }
+        }
+        return visits;
+    }
+
+    public void closeConnections() throws SQLException {
         SQLite_CONNECTION.close();
         H2_CONNECTION.close();
     }

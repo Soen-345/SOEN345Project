@@ -8,7 +8,9 @@ import org.mockito.Mockito;
 import org.springframework.samples.petclinic.vet.Vet;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -19,8 +21,7 @@ import java.util.Map;
 public class VetMigrationTest {
 
     private static VetMigration vetMigration;
-
-    private static Map<Integer, Vet> oldDataStoreVets;
+    private static List<Vet> oldDataStoreVets;
 
     static Vet vet1;
     static Vet vet2;
@@ -62,11 +63,11 @@ public class VetMigrationTest {
         when(vet5.getLastName()).thenReturn("Scott");
 
 
-        oldDataStoreVets = new HashMap<>();
+        oldDataStoreVets = new ArrayList<>();
 
-        oldDataStoreVets.put(vet1.getId(), vet1);
-        oldDataStoreVets.put(vet2.getId(), vet2);
-        oldDataStoreVets.put(vet3.getId(), vet3);
+        oldDataStoreVets.add(vet1);
+        oldDataStoreVets.add(vet2);
+        oldDataStoreVets.add(vet3);
 
     }
 
@@ -82,7 +83,7 @@ public class VetMigrationTest {
     @Order(2)
     public void testCheckConsistency() {
 
-        oldDataStoreVets.put(vet4.getId(), vet4);
+        oldDataStoreVets.add(vet4);
 
 
         assertEquals(1, vetMigration.checkConsistenciesTestOnly(oldDataStoreVets));
@@ -92,7 +93,7 @@ public class VetMigrationTest {
     @Order(3)
     public void testShadowReadConsistencyChecker() {
 
-        oldDataStoreVets.put(vet5.getId(), vet5);
+        oldDataStoreVets.add(vet5);
 
 
         vetMigration.shadowWriteToNewDatastore(vet5);

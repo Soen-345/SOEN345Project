@@ -1,12 +1,20 @@
 package org.springframework.samples.petclinic.migration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.owner.PetType;
+import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class TypeMigration implements IMigration <PetType> {
+@Service
+public class TypeMigration implements IMigration<PetType> {
+
+    private static final Logger log = LoggerFactory.getLogger(TypeMigration.class);
     private final TypeDAO typeDAO;
 
     public TypeMigration() {
@@ -14,13 +22,14 @@ public class TypeMigration implements IMigration <PetType> {
     }
 
     public int forklift() {
+
         this.typeDAO.initTable();
         int numInsert = 0;
 
-        Map<Integer, PetType> types = this.typeDAO.getAllTypes(Datastores.H2);
+        List<PetType> types = this.typeDAO.getAll(Datastores.H2);
 
-        for (PetType type : types.values()) {
-            boolean success = this.typeDAO.addType(type, Datastores.SQLITE);
+        for (PetType type : types) {
+            boolean success = this.typeDAO.migrate(type);
             if (success) {
                 numInsert++;
             }
@@ -28,13 +37,13 @@ public class TypeMigration implements IMigration <PetType> {
         return numInsert;
     }
 
-    public int forkliftTestOnly(Map<Integer, PetType> types) {
+    public int forkliftTestOnly(List<PetType> types) {
 
         this.typeDAO.initTable();
         int numInsert = 0;
 
-        for (PetType type : types.values()) {
-            boolean success = this.typeDAO.addType(type, Datastores.SQLITE);
+        for (PetType type : types) {
+            boolean success = this.typeDAO.migrate(type);
             if (success) {
                 numInsert++;
             }
@@ -48,17 +57,14 @@ public class TypeMigration implements IMigration <PetType> {
         int inconsistencies = 0;
 
 
-        Map<Integer, PetType> expected = this.typeDAO.getAllTypes(Datastores.H2);
+        List<PetType> expected = this.typeDAO.getAll(Datastores.H2);
 
-        Map<Integer, PetType> actual = this.typeDAO.getAllTypes(Datastores.SQLITE);
-
-        for (Integer key : expected.keySet()) {
-            PetType exp = expected.get(key);
-            PetType act = actual.get(key);
+        for (PetType exp : expected) {
+            PetType act = this.typeDAO.get(exp.getId(), Datastores.SQLITE);
             if (act == null) {
                 inconsistencies++;
                 logInconsistency(exp, null);
-                this.typeDAO.addType(exp, Datastores.SQLITE);
+                this.typeDAO.add(exp, Datastores.SQLITE);
             }
             if (act != null && (!Objects.equals(exp.getId(), act.getId()) || !exp.getName().equals(act.getName()) )) {
                 inconsistencies++;
@@ -72,19 +78,16 @@ public class TypeMigration implements IMigration <PetType> {
         return inconsistencies;
     }
 
-    public int checkConsistenciesTestOnly(Map<Integer, PetType> expected) {
+    public int checkConsistenciesTestOnly(List<PetType> expected) {
 
         int inconsistencies = 0;
 
-        Map<Integer, PetType> actual = this.typeDAO.getAllTypes(Datastores.SQLITE);
-
-        for (Integer key : expected.keySet()) {
-            PetType exp = expected.get(key);
-            PetType act = actual.get(key);
+        for (PetType exp : expected) {
+            PetType act = this.typeDAO.get(exp.getId(), Datastores.SQLITE);
             if (act == null) {
                 inconsistencies++;
                 logInconsistency(exp, null);
-                this.typeDAO.addType(exp, Datastores.SQLITE);
+                this.shadowWrite(exp);
             }
             if (act != null && (!Objects.equals(exp.getId(), act.getId()) || !exp.getName().equals(act.getName()) )) {
                 inconsistencies++;
@@ -100,10 +103,10 @@ public class TypeMigration implements IMigration <PetType> {
 
     public boolean shadowReadWriteConsistencyChecker(PetType exp) {
 
-        PetType act = this.typeDAO.getType(exp.getId(), Datastores.SQLITE);
+        PetType act = this.typeDAO.get(exp.getId(), Datastores.SQLITE);
 
         if (act == null) {
-            this.typeDAO.addType(exp, Datastores.SQLITE);
+            this.typeDAO.add(exp, Datastores.SQLITE);
 
             logInconsistency(exp, null);
 
@@ -122,21 +125,30 @@ public class TypeMigration implements IMigration <PetType> {
         return true;
     }
 
+    public List<PetType> findTypes() {
+        return this.typeDAO.getAll(Datastores.SQLITE);
+    }
+
     public void logInconsistency(PetType expected, PetType actual) {
 
         if (actual == null) {
-            System.out.println("Types Table Inconsistency - \n " +
+            log.warn("Types Table Inconsistency - \n " +
                     "Expected: " + expected.getId() + " " +   expected.getName() + "\n"
                     + "Actual: NULL");
         } else {
-            System.out.println("Types Table Inconsistency - \n " +
+            log.warn("Types Table Inconsistency - \n " +
                     "Expected: " + expected.getId() + " "  + expected.getName() + "\n"
                     + "Actual: " + actual.getId() + " "  + actual.getName());
         }
     }
 
     public void shadowWrite(PetType type) {
-        this.typeDAO.addType(type, Datastores.SQLITE);
+        if (MigrationToggles.isUnderTest) {
+            this.typeDAO.migrate(type);
+        }
+        else {
+            this.typeDAO.add(type, Datastores.SQLITE);
+        }
     }
 
     public void closeConnections() throws SQLException {

@@ -33,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.samples.petclinic.migration.VetMigration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -51,14 +52,9 @@ class VetControllerTests {
 	@MockBean
 	private VetRepository vets;
 
-//	@Mock
-//	private Vet james;
+	@MockBean
+	private VetMigration vetMigration;
 
-//	@Mock
-//	private Vet helen;
-//
-//	@Mock
-//	private Specialty radiology;
 
 	@BeforeEach
 	void setup() {
@@ -66,13 +62,6 @@ class VetControllerTests {
 		james.setFirstName("James");
 		james.setLastName("Carter");
 		james.setId(1);
-//		when(this.james.getId()).thenReturn(1);
-//		when(this.james.getFirstName()).thenReturn("James");
-//		when(this.james.getLastName()).thenReturn("Carter");
-//		when(this.james.getNrOfSpecialties()).thenReturn(0);
-//		when(this.james.getSpecialties()).thenReturn(Collections.unmodifiableList(Lists.newArrayList()));
-//		when(this.james.isNew()).thenReturn(false);
-
 
 		Vet helen=new Vet();
 		helen.setFirstName("Helen");
@@ -84,22 +73,9 @@ class VetControllerTests {
 		radiology.setName("radiology");
 		helen.addSpecialty(radiology);
 
-//		when(this.helen.getId()).thenReturn(2);
-//		when(this.helen.getFirstName()).thenReturn("Helen");
-//		when(this.helen.getLastName()).thenReturn("Leary");
-//		when(this.helen.getNrOfSpecialties()).thenReturn(1);
-//		when(this.helen.getSpecialties()).thenReturn(Collections.unmodifiableList(Lists.newArrayList(radiology)));
-//		when(this.helen.isNew()).thenReturn(false);
-
-//		when(this.radiology.getId()).thenReturn(1);
-//		when(this.radiology.getName()).thenReturn("radiology");
-//		when(this.radiology.isNew()).thenReturn(false);
-//		when(this.radiology.toString()).thenReturn("radiology");
 
 
-
-
-
+		when(this.vetMigration.findAll()).thenReturn(Lists.newArrayList(james, helen));
 		when(this.vets.findAll()).thenReturn(Lists.newArrayList(james, helen));
 	}
 
