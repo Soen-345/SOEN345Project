@@ -89,7 +89,6 @@ class OwnerController {
                     id = this.ownerMigration.shadowWriteToNewDatastore(owner);
                 }
                 if (MigrationToggles.isShadowReadEnabled) {
-                    this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
                     owner.setId(id);
                 }
 

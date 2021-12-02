@@ -2,6 +2,9 @@ package org.springframework.samples.petclinic.migration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.samples.petclinic.owner.Owner;
+import org.springframework.samples.petclinic.owner.Pet;
+import org.springframework.samples.petclinic.owner.PetType;
 import org.springframework.samples.petclinic.visit.Visit;
 
 import java.sql.*;
@@ -116,23 +119,17 @@ public class VisitDAO implements IDAO<Visit>{
 
     public void add(Visit visit, Datastores datastore) {
         String insertQuery = "INSERT INTO visits (id, pet_id, visit_date, description) " +
-                "VALUES (NULL" + "," + visit.getPetId() + ",'" +
+                "VALUES (NULL, " + visit.getPetId() + ",'" +
                 java.sql.Date.valueOf(visit.getDate()) +
-                "', '" + visit.getDescription()  +  "');";
+                "', '" + visit.getDescription() + "');";
         if (datastore == Datastores.SQLITE) {
             try {
                 Statement statement = SQLite_CONNECTION.createStatement();
                 statement.executeUpdate(insertQuery);
+
+
             }
             catch (SQLException e) {
-                log.error(e.getMessage());
-            }
-        }
-        if (datastore == Datastores.H2) {
-            try {
-                Statement statement = H2_CONNECTION.createStatement();
-                statement.executeUpdate(insertQuery);
-            } catch (SQLException e) {
                 log.error(e.getMessage());
             }
         }

@@ -62,13 +62,13 @@ public class ScheduledCheck {
 
             this.totalInconsistencies = vetCons + visitCons + petCons + typeCons + vetSpecialtyCons + ownerCons + specialtyCons;
 
-            log.info("OWNER TABLE: " + ownerCons);
-            log.info("PET TABLE: " + petCons);
-            log.info("VISIT TABLE: " + visitCons);
-            log.info("VET TABLE: " + vetCons);
-            log.info("SPECIALTY TABLE: " + specialtyCons);
-            log.info("VET SPECIALTY TABLE: " + vetSpecialtyCons);
-            log.info("PET TYPES TABLE: " + typeCons);
+            log.info("OWNER TABLE INCONSISTENCIES: " + ownerCons);
+            log.info("PET TABLE INCONSISTENCIES: " + petCons);
+            log.info("VISIT TABLE INCONSISTENCIES: " + visitCons);
+            log.info("VET TABLE INCONSISTENCIES: " + vetCons);
+            log.info("SPECIALTY TABLE INCONSISTENCIES: " + specialtyCons);
+            log.info("VET SPECIALTY TABLE INCONSISTENCIES: " + vetSpecialtyCons);
+            log.info("PET TYPES TABLE INCONSISTENCIES: " + typeCons);
 
             log.info("**** CONSISTENCY CHECKING DONE ****");
 
