@@ -44,6 +44,50 @@ public class OwnerDAO implements IDAO<Owner> {
         }
         this.createOwnerTable();
     }
+    public void initHashTable(){
+        String query = "DROP TABLE IF EXISTS hashTable;";
+        try {
+            Statement statement = SQLite_CONNECTION.createStatement();
+            statement.execute(query);
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        }
+        this.createHashTable();
+    }
+    public void createHashTable(){
+        String createQuery =
+                "CREATE TABLE IF NOT EXISTS hashTable (\n" +
+                        "          hashtype VARCHAR(30),\n" +
+                        "           hashStorage VARCHAR(255)\n"
+                        + ");";
+        try {
+            Statement statement = SQLite_CONNECTION.createStatement();
+            statement.execute(createQuery);
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        }
+    }
+    public void addHashStorage(String type,String hash){
+        String insertQuery = "INSERT INTO hashTable (hashtype, hashStorage) VALUES (" +" '" + type + "'"+ ",'" + hash  + "');";
+        try {
+            Statement statement = SQLite_CONNECTION.createStatement();
+            statement.execute(insertQuery);
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        }
+    }
+    public String getHash(String type){
+        String hashStorage  = "";
+        String query = "SELECT hashStorage FROM hashTable WHERE hashtype = " +"'"+ type +"'" + ";";
+        try {
+            Statement statement = SQLite_CONNECTION.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            hashStorage = resultSet.getString("hashStorage");
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        }
+        return hashStorage;
+    }
 
     private void createOwnerTable() {
         String createQuery =
@@ -381,6 +425,7 @@ public class OwnerDAO implements IDAO<Owner> {
         }
         return owners;
     }
+
 
 
     public void closeConnections() throws SQLException {

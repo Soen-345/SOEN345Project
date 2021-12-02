@@ -42,6 +42,7 @@ public class ScheduledCheck {
         }
     }
 
+
     // every 30 seconds
     @Async
     @Scheduled(fixedDelay = 30000)
@@ -75,9 +76,10 @@ public class ScheduledCheck {
             if (this.numRuns > 5 && totalInconsistencies < 3) {
                 MigrationToggles.isH2Enabled = false;
                 MigrationToggles.isShadowReadEnabled = true;
-
+                ownerMigration.updateData();
                 log.info("**** CONGRATS! YOU'VE MIGRATED FROM H2 TO SQLITE SUCCESSFULLY ****");
             }
         }
     }
+
 }

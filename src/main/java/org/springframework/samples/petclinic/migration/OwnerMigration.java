@@ -22,11 +22,12 @@ public class OwnerMigration implements IMigration<Owner> {
     private static final Logger log = LoggerFactory.getLogger(OwnerMigration.class);
 
     private final OwnerDAO ownerDAO;
-    private String dataChecker = "92D30D38AEA9E74B192F86F1BB69735549A7E98E";
+    private String dataChecker = "";
 
 
     public OwnerMigration() {
         ownerDAO = new OwnerDAO();
+        this.ownerDAO.initHashTable();
     }
 
     public int forklift() {
@@ -173,7 +174,8 @@ public class OwnerMigration implements IMigration<Owner> {
     }
 
     public void updateData(){
-        dataChecker = hashable() ;
+      //  dataChecker = hashable();
+        this.ownerDAO.addHashStorage("owner",hashable());
     }
 
     public String hashable(){
@@ -188,13 +190,13 @@ public class OwnerMigration implements IMigration<Owner> {
 
         }
         hashStringexpected = hashValue(hashStringexpected);
-        System.out.println(hashStringexpected);
         return hashStringexpected;
     }
 
     public boolean hashConsistencyChecker(){
             String actual = hashable();
-        return dataChecker.equals(actual);
+           dataChecker = this.ownerDAO.getHash("owner");
+        return  dataChecker.equals(actual);
     }
     private String hashValue(String value) {
         return DigestUtils.sha1Hex(value).toUpperCase();

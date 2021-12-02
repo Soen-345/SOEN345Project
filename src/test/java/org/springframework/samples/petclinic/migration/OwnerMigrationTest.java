@@ -115,6 +115,7 @@ public class OwnerMigrationTest {
 
     @Test
     public void consistencyChecking(){
+        ownerMigration.updateData();
         assertTrue(ownerMigration.hashConsistencyChecker());
     }
     @AfterAll
