@@ -52,8 +52,7 @@ class OwnerController {
 
     private VisitRepository visits;
 
-    private static Logger analytics = LogManager.getLogger("Analytics");
-
+    public static Logger analytics = LogManager.getLogger("Analytics");
 
 
 
@@ -122,6 +121,7 @@ class OwnerController {
 
             // find owners by last name
             results = this.owners.findByLastName(owner.getLastName());
+            //analytics.info("Feature Off: " + results);
 
         }
         if (OwnerToggles.isSearchFirstNameEnabled) {
@@ -132,26 +132,50 @@ class OwnerController {
 
             // find owners by first name
             results = this.owners.findByFirstName(owner.getFirstName());
-            analytics.info("Name: " + results);
+           // analytics.info("Feature On: " + results);
 
         }
         if(OwnerToggles.isSearchFirstNameEnabled||OwnerToggles.isSearchLastNameEnabled){
             if (results.isEmpty()) {
                 // no owners found
                 result.rejectValue("lastName", "notFound", "not found");
+
+                if (OwnerToggles.isSearchFirstNameEnabled)
+                    analytics.info("Feature on 1: not found" );
+                else
+                    analytics.info("Feature off 1: not found" ) ;
+
                 return "owners/findOwners";
             } else if (results.size() == 1) {
                 // 1 owner found
                 owner = results.iterator().next();
+
+                if (OwnerToggles.isSearchFirstNameEnabled)
+                    analytics.info("Feature on 2: " +  owner.getFirstName()  + " " + owner.getLastName());
+                else
+                    analytics.info("Feature off 2: " + owner.getLastName() + ", " + owner.getFirstName());
+
                 return "redirect:/owners/" + owner.getId();
             } else {
                 // multiple owners found
                 model.put("selections", results);
+
+                if (OwnerToggles.isSearchFirstNameEnabled)
+                    analytics.info("Feature on 3: " + owners);
+                else
+                    analytics.info("Feature off 3: " + owners);
+
                 return "owners/ownersList";
             }
 
         }
         result.rejectValue("lastName", "notFound", "not found");
+
+        if (OwnerToggles.isSearchFirstNameEnabled)
+            analytics.info("Feature on: 4" + "not found");
+        else
+            analytics.info("Feature off: 4" + "not found");
+
         return "owners/findOwners";
     }
 

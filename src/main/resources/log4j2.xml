@@ -18,10 +18,10 @@
                 <Pattern>${LOG_PATTERN}</Pattern>
             </PatternLayout>
             <Policies>
-                <SizeBasedTriggeringPolicy size="10MB" />
+                <SizeBasedTriggeringPolicy size="20MB" />
                 <TimeBasedTriggeringPolicy interval="1" />
             </Policies>
-            <DefaultRolloverStrategy max="10"/>
+            <DefaultRolloverStrategy max="200"/>
         </RollingFile>
 
         <RollingFile name="csvFile"
@@ -30,7 +30,7 @@
             <CsvLogEventLayout delimiter="," header="${file-header}\n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true" />
-                <SizeBasedTriggeringPolicy size="10 MB" />
+                <SizeBasedTriggeringPolicy size="20 MB" />
             </Policies>
             <DefaultRolloverStrategy max="200" />
         </RollingFile>

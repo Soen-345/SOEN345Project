@@ -38,11 +38,11 @@ import java.util.concurrent.ThreadLocalRandom;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 /**
  * Test class for {@link OwnerController}
  *
@@ -284,20 +284,28 @@ class OwnerControllerTests {
 		for (int i = 0; i < interations; i++) {
 			OwnerToggles.assignSearchNameFeature(30);
 			// hypothesis: user find correct owner easier with first name
-			// if search by last name user enter correct name in 1-5 search
+			// if search by last name user, it will take about 1-5 search to get the name right
 			// if search by first name user enter correct name in 1-2 search
+
+			int counter = 1;
 			if (OwnerToggles.isSearchLastNameEnabled) {
-				for (int j = 0; j < ThreadLocalRandom.current().nextDouble(0,5);j++){
+				for (int j = 0; j < ThreadLocalRandom.current().nextDouble(0,5);j++) {
 
 					mockMvc.perform(get("/owners").param("lastName", "NA")).andExpect(status().isOk())
 							.andExpect(model().attributeHasFieldErrors("owner", "lastName"))
 							.andExpect(model().attributeHasFieldErrorCode("owner", "lastName", "notFound"))
 							.andExpect(view().name("owners/findOwners"));
 
+					counter = counter + 1;
 				}
+
 				mockMvc.perform(get("/owners").param("lastName", "Franklin")).andExpect(status().is3xxRedirection())
 						.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
+
+				OwnerController.analytics.info("Number of searches to get it right for disabled: " + counter);
+
 			}
+
 			if (OwnerToggles.isSearchFirstNameEnabled){
 				for (int j = 0; j < ThreadLocalRandom.current().nextDouble(0,2);j++){
 
@@ -306,13 +314,19 @@ class OwnerControllerTests {
 							.andExpect(model().attributeHasFieldErrorCode("owner", "lastName", "notFound"))
 							.andExpect(view().name("owners/findOwners"));
 
+					counter = counter + 1;
+
 				}
 				mockMvc.perform(get("/owners").param("firstName", "George")).andExpect(status().is3xxRedirection())
 						.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
+
+
+				OwnerController.analytics.info("Number of searches to get it right for enabled: " + counter);
 
 			}
 
 		}
 
 	}
+
 }
