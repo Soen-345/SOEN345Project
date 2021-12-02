@@ -77,9 +77,22 @@ public class ScheduledCheck {
                 MigrationToggles.isH2Enabled = false;
                 MigrationToggles.isShadowReadEnabled = true;
                 ownerMigration.updateData();
+                MigrationToggles.consistencyHashChecking = true;
                 log.info("**** CONGRATS! YOU'VE MIGRATED FROM H2 TO SQLITE SUCCESSFULLY ****");
             }
         }
     }
 
+    @Async
+    @Scheduled(fixedDelay = 30000)
+    public void consistencyChecking(){
+        if (MigrationToggles.consistencyHashChecking){
+            if (!ownerMigration.hashConsistencyChecker()){
+                log.warn("owner data corrupted");
+            }else{
+                log.info("no corruption");
+            }
+        }
+    }
 }
+

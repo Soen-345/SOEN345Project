@@ -174,8 +174,8 @@ public class OwnerMigration implements IMigration<Owner> {
     }
 
     public void updateData(){
-      //  dataChecker = hashable();
         this.ownerDAO.addHashStorage("owner",hashable());
+        log.info("hashtable created");
     }
 
     public String hashable(){
