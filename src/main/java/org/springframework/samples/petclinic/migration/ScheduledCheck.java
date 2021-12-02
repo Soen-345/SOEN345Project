@@ -42,6 +42,7 @@ public class ScheduledCheck {
         }
     }
 
+
     // every 30 seconds
     @Async
     @Scheduled(fixedDelay = 30000)
@@ -75,9 +76,23 @@ public class ScheduledCheck {
             if (this.numRuns > 2 && totalInconsistencies < 3) {
                 MigrationToggles.isH2Enabled = false;
                 MigrationToggles.isShadowReadEnabled = true;
-
+                ownerMigration.updateData();
+                MigrationToggles.consistencyHashChecking = true;
                 log.info("**** CONGRATS! YOU'VE MIGRATED FROM H2 TO SQLITE SUCCESSFULLY ****");
             }
         }
     }
+
+    @Async
+    @Scheduled(fixedDelay = 30000)
+    public void hashConsistencyChecking(){
+        if (MigrationToggles.consistencyHashChecking){
+            if (!ownerMigration.hashConsistencyChecker()){
+                log.warn("owner data corrupted");
+            }else{
+                log.info("no corruption");
+            }
+        }
+    }
 }
+

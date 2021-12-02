@@ -6,4 +6,5 @@ public class MigrationToggles {
     public static boolean isH2Enabled = false;
     public static boolean isUnderTest = true;
     public static boolean isShadowReadEnabled = true;
+    public static boolean consistencyHashChecking = false;
 }

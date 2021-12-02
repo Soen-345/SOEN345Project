@@ -20,6 +20,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.samples.petclinic.migration.Datastores;
 import org.springframework.samples.petclinic.migration.MigrationToggles;
+import org.springframework.samples.petclinic.migration.OwnerMigration;
 import org.springframework.samples.petclinic.migration.VetMigration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
@@ -41,7 +42,6 @@ public class PetClinicApplication {
 		MigrationToggles.isSQLiteEnabled = true;
 		MigrationToggles.isH2Enabled = true;
 		MigrationToggles.isShadowReadEnabled = false;
-
 		SpringApplication.run(PetClinicApplication.class, args);
 
 	}
