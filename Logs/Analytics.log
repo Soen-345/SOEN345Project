@@ -1,94 +1,452 @@
-2021-11-29 18:24:19.306  INFO Musso --- [           main] .b.t.a.w.s.WebMvcTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [org.springframework.samples.petclinic.owner.OwnerControllerTests], using SpringBootContextLoader
-2021-11-29 18:24:19.321  INFO Musso --- [           main] o.s.t.c.s.AbstractContextLoader          : Could not detect default resource locations for test class [org.springframework.samples.petclinic.owner.OwnerControllerTests]: no resource found for suffixes {-context.xml, Context.groovy}.
-2021-11-29 18:24:19.322  INFO Musso --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [org.springframework.samples.petclinic.owner.OwnerControllerTests]: OwnerControllerTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2021-11-29 18:24:19.601  INFO Musso --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration org.springframework.samples.petclinic.PetClinicApplication for test class org.springframework.samples.petclinic.owner.OwnerControllerTests
-2021-11-29 18:24:19.608  INFO Musso --- [           main] .b.t.a.w.s.WebMvcTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
-2021-11-29 18:24:19.638  INFO Musso --- [           main] .b.t.a.w.s.WebMvcTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@66971f6b, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@50687efb, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@517bd097, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@142eef62, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@4a9cc6cb, org.springframework.test.context.support.DirtiesContextTestExecutionListener@5990e6c5, org.springframework.test.context.transaction.TransactionalTestExecutionListener@56e07a08, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@35d6ca49, org.springframework.test.context.event.EventPublishingTestExecutionListener@1950e8a6, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@47289387, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@12cd9150, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@114a85c2, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@f415a95, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@cf65451, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@724f138e]
-2021-11-29 18:24:21.625  INFO Musso --- [kground-preinit] o.h.v.i.u.Version                        : HV000001: Hibernate Validator 6.2.0.Final
-2021-11-29 18:24:21.740  INFO Musso --- [           main] o.s.s.p.o.OwnerControllerTests           : Starting OwnerControllerTests using Java 17 on Musso with PID 13864 (started by ineke in C:\Users\ineke\IdeaProjects\SOEN345Project)
-2021-11-29 18:24:21.749  INFO Musso --- [           main] o.s.s.p.o.OwnerControllerTests           : No active profile set, falling back to default profiles: default
-2021-11-29 18:24:26.920  INFO Musso --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2021-11-29 18:24:26.921  INFO Musso --- [           main] o.s.t.w.s.TestDispatcherServlet          : Initializing Servlet ''
-2021-11-29 18:24:26.924  INFO Musso --- [           main] o.s.t.w.s.TestDispatcherServlet          : Completed initialization in 2 ms
-2021-11-29 18:24:26.995  INFO Musso --- [           main] o.s.s.p.o.OwnerControllerTests           : Started OwnerControllerTests in 6.05 seconds (JVM running for 10.528)
-2021-11-29 18:24:28.004  INFO Musso --- [           main] Anayltics                                : Name: [george, [Owner@217fd3c id = [null], new = true, lastName = [null], firstName = [null], address = [null], city = [null], telephone = [null]]]
-2021-11-29 18:24:28.045  INFO Musso --- [           main] Anayltics                                : Name: [george]
-2021-11-30 13:30:13.903  INFO Musso --- [kground-preinit] o.h.v.i.u.Version                        : HV000001: Hibernate Validator 6.2.0.Final
-2021-11-30 13:30:14.002  INFO Musso --- [  restartedMain] o.s.s.p.PetClinicApplication             : Starting PetClinicApplication using Java 17 on Musso with PID 5700 (C:\Users\ineke\IdeaProjects\SOEN345Project\target\classes started by ineke in C:\Users\ineke\IdeaProjects\SOEN345Project)
-2021-11-30 13:30:14.013  INFO Musso --- [  restartedMain] o.s.s.p.PetClinicApplication             : No active profile set, falling back to default profiles: default
-2021-11-30 13:30:14.232  INFO Musso --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2021-11-30 13:30:14.233  INFO Musso --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2021-11-30 13:30:16.694  INFO Musso --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2021-11-30 13:30:16.821  INFO Musso --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 110 ms. Found 4 JPA repository interfaces.
-2021-11-30 13:30:18.211  INFO Musso --- [  restartedMain] o.s.b.w.e.t.TomcatWebServer              : Tomcat initialized with port(s): 8080 (http)
-2021-11-30 13:30:18.229  INFO Musso --- [  restartedMain] o.a.c.h.Http11NioProtocol                : Initializing ProtocolHandler ["http-nio-8080"]
-2021-11-30 13:30:18.231  INFO Musso --- [  restartedMain] o.a.c.c.StandardService                  : Starting service [Tomcat]
-2021-11-30 13:30:18.232  INFO Musso --- [  restartedMain] o.a.c.c.StandardEngine                   : Starting Servlet engine: [Apache Tomcat/9.0.52]
-2021-11-30 13:30:18.480  INFO Musso --- [  restartedMain] o.a.c.c.C.[.[.[/]                        : Initializing Spring embedded WebApplicationContext
-2021-11-30 13:30:18.483  INFO Musso --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4248 ms
-2021-11-30 13:30:18.871  INFO Musso --- [  restartedMain] c.z.h.HikariDataSource                   : HikariPool-1 - Starting...
-2021-11-30 13:30:19.200  INFO Musso --- [  restartedMain] c.z.h.HikariDataSource                   : HikariPool-1 - Start completed.
-2021-11-30 13:30:19.211  INFO Musso --- [  restartedMain] o.s.b.a.h.H2ConsoleAutoConfiguration     : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
-2021-11-30 13:30:19.906  INFO Musso --- [  restartedMain] o.e.c.EhcacheManager                     : Cache 'vets' created in EhcacheManager.
-2021-11-30 13:30:19.920  INFO Musso --- [  restartedMain] o.e.j.Eh107CacheManager                  : Registering Ehcache MBean javax.cache:type=CacheStatistics,CacheManager=urn.X-ehcache.jsr107-default-config,Cache=vets
-2021-11-30 13:30:19.930  INFO Musso --- [  restartedMain] o.e.j.Eh107CacheManager                  : Registering Ehcache MBean javax.cache:type=CacheStatistics,CacheManager=urn.X-ehcache.jsr107-default-config,Cache=vets
-2021-11-30 13:30:20.068  INFO Musso --- [  restartedMain] o.h.j.i.u.LogHelper                      : HHH000204: Processing PersistenceUnitInfo [name: default]
-2021-11-30 13:30:20.222  INFO Musso --- [  restartedMain] o.h.Version                              : HHH000412: Hibernate ORM core version 5.4.32.Final
-2021-11-30 13:30:20.521  INFO Musso --- [  restartedMain] o.h.a.c.Version                          : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
-2021-11-30 13:30:20.825  INFO Musso --- [  restartedMain] o.h.d.Dialect                            : HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
-2021-11-30 13:30:22.263  INFO Musso --- [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2021-11-30 13:30:22.279  INFO Musso --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2021-11-30 13:30:22.688  INFO Musso --- [  restartedMain] o.s.s.p.m.DatastoreConnection            : Connection to SQLite successful
-2021-11-30 13:30:22.690  INFO Musso --- [  restartedMain] o.s.s.p.m.DatastoreConnection            : Connection to H2 successful
-2021-11-30 13:30:22.726  INFO Musso --- [  restartedMain] o.s.s.p.m.ScheduledCheck                 : **** FORKLIFT STARTING ****
-2021-11-30 13:30:24.695 ERROR Musso --- [  restartedMain] o.s.s.p.m.PetDAO                         : [SQLITE_ERROR] SQL error or missing database (no such table: pets)
-2021-11-30 13:30:25.405  INFO Musso --- [  restartedMain] o.s.s.p.m.ScheduledCheck                 : FORKLIFT COMPLETED
-2021-11-30 13:30:29.140  INFO Musso --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
-2021-11-30 13:30:29.156  INFO Musso --- [  restartedMain] o.s.b.a.e.w.EndpointLinksResolver        : Exposing 13 endpoint(s) beneath base path '/actuator'
-2021-11-30 13:30:29.208  INFO Musso --- [  restartedMain] o.a.c.h.Http11NioProtocol                : Starting ProtocolHandler ["http-nio-8080"]
-2021-11-30 13:30:29.293  INFO Musso --- [  restartedMain] o.s.b.w.e.t.TomcatWebServer              : Tomcat started on port(s): 8080 (http) with context path ''
-2021-11-30 13:30:29.316  INFO Musso --- [   scheduling-1] o.s.s.p.m.ScheduledCheck                 : **** CONSISTENCY CHECKING STARTING ****
-2021-11-30 13:30:29.332  INFO Musso --- [  restartedMain] o.s.s.p.PetClinicApplication             : Started PetClinicApplication in 16.161 seconds (JVM running for 19.498)
-2021-11-30 13:30:29.498  INFO Musso --- [   scheduling-1] o.s.s.p.m.ScheduledCheck                 : OWNER TABLE: 0
-2021-11-30 13:30:29.499  INFO Musso --- [   scheduling-1] o.s.s.p.m.ScheduledCheck                 : PET TABLE: 0
-2021-11-30 13:30:29.499  INFO Musso --- [   scheduling-1] o.s.s.p.m.ScheduledCheck                 : VISIT TABLE: 0
-2021-11-30 13:30:29.500  INFO Musso --- [   scheduling-1] o.s.s.p.m.ScheduledCheck                 : VET TABLE: 0
-2021-11-30 13:30:29.500  INFO Musso --- [   scheduling-1] o.s.s.p.m.ScheduledCheck                 : SPECIALTY TABLE: 0
-2021-11-30 13:30:29.501  INFO Musso --- [   scheduling-1] o.s.s.p.m.ScheduledCheck                 : VET SPECIALTY TABLE: 0
-2021-11-30 13:30:29.502  INFO Musso --- [   scheduling-1] o.s.s.p.m.ScheduledCheck                 : PET TYPES TABLE: 0
-2021-11-30 13:30:29.502  INFO Musso --- [   scheduling-1] o.s.s.p.m.ScheduledCheck                 : **** CONSISTENCY CHECKING DONE ****
-2021-11-30 13:30:59.144  INFO Musso --- [ionShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2021-11-30 13:30:59.375  WARN Musso --- [ionShutdownHook] o.s.b.f.s.DisposableBeanAdapter          : Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-200]
-2021-11-30 13:30:59.381  INFO Musso --- [ionShutdownHook] o.e.c.EhcacheManager                     : Cache 'vets' removed from EhcacheManager.
-2021-11-30 13:30:59.388  INFO Musso --- [ionShutdownHook] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown initiated...
-2021-11-30 13:30:59.423  INFO Musso --- [ionShutdownHook] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown completed.
-2021-11-30 14:34:20.465  INFO Musso --- [           main] .b.t.a.w.s.WebMvcTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [org.springframework.samples.petclinic.owner.OwnerControllerTests], using SpringBootContextLoader
-2021-11-30 14:34:20.493  INFO Musso --- [           main] o.s.t.c.s.AbstractContextLoader          : Could not detect default resource locations for test class [org.springframework.samples.petclinic.owner.OwnerControllerTests]: no resource found for suffixes {-context.xml, Context.groovy}.
-2021-11-30 14:34:20.494  INFO Musso --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [org.springframework.samples.petclinic.owner.OwnerControllerTests]: OwnerControllerTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2021-11-30 14:34:20.962  INFO Musso --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration org.springframework.samples.petclinic.PetClinicApplication for test class org.springframework.samples.petclinic.owner.OwnerControllerTests
-2021-11-30 14:34:20.978  INFO Musso --- [           main] .b.t.a.w.s.WebMvcTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
-2021-11-30 14:34:21.060  INFO Musso --- [           main] .b.t.a.w.s.WebMvcTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@476aac9, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@6cea706c, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@3bd7f8dc, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@2f2bf0e2, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@1eba372c, org.springframework.test.context.support.DirtiesContextTestExecutionListener@21ec5d87, org.springframework.test.context.transaction.TransactionalTestExecutionListener@25f9407e, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@552518c3, org.springframework.test.context.event.EventPublishingTestExecutionListener@1a69561c, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@59aa20b3, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@363f6148, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@4b21844c, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@1b28f282, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@138fe6ec, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@5e77f0f4]
-2021-11-30 14:34:24.348  INFO Musso --- [kground-preinit] o.h.v.i.u.Version                        : HV000001: Hibernate Validator 6.2.0.Final
-2021-11-30 14:34:24.418  INFO Musso --- [           main] o.s.s.p.o.OwnerControllerTests           : Starting OwnerControllerTests using Java 17 on Musso with PID 19128 (started by ineke in C:\Users\ineke\IdeaProjects\SOEN345Project)
-2021-11-30 14:34:24.425  INFO Musso --- [           main] o.s.s.p.o.OwnerControllerTests           : No active profile set, falling back to default profiles: default
-2021-11-30 14:34:29.761  INFO Musso --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2021-11-30 14:34:29.762  INFO Musso --- [           main] o.s.t.w.s.TestDispatcherServlet          : Initializing Servlet ''
-2021-11-30 14:34:29.766  INFO Musso --- [           main] o.s.t.w.s.TestDispatcherServlet          : Completed initialization in 1 ms
-2021-11-30 14:34:29.823  INFO Musso --- [           main] o.s.s.p.o.OwnerControllerTests           : Started OwnerControllerTests in 6.293 seconds (JVM running for 12.082)
-2021-11-30 14:34:30.835  INFO Musso --- [           main] Analytics                                : Name: [george, [Owner@7cd8831c id = [null], new = true, lastName = [null], firstName = [null], address = [null], city = [null], telephone = [null]]]
-2021-11-30 14:34:30.865  INFO Musso --- [           main] Analytics                                : Name: [george]
-2021-11-30 14:35:20.749  INFO Musso --- [           main] .b.t.a.w.s.WebMvcTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [org.springframework.samples.petclinic.owner.OwnerControllerTests], using SpringBootContextLoader
-2021-11-30 14:35:20.772  INFO Musso --- [           main] o.s.t.c.s.AbstractContextLoader          : Could not detect default resource locations for test class [org.springframework.samples.petclinic.owner.OwnerControllerTests]: no resource found for suffixes {-context.xml, Context.groovy}.
-2021-11-30 14:35:20.774  INFO Musso --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [org.springframework.samples.petclinic.owner.OwnerControllerTests]: OwnerControllerTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2021-11-30 14:35:21.005  INFO Musso --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration org.springframework.samples.petclinic.PetClinicApplication for test class org.springframework.samples.petclinic.owner.OwnerControllerTests
-2021-11-30 14:35:21.010  INFO Musso --- [           main] .b.t.a.w.s.WebMvcTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
-2021-11-30 14:35:21.039  INFO Musso --- [           main] .b.t.a.w.s.WebMvcTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@476aac9, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@6cea706c, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@3bd7f8dc, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@2f2bf0e2, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@1eba372c, org.springframework.test.context.support.DirtiesContextTestExecutionListener@21ec5d87, org.springframework.test.context.transaction.TransactionalTestExecutionListener@25f9407e, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@552518c3, org.springframework.test.context.event.EventPublishingTestExecutionListener@1a69561c, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@59aa20b3, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@363f6148, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@4b21844c, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@1b28f282, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@138fe6ec, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@5e77f0f4]
-2021-11-30 14:35:22.607  INFO Musso --- [kground-preinit] o.h.v.i.u.Version                        : HV000001: Hibernate Validator 6.2.0.Final
-2021-11-30 14:35:22.682  INFO Musso --- [           main] o.s.s.p.o.OwnerControllerTests           : Starting OwnerControllerTests using Java 17 on Musso with PID 1856 (started by ineke in C:\Users\ineke\IdeaProjects\SOEN345Project)
-2021-11-30 14:35:22.693  INFO Musso --- [           main] o.s.s.p.o.OwnerControllerTests           : No active profile set, falling back to default profiles: default
-2021-11-30 14:35:26.516  INFO Musso --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2021-11-30 14:35:26.517  INFO Musso --- [           main] o.s.t.w.s.TestDispatcherServlet          : Initializing Servlet ''
-2021-11-30 14:35:26.519  INFO Musso --- [           main] o.s.t.w.s.TestDispatcherServlet          : Completed initialization in 1 ms
-2021-11-30 14:35:26.583  INFO Musso --- [           main] o.s.s.p.o.OwnerControllerTests           : Started OwnerControllerTests in 4.421 seconds (JVM running for 8.392)
-2021-11-30 14:35:27.419  INFO Musso --- [           main] Analytics                                : Name: [george, [Owner@7cd8831c id = [null], new = true, lastName = [null], firstName = [null], address = [null], city = [null], telephone = [null]]]
-2021-11-30 14:35:27.451  INFO Musso --- [           main] Analytics                                : Name: [george]
+2021-12-02 13:49:44.306  INFO Musso --- [           main] .b.t.a.w.s.WebMvcTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [org.springframework.samples.petclinic.owner.OwnerControllerTests], using SpringBootContextLoader
+2021-12-02 13:49:44.331  INFO Musso --- [           main] o.s.t.c.s.AbstractContextLoader          : Could not detect default resource locations for test class [org.springframework.samples.petclinic.owner.OwnerControllerTests]: no resource found for suffixes {-context.xml, Context.groovy}.
+2021-12-02 13:49:44.333  INFO Musso --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [org.springframework.samples.petclinic.owner.OwnerControllerTests]: OwnerControllerTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2021-12-02 13:49:44.655  INFO Musso --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration org.springframework.samples.petclinic.PetClinicApplication for test class org.springframework.samples.petclinic.owner.OwnerControllerTests
+2021-12-02 13:49:44.659  INFO Musso --- [           main] .b.t.a.w.s.WebMvcTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+2021-12-02 13:49:44.685  INFO Musso --- [           main] .b.t.a.w.s.WebMvcTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@476aac9, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@6cea706c, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@3bd7f8dc, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@2f2bf0e2, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@1eba372c, org.springframework.test.context.support.DirtiesContextTestExecutionListener@21ec5d87, org.springframework.test.context.transaction.TransactionalTestExecutionListener@25f9407e, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@552518c3, org.springframework.test.context.event.EventPublishingTestExecutionListener@1a69561c, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@59aa20b3, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@363f6148, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@4b21844c, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@1b28f282, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@138fe6ec, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@5e77f0f4]
+2021-12-02 13:49:46.326  INFO Musso --- [kground-preinit] o.h.v.i.u.Version                        : HV000001: Hibernate Validator 6.2.0.Final
+2021-12-02 13:49:46.400  INFO Musso --- [           main] o.s.s.p.o.OwnerControllerTests           : Starting OwnerControllerTests using Java 17 on Musso with PID 15240 (started by ineke in C:\Users\ineke\IdeaProjects\SOEN345Project)
+2021-12-02 13:49:46.418  INFO Musso --- [           main] o.s.s.p.o.OwnerControllerTests           : No active profile set, falling back to default profiles: default
+2021-12-02 13:49:51.141  INFO Musso --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2021-12-02 13:49:51.142  INFO Musso --- [           main] o.s.t.w.s.TestDispatcherServlet          : Initializing Servlet ''
+2021-12-02 13:49:51.146  INFO Musso --- [           main] o.s.t.w.s.TestDispatcherServlet          : Completed initialization in 3 ms
+2021-12-02 13:49:51.218  INFO Musso --- [           main] o.s.s.p.o.OwnerControllerTests           : Started OwnerControllerTests in 5.401 seconds (JVM running for 9.794)
+2021-12-02 13:49:51.446  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.014  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:52.020  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 2
+2021-12-02 13:49:52.022  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:52.048  INFO Musso --- [           main] Analytics                                : Feature on 2: George Franklin
+2021-12-02 13:49:52.050  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for enabled: 2
+2021-12-02 13:49:52.053  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.083  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.109  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:52.113  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 3
+2021-12-02 13:49:52.115  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:52.141  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:52.159  INFO Musso --- [           main] Analytics                                : Feature on 2: George Franklin
+2021-12-02 13:49:52.162  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for enabled: 3
+2021-12-02 13:49:52.165  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.183  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.203  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:52.206  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 3
+2021-12-02 13:49:52.208  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.227  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.261  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.286  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.301  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:52.305  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 5
+2021-12-02 13:49:52.307  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.332  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.348  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:52.350  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 3
+2021-12-02 13:49:52.351  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:52.370  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:52.386  INFO Musso --- [           main] Analytics                                : Feature on 2: George Franklin
+2021-12-02 13:49:52.388  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for enabled: 3
+2021-12-02 13:49:52.390  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:52.401  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:52.416  INFO Musso --- [           main] Analytics                                : Feature on 2: George Franklin
+2021-12-02 13:49:52.418  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for enabled: 3
+2021-12-02 13:49:52.420  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.433  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.445  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.459  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:52.461  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 4
+2021-12-02 13:49:52.463  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.475  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:52.477  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 2
+2021-12-02 13:49:52.479  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.490  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.506  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:52.508  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 3
+2021-12-02 13:49:52.510  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.522  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.540  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.557  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:52.559  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 4
+2021-12-02 13:49:52.562  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.578  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.595  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.620  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:52.622  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 4
+2021-12-02 13:49:52.624  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:52.641  INFO Musso --- [           main] Analytics                                : Feature on 2: George Franklin
+2021-12-02 13:49:52.642  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for enabled: 2
+2021-12-02 13:49:52.644  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.673  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.697  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:52.699  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 3
+2021-12-02 13:49:52.701  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.720  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.741  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.763  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:52.765  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 4
+2021-12-02 13:49:52.767  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.787  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.803  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.819  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:52.821  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 4
+2021-12-02 13:49:52.822  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.838  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.854  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.866  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:52.867  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 4
+2021-12-02 13:49:52.868  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:52.888  INFO Musso --- [           main] Analytics                                : Feature on 2: George Franklin
+2021-12-02 13:49:52.890  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for enabled: 2
+2021-12-02 13:49:52.893  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.912  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.931  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.957  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:52.958  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 4
+2021-12-02 13:49:52.960  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:52.985  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.006  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.023  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.044  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.059  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:53.061  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 6
+2021-12-02 13:49:53.062  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.079  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.099  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:53.101  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 3
+2021-12-02 13:49:53.102  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.120  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.141  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.165  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:53.167  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 4
+2021-12-02 13:49:53.168  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.187  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.207  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.224  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.239  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:53.241  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 5
+2021-12-02 13:49:53.244  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:53.261  INFO Musso --- [           main] Analytics                                : Feature on 2: George Franklin
+2021-12-02 13:49:53.262  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for enabled: 2
+2021-12-02 13:49:53.264  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.280  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.295  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:53.297  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 3
+2021-12-02 13:49:53.298  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:53.312  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:53.329  INFO Musso --- [           main] Analytics                                : Feature on 2: George Franklin
+2021-12-02 13:49:53.331  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for enabled: 3
+2021-12-02 13:49:53.332  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.354  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.381  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.403  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.430  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:53.433  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 5
+2021-12-02 13:49:53.435  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.458  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:53.461  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 2
+2021-12-02 13:49:53.463  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.479  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.496  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:53.497  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 3
+2021-12-02 13:49:53.499  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:53.517  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:53.540  INFO Musso --- [           main] Analytics                                : Feature on 2: George Franklin
+2021-12-02 13:49:53.542  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for enabled: 3
+2021-12-02 13:49:53.546  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.567  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.588  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.615  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:53.618  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 4
+2021-12-02 13:49:53.620  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.657  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.682  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.698  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:53.699  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 4
+2021-12-02 13:49:53.701  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.721  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.739  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.756  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.776  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.792  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:53.795  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 6
+2021-12-02 13:49:53.796  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.816  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.840  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:53.842  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 3
+2021-12-02 13:49:53.845  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.862  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.879  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.900  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:53.901  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 4
+2021-12-02 13:49:53.903  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.920  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.935  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.949  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.966  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:53.988  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:53.990  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 6
+2021-12-02 13:49:53.991  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:54.019  INFO Musso --- [           main] Analytics                                : Feature on 2: George Franklin
+2021-12-02 13:49:54.021  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for enabled: 2
+2021-12-02 13:49:54.022  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.048  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.066  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.085  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.100  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:54.101  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 5
+2021-12-02 13:49:54.103  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.115  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.132  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.144  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:54.146  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 4
+2021-12-02 13:49:54.147  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.159  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.173  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.189  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:54.191  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 4
+2021-12-02 13:49:54.195  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.208  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.226  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.243  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:54.245  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 4
+2021-12-02 13:49:54.247  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:54.268  INFO Musso --- [           main] Analytics                                : Feature on 2: George Franklin
+2021-12-02 13:49:54.269  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for enabled: 2
+2021-12-02 13:49:54.270  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:54.287  INFO Musso --- [           main] Analytics                                : Feature on 2: George Franklin
+2021-12-02 13:49:54.288  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for enabled: 2
+2021-12-02 13:49:54.289  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.306  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:54.307  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 2
+2021-12-02 13:49:54.308  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.323  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.337  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:54.339  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 3
+2021-12-02 13:49:54.340  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.357  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.379  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.397  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:54.399  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 4
+2021-12-02 13:49:54.400  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.422  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.440  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.458  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.483  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:54.485  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 5
+2021-12-02 13:49:54.488  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.511  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.536  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.553  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.570  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:54.571  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 5
+2021-12-02 13:49:54.573  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.590  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.607  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.622  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.637  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:54.639  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 5
+2021-12-02 13:49:54.640  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:54.657  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:54.678  INFO Musso --- [           main] Analytics                                : Feature on 2: George Franklin
+2021-12-02 13:49:54.680  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for enabled: 3
+2021-12-02 13:49:54.681  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.700  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:54.702  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 2
+2021-12-02 13:49:54.705  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.723  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:54.725  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 2
+2021-12-02 13:49:54.727  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.746  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.763  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:54.765  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 3
+2021-12-02 13:49:54.767  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:54.785  INFO Musso --- [           main] Analytics                                : Feature on 2: George Franklin
+2021-12-02 13:49:54.786  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for enabled: 2
+2021-12-02 13:49:54.788  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.805  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:54.807  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 2
+2021-12-02 13:49:54.808  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.823  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.839  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.857  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.873  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:54.875  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 5
+2021-12-02 13:49:54.879  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:54.899  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:54.919  INFO Musso --- [           main] Analytics                                : Feature on 2: George Franklin
+2021-12-02 13:49:54.920  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for enabled: 3
+2021-12-02 13:49:54.921  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.945  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.964  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.979  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:54.980  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 4
+2021-12-02 13:49:54.981  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:54.997  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.014  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:55.015  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 3
+2021-12-02 13:49:55.016  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.031  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.045  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.059  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.078  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:55.079  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 5
+2021-12-02 13:49:55.081  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.098  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.114  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.132  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:55.134  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 4
+2021-12-02 13:49:55.135  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:55.155  INFO Musso --- [           main] Analytics                                : Feature on 2: George Franklin
+2021-12-02 13:49:55.156  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for enabled: 2
+2021-12-02 13:49:55.158  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.176  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:55.179  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 2
+2021-12-02 13:49:55.181  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.197  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.213  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:55.214  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 3
+2021-12-02 13:49:55.216  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.228  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.243  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.257  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:55.258  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 4
+2021-12-02 13:49:55.259  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.271  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.283  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.297  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:55.298  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 4
+2021-12-02 13:49:55.300  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.312  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.325  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.338  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:55.340  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 4
+2021-12-02 13:49:55.341  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.365  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.379  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.393  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.406  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:55.407  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 5
+2021-12-02 13:49:55.409  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.429  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.446  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.462  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.478  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:55.479  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 5
+2021-12-02 13:49:55.480  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.497  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.512  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.529  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.542  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.557  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:55.559  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 6
+2021-12-02 13:49:55.561  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.574  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.588  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:55.590  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 3
+2021-12-02 13:49:55.593  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.612  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.627  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:55.629  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 3
+2021-12-02 13:49:55.631  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:55.644  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:55.660  INFO Musso --- [           main] Analytics                                : Feature on 2: George Franklin
+2021-12-02 13:49:55.662  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for enabled: 3
+2021-12-02 13:49:55.664  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.677  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.692  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:55.693  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 3
+2021-12-02 13:49:55.695  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:55.708  INFO Musso --- [           main] Analytics                                : Feature on 2: George Franklin
+2021-12-02 13:49:55.709  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for enabled: 2
+2021-12-02 13:49:55.711  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.728  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.754  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.771  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:55.772  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 4
+2021-12-02 13:49:55.773  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.789  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.809  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.830  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.847  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:55.848  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 5
+2021-12-02 13:49:55.850  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.867  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:55.869  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 2
+2021-12-02 13:49:55.870  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.887  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.903  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.919  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:55.920  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 4
+2021-12-02 13:49:55.921  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:55.936  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:55.951  INFO Musso --- [           main] Analytics                                : Feature on 2: George Franklin
+2021-12-02 13:49:55.953  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for enabled: 3
+2021-12-02 13:49:55.955  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.973  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:55.992  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:55.993  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 3
+2021-12-02 13:49:55.997  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.018  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:56.020  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 2
+2021-12-02 13:49:56.022  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:56.043  INFO Musso --- [           main] Analytics                                : Feature on 2: George Franklin
+2021-12-02 13:49:56.044  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for enabled: 2
+2021-12-02 13:49:56.047  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.062  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.073  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:56.074  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 3
+2021-12-02 13:49:56.075  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.089  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.104  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:56.105  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 3
+2021-12-02 13:49:56.106  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.120  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.135  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:56.137  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 3
+2021-12-02 13:49:56.138  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:56.153  INFO Musso --- [           main] Analytics                                : Feature on 2: George Franklin
+2021-12-02 13:49:56.154  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for enabled: 2
+2021-12-02 13:49:56.155  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.174  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.190  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:56.191  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 3
+2021-12-02 13:49:56.193  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.205  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.219  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.239  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.255  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:56.256  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 5
+2021-12-02 13:49:56.257  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.276  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.291  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.302  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:56.303  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 4
+2021-12-02 13:49:56.304  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.316  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:56.316  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 2
+2021-12-02 13:49:56.317  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:56.331  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:56.340  INFO Musso --- [           main] Analytics                                : Feature on 2: George Franklin
+2021-12-02 13:49:56.341  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for enabled: 3
+2021-12-02 13:49:56.342  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.351  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.360  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.376  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:56.378  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 4
+2021-12-02 13:49:56.379  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.398  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:56.401  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 2
+2021-12-02 13:49:56.402  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.423  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.441  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:56.442  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 3
+2021-12-02 13:49:56.446  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.464  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.482  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.499  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:56.500  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 4
+2021-12-02 13:49:56.502  INFO Musso --- [           main] Analytics                                : Feature on 1: not found
+2021-12-02 13:49:56.514  INFO Musso --- [           main] Analytics                                : Feature on 2: George Franklin
+2021-12-02 13:49:56.515  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for enabled: 2
+2021-12-02 13:49:56.516  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.533  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.571  INFO Musso --- [           main] Analytics                                : Feature off 1: not found
+2021-12-02 13:49:56.594  INFO Musso --- [           main] Analytics                                : Feature off 2: Franklin, George
+2021-12-02 13:49:56.596  INFO Musso --- [           main] Analytics                                : Number of searches to get it right for disabled: 4
