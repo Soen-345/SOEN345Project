@@ -14,7 +14,7 @@ summary(rndDisabled)
 #statistical test
 wilcox.test(enabled$V4, rndDisabled$V4)
 
-boxplot(enabled$V4, rndDisabled$V4)
+boxplot(enabled$V4, rndDisabled$V4, main="Boxplot for AB Testing", ylab="# of searches", xlab="Features", names=c("New", "Old"))
 
 #median difference
 median(enabled$V4) - median(rndDisabled$V4)
