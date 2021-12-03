@@ -315,7 +315,7 @@ class OwnerControllerTests {
 				mockMvc.perform(get("/owners").param("lastName", "Franklin")).andExpect(status().is3xxRedirection())
 						.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
 
-				OwnerController.analytics.info("Number of searches to get it right for disabled: " + counter);
+				OwnerController.analytics.info("Number of searches to get it right for disabled: ," + counter);
 
 			}
 
@@ -334,7 +334,7 @@ class OwnerControllerTests {
 						.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
 
 
-				OwnerController.analytics.info("Number of searches to get it right for enabled: " + counter);
+				OwnerController.analytics.info("Number of searches to get it right for enabled: ," + counter);
 
 			}
 
