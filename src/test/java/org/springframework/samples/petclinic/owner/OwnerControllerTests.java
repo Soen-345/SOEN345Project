@@ -300,7 +300,7 @@ class OwnerControllerTests {
 			// if search by last name user, it will take about 1-5 search to get the name right
 			// if search by first name user enter correct name in 1-2 search
 
-			int counter = 1;
+			int counter = 0;
 			if (OwnerToggles.isSearchLastNameEnabled) {
 				for (int j = 0; j < ThreadLocalRandom.current().nextDouble(0,5);j++) {
 
