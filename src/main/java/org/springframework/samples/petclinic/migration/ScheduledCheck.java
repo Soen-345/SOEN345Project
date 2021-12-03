@@ -45,7 +45,7 @@ public class ScheduledCheck {
 
     // every 30 seconds
     @Async
-    @Scheduled(fixedDelay = 12)
+    @Scheduled(fixedDelay = 30000)
     public void consistencyCheck() {
 
         if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isH2Enabled) {
