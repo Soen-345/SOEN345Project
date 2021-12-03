@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.migration;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.owner.Owner;
@@ -18,6 +19,7 @@ public class PetMigration implements IMigration<Pet> {
     private static final Logger log = LoggerFactory.getLogger(PetMigration.class);
 
     private final PetDAO petDAO;
+    private String dataChecker = "";
 
     public PetMigration() {
         petDAO = new PetDAO();
@@ -169,5 +171,33 @@ public class PetMigration implements IMigration<Pet> {
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
     }
+    public void updateData(){
+        this.petDAO.addHashStorage("pet",hashable());
+        log.info("Data Stored for pet");
+    }
+
+    public String hashable(){
+        List<Pet> pet;
+        pet = this.petDAO.getAll(Datastores.SQLITE);
+        String hashStringexpected = "";
+        for(int i=0; i< 4; i++){
+            Pet oldpet= pet.get(i);
+            hashStringexpected = hashStringexpected + oldpet.getName() + oldpet.getBirthDate() + oldpet.getTypeId()
+                    + oldpet.getOwnerId();
+
+        }
+        hashStringexpected = hashValue(hashStringexpected);
+        return hashStringexpected;
+    }
+
+    public boolean hashConsistencyChecker(){
+        String actual = hashable();
+        dataChecker = this.petDAO.getHash("pet");
+        return  dataChecker.equals(actual);
+    }
+    private String hashValue(String value) {
+        return DigestUtils.sha1Hex(value).toUpperCase();
+    }
+
 }
 

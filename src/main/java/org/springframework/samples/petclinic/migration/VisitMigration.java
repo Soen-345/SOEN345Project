@@ -1,7 +1,9 @@
 package org.springframework.samples.petclinic.migration;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.samples.petclinic.owner.Pet;
 import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,7 @@ public class VisitMigration implements IMigration<Visit> {
     private static final Logger log = LoggerFactory.getLogger(VisitMigration.class);
 
     private final VisitDAO visitDAO;
+    private String dataChecker;
 
     public VisitMigration() {
         visitDAO = new VisitDAO();
@@ -149,6 +152,7 @@ public class VisitMigration implements IMigration<Visit> {
         }
     }
 
+
     public void shadowWriteToNewDatastore(Visit visit) {
         if (MigrationToggles.isH2Enabled && MigrationToggles.isSQLiteEnabled && visit.getId() != null) {
             this.visitDAO.migrate(visit);
@@ -160,6 +164,33 @@ public class VisitMigration implements IMigration<Visit> {
 
     public void closeConnections() throws SQLException {
         this.visitDAO.closeConnections();
+    }
+    public void updateData(){
+        this.visitDAO.addHashStorage("visit",hashable());
+        log.info("Data Stored for visits");
+    }
+
+    public String hashable(){
+        List<Visit> visits;
+        visits = this.visitDAO.getAll(Datastores.SQLITE);
+        String hashStringexpected = "";
+        for(int i=0; i< 4; i++){
+            Visit oldVists= visits.get(i);
+            hashStringexpected = hashStringexpected + oldVists.getPetId() + oldVists.getDate() + oldVists.getDescription();
+
+        }
+        hashStringexpected = hashValue(hashStringexpected);
+        return hashStringexpected;
+    }
+
+    public boolean hashConsistencyChecker(){
+        String actual = hashable();
+        dataChecker = this.visitDAO.getHash("visit");
+        return  dataChecker.equals(actual);
+    }
+
+    private String hashValue(String value) {
+        return DigestUtils.sha1Hex(value).toUpperCase();
     }
 
     public static LocalDate convertToLocalDateViaInstant(Date dateToConvert) {

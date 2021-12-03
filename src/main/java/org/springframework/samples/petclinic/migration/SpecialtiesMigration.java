@@ -1,7 +1,9 @@
 package org.springframework.samples.petclinic.migration;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.samples.petclinic.owner.Pet;
 import org.springframework.samples.petclinic.vet.Specialty;
 
 import java.sql.SQLException;
@@ -14,6 +16,7 @@ public class SpecialtiesMigration implements IMigration<Specialty> {
     private static final Logger log = LoggerFactory.getLogger(SpecialtiesMigration.class);
 
     private final SpecialtiesDAO specialtiesDAO;
+    private String dataChecker = "";
 
     public SpecialtiesMigration() {
         specialtiesDAO = new SpecialtiesDAO();
@@ -138,6 +141,31 @@ public class SpecialtiesMigration implements IMigration<Specialty> {
 
     public void shadowWrite(Specialty specialty) {
         this.specialtiesDAO.add(specialty, Datastores.SQLITE);
+    }
+
+    public void updateData(){
+        this.specialtiesDAO.addHashStorage("specialties",hashable());
+        log.info("Data Stored for specialties");
+    }
+    public String hashable(){
+        List<Specialty> specialty;
+        specialty = this.specialtiesDAO.getAll(Datastores.SQLITE);
+        String hashStringexpected = "";
+        for(int i=0; i< 3; i++){
+            Specialty oldSpecialty= specialty.get(i);
+            hashStringexpected = hashStringexpected + oldSpecialty.getId() + oldSpecialty.getName();
+
+        }
+        hashStringexpected = hashValue(hashStringexpected);
+        return hashStringexpected;
+    }
+    public boolean hashConsistencyChecker(){
+        String actual = hashable();
+        dataChecker = this.specialtiesDAO.getHash("specialties");
+        return  dataChecker.equals(actual);
+    }
+    private String hashValue(String value) {
+        return DigestUtils.sha1Hex(value).toUpperCase();
     }
 
     public void closeConnections() throws SQLException {
