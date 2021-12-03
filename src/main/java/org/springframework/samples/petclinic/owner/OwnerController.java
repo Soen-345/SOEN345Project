@@ -163,18 +163,20 @@ class OwnerController {
                 result.rejectValue("lastName", "notFound", "not found");
 
                 if (OwnerToggles.isSearchFirstNameEnabled)
-                    analytics.info("Feature on 1: not found" );
+                    analytics.info("Feature on 1: not found, " );
                 else
-                    analytics.info("Feature off 1: not found" ) ;
+                    analytics.info("Feature off 1: not found, " ) ;
 
                 return "owners/findOwners";
             } else if (results != null && results.size() == 1) {
                 // 1 owner found
                 owner = results.iterator().next();
+
                 if (OwnerToggles.isSearchFirstNameEnabled)
-                    analytics.info("Feature on 2: " + owner.getLastName()+", "+owner.getFirstName());
+                    analytics.info("Feature on 2: " +  owner.getFirstName()  + " " + owner.getLastName() + ", ");
                 else
-                    analytics.info("Feature off 2: " + owner.getLastName()+", "+owner.getFirstName());
+                    analytics.info("Feature off 2: " + owner.getLastName() + " " + owner.getFirstName() + ", ");
+
 
                 return "redirect:/owners/" + owner.getId();
             } else {
