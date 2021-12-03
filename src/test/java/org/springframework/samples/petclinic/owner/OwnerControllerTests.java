@@ -21,8 +21,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import java.util.*;
 import java.lang.*;
+import java.util.concurrent.ThreadLocalRandom;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -96,6 +99,7 @@ class OwnerControllerTests {
         when(this.max.getBirthDate()).thenReturn(LocalDate.now());
         when(this.max.getVisits()).thenReturn(Lists.newArrayList(visit));
         when(this.george.getPetsInternal()).thenReturn(Collections.singleton(max));
+
 /*
         when(this.owners.findById(TEST_OWNER_ID)).thenReturn(george);
         given(this.owners.findByFirstName(george.getFirstName())).willReturn(Lists.newArrayList(george));
@@ -237,5 +241,105 @@ class OwnerControllerTests {
 
     }
 
+	@Test
+	// tests the logger and rollback
+	public void rollBackWithLoggerTest () throws Exception {
+		//feature is dark --> no one can access the feature
+		OwnerToggles.isSearchFirstNameEnabled=false;
+		OwnerToggles.isSearchLastNameEnabled=true;
+
+		//for when the feature is off
+		//when(this.owners.findByLastName("")).thenReturn(Lists.newArrayList(george, new Owner()));
+        when(this.ownerMigration.shadowReadByLastName("")).thenReturn(Lists.newArrayList(george, new Owner()));
+		mockMvc.perform(get("/owners")).andExpect(status().isOk()).andExpect(view().name("owners/ownersList"));
+
+		//when(this.owners.findByLastName(george.getLastName())).thenReturn(Lists.newArrayList(george));
+        when(this.ownerMigration.shadowReadByLastName(george.getLastName())).thenReturn(Lists.newArrayList(george));
+		mockMvc.perform(get("/owners").param("lastName", "Franklin")).andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
+
+		//feature is on
+		OwnerToggles.isSearchFirstNameEnabled=true;
+		OwnerToggles.isSearchLastNameEnabled=false;
+
+        when(this.ownerMigration.shadowReadByFirstName("")).thenReturn(Lists.newArrayList(george, new Owner()));
+		mockMvc.perform(get("/owners")).andExpect(status().isOk()).andExpect(view().name("owners/ownersList"));
+
+        when(this.ownerMigration.shadowReadByFirstName("George")).thenReturn(Lists.newArrayList(george));
+		mockMvc.perform(get("/owners").param("firstName", "George")).andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
+
+		//for when the feature is off --> rollback
+		OwnerToggles.isSearchFirstNameEnabled=false;
+		OwnerToggles.isSearchLastNameEnabled=true;
+
+        when(this.ownerMigration.shadowReadByLastName("")).thenReturn(Lists.newArrayList(george, new Owner()));
+		mockMvc.perform(get("/owners")).andExpect(status().isOk()).andExpect(view().name("owners/ownersList"));
+
+        when(this.ownerMigration.shadowReadByLastName(george.getLastName())).thenReturn(Lists.newArrayList(george));
+		mockMvc.perform(get("/owners").param("lastName", "Franklin")).andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
+
+	}
+
+	@Test
+	void testRandomFeature() throws Exception{
+		int interations = 100;
+
+		given(this.owners.findByLastName("")).willReturn(Lists.newArrayList(george, new Owner()));
+		given(this.owners.findByLastName(george.getLastName())).willReturn(Lists.newArrayList(george));
+		given(this.owners.findByFirstName("")).willReturn(Lists.newArrayList(george, new Owner()));
+		given(this.owners.findByFirstName(george.getFirstName())).willReturn(Lists.newArrayList(george));
+
+		given(this.owners.findByLastName("NA")).willReturn(Lists.newArrayList());
+		given(this.owners.findByFirstName("NA")).willReturn(Lists.newArrayList());
+
+		for (int i = 0; i < interations; i++) {
+			OwnerToggles.assignSearchNameFeature(30);
+			// hypothesis: user find correct owner easier with first name
+			// if search by last name user, it will take about 1-5 search to get the name right
+			// if search by first name user enter correct name in 1-2 search
+
+			int counter = 0;
+			if (OwnerToggles.isSearchLastNameEnabled) {
+				for (int j = 0; j < ThreadLocalRandom.current().nextDouble(0,5);j++) {
+
+					mockMvc.perform(get("/owners").param("lastName", "NA")).andExpect(status().isOk())
+							.andExpect(model().attributeHasFieldErrors("owner", "lastName"))
+							.andExpect(model().attributeHasFieldErrorCode("owner", "lastName", "notFound"))
+							.andExpect(view().name("owners/findOwners"));
+
+					counter = counter + 1;
+				}
+
+				mockMvc.perform(get("/owners").param("lastName", "Franklin")).andExpect(status().is3xxRedirection())
+						.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
+
+				OwnerController.analytics.info("Number of searches to get it right for disabled: ," + counter);
+
+			}
+
+			if (OwnerToggles.isSearchFirstNameEnabled){
+				for (int j = 0; j < ThreadLocalRandom.current().nextDouble(0,2);j++){
+
+					mockMvc.perform(get("/owners").param("firstName", "NA")).andExpect(status().isOk())
+							.andExpect(model().attributeHasFieldErrors("owner", "lastName"))
+							.andExpect(model().attributeHasFieldErrorCode("owner", "lastName", "notFound"))
+							.andExpect(view().name("owners/findOwners"));
+
+					counter = counter + 1;
+
+				}
+				mockMvc.perform(get("/owners").param("firstName", "George")).andExpect(status().is3xxRedirection())
+						.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
+
+
+				OwnerController.analytics.info("Number of searches to get it right for enabled: ," + counter);
+
+			}
+
+		}
+
+	}
 
 }

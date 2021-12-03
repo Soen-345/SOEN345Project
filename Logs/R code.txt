@@ -1,0 +1,23 @@
+#for the file path, use the one where Analytics.log is located in your local drive
+dd <- read.table('C:/Users/ineke/IdeaProjects/SOEN345Project/Logs/Analytics.log', sep = ',', header=F)
+summary(dd)
+
+#get enabled 
+enabled <- dd[dd$V3 == " Number of searches to get it right for enabled: ", ]
+summary(enabled)
+
+#get disabled and a sample of same length as enabled
+disabled <- dd[dd$V3 == " Number of searches to get it right for disabled: ", ]
+rndDisabled <- disabled[sample(nrow(disabled), length(enabled$V3)), ]
+summary(rndDisabled)
+
+#statistical test
+wilcox.test(enabled$V4, rndDisabled$V4)
+
+boxplot(enabled$V4, rndDisabled$V4, main="Boxplot for AB Testing", ylab="# of searches", xlab="Features", names=c("New", "Old"))
+
+#median difference
+median(enabled$V4) - median(rndDisabled$V4)
+
+#median times
+median(enabled$V4)/median(rndDisabled$V4)

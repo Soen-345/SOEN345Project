@@ -15,6 +15,12 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.migration.MigrationToggles;
 import org.springframework.samples.petclinic.migration.OwnerMigration;
@@ -33,7 +39,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.Map;
-
 /**
  * @author Juergen Hoeller
  * @author Ken Krebs
@@ -51,11 +56,17 @@ class OwnerController {
     private final OwnerMigration ownerMigration;
     private final VisitMigration visitMigration;
 
+    public static Logger analytics = LogManager.getLogger("Analytics");
+
+
+
     public OwnerController(OwnerRepository clinicService, OwnerMigration ownerMigration,
                            VisitRepository visits, VisitMigration visitMigration) {
         this.owners = clinicService;
         this.ownerMigration = ownerMigration;
         this.visits = visits;
+
+        OwnerToggles.assignSearchNameFeature(30);
         this.visitMigration = visitMigration;
     }
 
@@ -101,13 +112,13 @@ class OwnerController {
     @GetMapping("/owners/find")
     public String initFindForm(Map<String, Object> model) {
         model.put("owner", new Owner());
-        if (OwnerToggles.isSearchLastNameEnabled) {
-            model.put("nameType", "Last");
-        }
-        if (OwnerToggles.isSearchFirstNameEnabled) {
+        if(OwnerToggles.isSearchLastNameEnabled)
+            model.put("nameType","Last");
+        if(OwnerToggles.isSearchFirstNameEnabled) {
             model.put("nameType", "First");
-        }
+            analytics.info("Name processing...");
 
+        }
         return "owners/findOwners";
     }
 
@@ -150,20 +161,44 @@ class OwnerController {
             if (results != null && results.isEmpty()) {
                 // no owners found
                 result.rejectValue("lastName", "notFound", "not found");
+
+                if (OwnerToggles.isSearchFirstNameEnabled)
+                    analytics.info("Feature on 1: not found, " );
+                else
+                    analytics.info("Feature off 1: not found, " ) ;
+
                 return "owners/findOwners";
             } else if (results != null && results.size() == 1) {
                 // 1 owner found
                 owner = results.iterator().next();
 
+                if (OwnerToggles.isSearchFirstNameEnabled)
+                    analytics.info("Feature on 2: " +  owner.getFirstName()  + " " + owner.getLastName() + ", ");
+                else
+                    analytics.info("Feature off 2: " + owner.getLastName() + " " + owner.getFirstName() + ", ");
+
+
                 return "redirect:/owners/" + owner.getId();
             } else {
                 // multiple owners found
                 model.put("selections", results);
+
+                if (OwnerToggles.isSearchFirstNameEnabled)
+                    analytics.info("Feature on 3: " + results);
+                else
+                    analytics.info("Feature off 3: " + results);
+
                 return "owners/ownersList";
             }
 
         }
         result.rejectValue("lastName", "notFound", "not found");
+
+        if (OwnerToggles.isSearchFirstNameEnabled)
+            analytics.info("Feature on: 4" + "not found");
+        else
+            analytics.info("Feature off: 4" + "not found");
+
         return "owners/findOwners";
     }
 
@@ -205,6 +240,7 @@ class OwnerController {
                 }
                 return "redirect:/owners/{ownerId}";
             }
+
         }
         return "Update owner feature not enabled";
     }

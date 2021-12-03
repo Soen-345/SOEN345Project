@@ -15,8 +15,6 @@
  */
 package org.springframework.samples.petclinic.model;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
-
 import java.io.Serializable;
 
 import javax.persistence.GeneratedValue;

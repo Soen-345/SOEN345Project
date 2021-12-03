@@ -17,7 +17,6 @@ package org.springframework.samples.petclinic.model;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import javax.print.attribute.standard.MediaSize;
 
 /**
  * Simple JavaBean domain object adds a name property to <code>BaseEntity</code>. Used as
