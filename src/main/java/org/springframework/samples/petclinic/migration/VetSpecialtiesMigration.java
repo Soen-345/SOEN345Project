@@ -1,7 +1,9 @@
 package org.springframework.samples.petclinic.migration;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.samples.petclinic.owner.Pet;
 import org.springframework.samples.petclinic.vet.VetSpecialty;
 
 import java.sql.SQLException;
@@ -16,6 +18,7 @@ public class VetSpecialtiesMigration  {
     private static final Logger log = LoggerFactory.getLogger(VisitMigration.class);
 
     private final VetSpecialtiesDAO vetSpecialtiesDAO;
+    private String dataChecker;
 
     public VetSpecialtiesMigration() {
         vetSpecialtiesDAO = new VetSpecialtiesDAO();
@@ -96,6 +99,33 @@ public class VetSpecialtiesMigration  {
                     + "Actual: " + actual.getVet_id() + " " + actual.getSpecialty_id());
         }
 
+    }
+
+    public void updateData(){
+        this.vetSpecialtiesDAO.addHashStorage("vetSpecialtiesDAO",hashable());
+        log.info("hashtable created for vetSpecialties");
+    }
+    public String hashable(){
+        List<VetSpecialty> vetSpecialties;
+        vetSpecialties = this.vetSpecialtiesDAO.getAll(Datastores.SQLITE);
+        String hashStringexpected = "";
+        for(int i=0; i< 4; i++){
+            VetSpecialty oldvetSpecialtie= vetSpecialties.get(i);
+            hashStringexpected = hashStringexpected + oldvetSpecialtie.getSpecialty_id() + oldvetSpecialtie.getVet_id();
+
+        }
+        hashStringexpected = hashValue(hashStringexpected);
+        return hashStringexpected;
+    }
+
+    public boolean hashConsistencyChecker(){
+        String actual = hashable();
+        dataChecker = this.vetSpecialtiesDAO.getHash("vetSpecialtiesDAO");
+        return  dataChecker.equals(actual);
+    }
+
+    private String hashValue(String value) {
+        return DigestUtils.sha1Hex(value).toUpperCase();
     }
 
     public void closeConnections() throws SQLException {

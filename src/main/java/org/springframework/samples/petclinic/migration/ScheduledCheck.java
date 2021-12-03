@@ -77,11 +77,18 @@ public class ScheduledCheck {
                 MigrationToggles.isH2Enabled = false;
                 MigrationToggles.isShadowReadEnabled = true;
                 ownerMigration.updateData();
+                petMigration.updateData();
+                vetMigration.updateData();
+                visitMigration.updateData();
+                vetSpecialtiesMigration.updateData();
+                specialtiesMigration.updateData();
+                typeMigration.updateData();
                 MigrationToggles.consistencyHashChecking = true;
                 log.info("**** CONGRATS! YOU'VE MIGRATED FROM H2 TO SQLITE SUCCESSFULLY ****");
             }
         }
     }
+
 
     @Async
     @Scheduled(fixedDelay = 30000)
@@ -89,6 +96,36 @@ public class ScheduledCheck {
         if (MigrationToggles.consistencyHashChecking){
             if (!ownerMigration.hashConsistencyChecker()){
                 log.warn("owner data corrupted");
+            }else{
+                log.info("no corruption");
+            }
+            if (!petMigration.hashConsistencyChecker()){
+                log.warn("pets data corrupted");
+            }else{
+                log.info("no corruption");
+            }
+            if (!vetMigration.hashConsistencyChecker()){
+                log.warn("vets data corrupted");
+            }else{
+                log.info("no corruption");
+            }
+            if (!visitMigration.hashConsistencyChecker()){
+                log.warn("visits data corrupted");
+            }else{
+                log.info("no corruption");
+            }
+            if (!vetSpecialtiesMigration.hashConsistencyChecker()){
+                log.warn("visits data corrupted");
+            }else{
+                log.info("no corruption");
+            }
+            if (!specialtiesMigration.hashConsistencyChecker()){
+                log.warn("specialties data corrupted");
+            }else{
+                log.info("no corruption");
+            }
+            if (!typeMigration.hashConsistencyChecker()){
+                log.warn("type data corrupted");
             }else{
                 log.info("no corruption");
             }

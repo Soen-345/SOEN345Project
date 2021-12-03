@@ -212,10 +212,32 @@ public class VisitDAO implements IDAO<Visit>{
         return visits;
     }
 
+
     public void closeConnections() throws SQLException {
         SQLite_CONNECTION.close();
         H2_CONNECTION.close();
     }
 
+    public void addHashStorage(String type,String hash){
+        String insertQuery = "INSERT INTO hashTable (hashtype, hashStorage) VALUES (" +" '" + type + "'"+ ",'" + hash  + "');";
+        try {
+            Statement statement = SQLite_CONNECTION.createStatement();
+            statement.execute(insertQuery);
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        }
+    }
+    public String getHash(String type){
+        String hashStorage  = "";
+        String query = "SELECT hashStorage FROM hashTable WHERE hashtype = " +"'"+ type +"'" + ";";
+        try {
+            Statement statement = SQLite_CONNECTION.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            hashStorage = resultSet.getString("hashStorage");
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        }
+        return hashStorage;
+    }
 
 }

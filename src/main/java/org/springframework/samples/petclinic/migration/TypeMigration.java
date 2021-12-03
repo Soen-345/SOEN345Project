@@ -1,7 +1,9 @@
 package org.springframework.samples.petclinic.migration;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.samples.petclinic.owner.Pet;
 import org.springframework.samples.petclinic.owner.PetType;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +18,7 @@ public class TypeMigration implements IMigration<PetType> {
 
     private static final Logger log = LoggerFactory.getLogger(TypeMigration.class);
     private final TypeDAO typeDAO;
-
+    private String dataChecker= "";
     public TypeMigration() {
         typeDAO = new TypeDAO();
     }
@@ -149,6 +151,31 @@ public class TypeMigration implements IMigration<PetType> {
         else {
             this.typeDAO.add(type, Datastores.SQLITE);
         }
+    }
+
+    public void updateData(){
+        this.typeDAO.addHashStorage("pettype",hashable());
+        log.info("hashtable created for type");
+    }
+    public String hashable(){
+        List<PetType> petType;
+        petType = this.typeDAO.getAll(Datastores.SQLITE);
+        String hashStringexpected = "";
+        for(int i=0; i< 4; i++){
+            PetType oldpetType= petType.get(i);
+            hashStringexpected = hashStringexpected + oldpetType.getName() + oldpetType.getId();
+
+        }
+        hashStringexpected = hashValue(hashStringexpected);
+        return hashStringexpected;
+    }
+    public boolean hashConsistencyChecker(){
+        String actual = hashable();
+        dataChecker = this.typeDAO.getHash("pettype");
+        return  dataChecker.equals(actual);
+    }
+    private String hashValue(String value) {
+        return DigestUtils.sha1Hex(value).toUpperCase();
     }
 
     public void closeConnections() throws SQLException {

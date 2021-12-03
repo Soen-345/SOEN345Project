@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.migration;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.vet.Vet;
@@ -20,6 +21,7 @@ public class VetMigration implements IMigration<Vet>{
     private static final Logger log = LoggerFactory.getLogger(VetMigration.class);
 
     private final VetDAO vetDAO;
+    private String datachecker = "";
 
     public VetMigration() {
         vetDAO = new VetDAO();
@@ -155,6 +157,32 @@ public class VetMigration implements IMigration<Vet>{
         else {
             this.vetDAO.add(vet, Datastores.SQLITE);
         }
+    }
+
+    public void updateData(){
+       this.vetDAO.addHashStorage("vet",hashable());
+       log.info("hashable created for vet");
+    }
+
+    public String hashable(){
+        List <Vet> vet;
+        vet = this.vetDAO.getAll(Datastores.SQLITE);
+        String hashStringExpected = "";
+        for(int i=0; i<4; i++){
+            Vet oldvet = vet.get(i);
+            hashStringExpected = hashStringExpected + oldvet.getFirstName() + oldvet.getLastName();
+        }
+        hashStringExpected = hashValue(hashStringExpected);
+     return hashStringExpected;
+    }
+
+    public boolean hashConsistencyChecker(){
+        String actual = hashable();
+        datachecker = this.vetDAO.getHash("vet");
+        return datachecker.equals(actual);
+    }
+    public String hashValue(String value){
+        return DigestUtils.sha1Hex(value).toUpperCase();
     }
 
     public void closeConnections() throws SQLException {
