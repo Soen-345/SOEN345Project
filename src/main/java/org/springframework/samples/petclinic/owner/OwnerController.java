@@ -184,9 +184,9 @@ class OwnerController {
                 model.put("selections", results);
 
                 if (OwnerToggles.isSearchFirstNameEnabled)
-                    analytics.info("Feature on 3: " + results);
+                    analytics.info("Feature on 3: " + results + ", ");
                 else
-                    analytics.info("Feature off 3: " + results);
+                    analytics.info("Feature off 3: " + results + ", ");
 
                 return "owners/ownersList";
             }
