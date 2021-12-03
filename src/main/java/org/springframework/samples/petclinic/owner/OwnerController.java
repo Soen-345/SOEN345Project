@@ -171,6 +171,10 @@ class OwnerController {
             } else if (results != null && results.size() == 1) {
                 // 1 owner found
                 owner = results.iterator().next();
+                if (OwnerToggles.isSearchFirstNameEnabled)
+                    analytics.info("Feature on 2: " + owner.getLastName()+", "+owner.getFirstName());
+                else
+                    analytics.info("Feature off 2: " + owner.getLastName()+", "+owner.getFirstName());
 
                 return "redirect:/owners/" + owner.getId();
             } else {
