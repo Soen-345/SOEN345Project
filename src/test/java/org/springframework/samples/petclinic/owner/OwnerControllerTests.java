@@ -25,10 +25,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 /**
  * Test class for {@link OwnerController}
  *
@@ -97,6 +99,7 @@ class OwnerControllerTests {
         when(this.max.getBirthDate()).thenReturn(LocalDate.now());
         when(this.max.getVisits()).thenReturn(Lists.newArrayList(visit));
         when(this.george.getPetsInternal()).thenReturn(Collections.singleton(max));
+
 /*
         when(this.owners.findById(TEST_OWNER_ID)).thenReturn(george);
         given(this.owners.findByFirstName(george.getFirstName())).willReturn(Lists.newArrayList(george));
@@ -237,12 +240,6 @@ class OwnerControllerTests {
 
 
     }
-					@Override
-					public void describeTo(Description description) {
-						description.appendText("Max did not have any visits");
-					}
-				}))).andExpect(view().name("owners/ownerDetails"));
-	}
 
 	@Test
 	// tests the logger and rollback
@@ -252,10 +249,12 @@ class OwnerControllerTests {
 		OwnerToggles.isSearchLastNameEnabled=true;
 
 		//for when the feature is off
-		given(this.owners.findByLastName("")).willReturn(Lists.newArrayList(george, new Owner()));
+		//when(this.owners.findByLastName("")).thenReturn(Lists.newArrayList(george, new Owner()));
+        when(this.ownerMigration.shadowReadByLastName("")).thenReturn(Lists.newArrayList(george, new Owner()));
 		mockMvc.perform(get("/owners")).andExpect(status().isOk()).andExpect(view().name("owners/ownersList"));
 
-		given(this.owners.findByLastName(george.getLastName())).willReturn(Lists.newArrayList(george));
+		//when(this.owners.findByLastName(george.getLastName())).thenReturn(Lists.newArrayList(george));
+        when(this.ownerMigration.shadowReadByLastName(george.getLastName())).thenReturn(Lists.newArrayList(george));
 		mockMvc.perform(get("/owners").param("lastName", "Franklin")).andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
 
@@ -263,20 +262,21 @@ class OwnerControllerTests {
 		OwnerToggles.isSearchFirstNameEnabled=true;
 		OwnerToggles.isSearchLastNameEnabled=false;
 
-		given(this.owners.findByFirstName("")).willReturn(Lists.newArrayList(george, new Owner()));
+        when(this.ownerMigration.shadowReadByFirstName("")).thenReturn(Lists.newArrayList(george, new Owner()));
 		mockMvc.perform(get("/owners")).andExpect(status().isOk()).andExpect(view().name("owners/ownersList"));
 
-		given(this.owners.findByFirstName(george.getFirstName())).willReturn(Lists.newArrayList(george));
+        when(this.ownerMigration.shadowReadByFirstName("George")).thenReturn(Lists.newArrayList(george));
 		mockMvc.perform(get("/owners").param("firstName", "George")).andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
 
 		//for when the feature is off --> rollback
 		OwnerToggles.isSearchFirstNameEnabled=false;
 		OwnerToggles.isSearchLastNameEnabled=true;
-		given(this.owners.findByLastName("")).willReturn(Lists.newArrayList(george, new Owner()));
+
+        when(this.ownerMigration.shadowReadByLastName("")).thenReturn(Lists.newArrayList(george, new Owner()));
 		mockMvc.perform(get("/owners")).andExpect(status().isOk()).andExpect(view().name("owners/ownersList"));
 
-		given(this.owners.findByLastName(george.getLastName())).willReturn(Lists.newArrayList(george));
+        when(this.ownerMigration.shadowReadByLastName(george.getLastName())).thenReturn(Lists.newArrayList(george));
 		mockMvc.perform(get("/owners").param("lastName", "Franklin")).andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
 
@@ -285,6 +285,7 @@ class OwnerControllerTests {
 	@Test
 	void testRandomFeature() throws Exception{
 		int interations = 100;
+
 		given(this.owners.findByLastName("")).willReturn(Lists.newArrayList(george, new Owner()));
 		given(this.owners.findByLastName(george.getLastName())).willReturn(Lists.newArrayList(george));
 		given(this.owners.findByFirstName("")).willReturn(Lists.newArrayList(george, new Owner()));

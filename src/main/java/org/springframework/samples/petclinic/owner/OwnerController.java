@@ -65,7 +65,6 @@ class OwnerController {
         this.owners = clinicService;
         this.ownerMigration = ownerMigration;
         this.visits = visits;
-        this.ownerMigration = new OwnerMigration();
 
         OwnerToggles.assignSearchNameFeature(30);
         this.visitMigration = visitMigration;
@@ -120,13 +119,6 @@ class OwnerController {
             analytics.info("Name processing...");
 
         }
-        if (OwnerToggles.isSearchLastNameEnabled) {
-            model.put("nameType", "Last");
-        }
-        if (OwnerToggles.isSearchFirstNameEnabled) {
-            model.put("nameType", "First");
-        }
-
         return "owners/findOwners";
     }
 
@@ -186,9 +178,9 @@ class OwnerController {
                 model.put("selections", results);
 
                 if (OwnerToggles.isSearchFirstNameEnabled)
-                    analytics.info("Feature on 3: " + owners);
+                    analytics.info("Feature on 3: " + results);
                 else
-                    analytics.info("Feature off 3: " + owners);
+                    analytics.info("Feature off 3: " + results);
 
                 return "owners/ownersList";
             }
