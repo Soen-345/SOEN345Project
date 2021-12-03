@@ -45,7 +45,7 @@ public class ScheduledCheck {
 
     // every 30 seconds
     @Async
-    @Scheduled(fixedDelay = 30000)
+    @Scheduled(fixedDelay = 12)
     public void consistencyCheck() {
 
         if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isH2Enabled) {
@@ -97,37 +97,37 @@ public class ScheduledCheck {
             if (!ownerMigration.hashConsistencyChecker()){
                 log.warn("owner data corrupted");
             }else{
-                log.info("no corruption");
+                log.info("no corruption in Owner's table");
             }
             if (!petMigration.hashConsistencyChecker()){
                 log.warn("pets data corrupted");
             }else{
-                log.info("no corruption");
+                log.info("no corruption in Pet's table");
             }
             if (!vetMigration.hashConsistencyChecker()){
                 log.warn("vets data corrupted");
             }else{
-                log.info("no corruption");
+                log.info("no corruption in Vets table");
             }
             if (!visitMigration.hashConsistencyChecker()){
                 log.warn("visits data corrupted");
             }else{
-                log.info("no corruption");
+                log.info("no corruption in Visits table");
             }
             if (!vetSpecialtiesMigration.hashConsistencyChecker()){
-                log.warn("visits data corrupted");
+                log.warn("Vetspecialties data corrupted");
             }else{
-                log.info("no corruption");
+                log.info("no corruption in Vetspecialties table");
             }
             if (!specialtiesMigration.hashConsistencyChecker()){
                 log.warn("specialties data corrupted");
             }else{
-                log.info("no corruption");
+                log.info("no corruption in Specialties table");
             }
             if (!typeMigration.hashConsistencyChecker()){
                 log.warn("type data corrupted");
             }else{
-                log.info("no corruption");
+                log.info("no corruption in Type Table");
             }
         }
     }

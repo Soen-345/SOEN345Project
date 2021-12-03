@@ -167,7 +167,7 @@ public class VisitMigration implements IMigration<Visit> {
     }
     public void updateData(){
         this.visitDAO.addHashStorage("visit",hashable());
-        log.info("hashtable created for visit");
+        log.info("Data Stored for visits");
     }
 
     public String hashable(){

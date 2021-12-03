@@ -173,7 +173,7 @@ public class PetMigration implements IMigration<Pet> {
     }
     public void updateData(){
         this.petDAO.addHashStorage("pet",hashable());
-        log.info("hashtable created");
+        log.info("Data Stored for pet");
     }
 
     public String hashable(){

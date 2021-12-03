@@ -161,7 +161,7 @@ public class VetMigration implements IMigration<Vet>{
 
     public void updateData(){
        this.vetDAO.addHashStorage("vet",hashable());
-       log.info("hashable created for vet");
+       log.info("Data Stored for vet");
     }
 
     public String hashable(){

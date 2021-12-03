@@ -155,7 +155,7 @@ public class TypeMigration implements IMigration<PetType> {
 
     public void updateData(){
         this.typeDAO.addHashStorage("pettype",hashable());
-        log.info("hashtable created for type");
+        log.info("Data Stored for type");
     }
     public String hashable(){
         List<PetType> petType;

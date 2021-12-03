@@ -103,7 +103,7 @@ public class VetSpecialtiesMigration  {
 
     public void updateData(){
         this.vetSpecialtiesDAO.addHashStorage("vetSpecialtiesDAO",hashable());
-        log.info("hashtable created for vetSpecialties");
+        log.info("Data Stored for vetSpecialties");
     }
     public String hashable(){
         List<VetSpecialty> vetSpecialties;

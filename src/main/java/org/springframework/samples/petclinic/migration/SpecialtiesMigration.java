@@ -145,7 +145,7 @@ public class SpecialtiesMigration implements IMigration<Specialty> {
 
     public void updateData(){
         this.specialtiesDAO.addHashStorage("specialties",hashable());
-        log.info("hashtable created for specialties");
+        log.info("Data Stored for specialties");
     }
     public String hashable(){
         List<Specialty> specialty;
