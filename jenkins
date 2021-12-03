@@ -24,8 +24,6 @@ pipeline {
             }
         stage('Generate reports') {
             steps {
-                echo '...generating code coverage report...'
-                bat 'mvn cobertura:cobertura -Dcobertura.report.format=xml'
                 echo '...generating static analysis report...'
                 bat 'mvn checkstyle:checkstyle -Dcheckstyle.report.formal=xml'
                 echo 'Reports generated successfully'
@@ -35,7 +33,6 @@ pipeline {
         post {
             always {
                 junit 'target/surefire-reports/*.xml'
-                cobertura autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: '**/target/site/cobertura/coverage.xml', failUnhealthy: false, failUnstable: false, maxNumberOfBuilds: 0, onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false
                 recordIssues(tools: [checkStyle(pattern: '**/target/checkstyle-result.xml')])
              }
         }
