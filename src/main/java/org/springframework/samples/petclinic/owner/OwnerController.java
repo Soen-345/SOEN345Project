@@ -137,10 +137,8 @@ class OwnerController {
             }
 
             if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
-                boolean success = this.ownerMigration.shadowReadWriteConsistencyChecker(owner);
-                if (success) {
-                    results = ownerMigration.shadowReadByLastName(owner.getLastName());
-                }
+                results = ownerMigration.shadowReadByLastName(owner.getLastName());
+
             }
 
         }
@@ -210,10 +208,8 @@ class OwnerController {
                 owner = this.owners.findById(ownerId);
             }
             if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
-                boolean success = this.ownerMigration.shadowReadWriteConsistencyChecker(this.ownerMigration.shadowRead(ownerId));
-                if (success) {
-                    owner = this.ownerMigration.shadowRead(ownerId);
-                }
+                owner = this.ownerMigration.shadowRead(ownerId);
+
             }
             assert owner != null;
             model.addAttribute(owner);
@@ -259,10 +255,7 @@ class OwnerController {
             owner = this.owners.findById(ownerId);
         }
         if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
-            boolean success = this.ownerMigration.shadowReadWriteConsistencyChecker(this.ownerMigration.shadowRead(ownerId));
-            if (success) {
-                owner = this.ownerMigration.shadowRead(ownerId);
-            }
+            owner = this.ownerMigration.shadowRead(ownerId);
         }
 
         assert owner != null;

@@ -75,10 +75,7 @@ class VisitController {
 			pet = this.pets.findById(petId);
 		}
 		if (MigrationToggles.isSQLiteEnabled && MigrationToggles.isShadowReadEnabled) {
-			boolean success = this.petMigration.shadowReadWriteConsistencyChecker(this.petMigration.shadowRead(petId));
-			if (success) {
-				pet = this.petMigration.shadowRead(petId);
-			}
+			pet = this.petMigration.shadowRead(petId);
 		}
 		assert pet != null;
 		Visit visit = new Visit();
